@@ -13,7 +13,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
             border-radius: 16px;
@@ -23,41 +23,46 @@
         .header {
             background: linear-gradient(135deg, #1DA1F2 0%, #0d8bd9 100%);
             color: white;
-            padding: 30px;
+            padding: 40px 30px;
             text-align: center;
         }
-        .header h1 { font-size: 28px; margin-bottom: 10px; font-weight: 700; }
-        .header .date { font-size: 14px; opacity: 0.9; }
-        .header .emoji { font-size: 48px; margin-bottom: 10px; }
-        .content { padding: 30px; }
-        .section { margin-bottom: 30px; }
+        .header h1 { font-size: 32px; margin-bottom: 10px; font-weight: 700; }
+        .header .date { font-size: 16px; opacity: 0.9; }
+        .header .emoji { font-size: 56px; margin-bottom: 15px; }
+        .content { padding: 40px 30px; }
+        .section { margin-bottom: 40px; }
         .section-title {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 24px;
+            font-weight: 700;
             color: #1DA1F2;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #1DA1F2;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #1DA1F2;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
         .card {
             background: #f7f9fa;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid #1DA1F2;
+            padding: 24px;
+            margin-bottom: 20px;
+            border-left: 5px solid #1DA1F2;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
         .card-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 15px;
+            margin-bottom: 15px;
         }
         .avatar {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
@@ -65,67 +70,136 @@
             justify-content: center;
             color: white;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 22px;
+            flex-shrink: 0;
         }
         .author-info { flex: 1; }
-        .author-name { font-weight: 600; color: #14171a; font-size: 16px; }
-        .author-handle { color: #657786; font-size: 14px; }
-        .card-content { color: #14171a; line-height: 1.6; font-size: 15px; }
+        .author-name { font-weight: 700; color: #14171a; font-size: 18px; margin-bottom: 4px; }
+        .author-handle { color: #657786; font-size: 15px; }
+        .author-handle a { color: #1DA1F2; text-decoration: none; }
+        .author-handle a:hover { text-decoration: underline; }
+        .card-content { color: #14171a; line-height: 1.8; font-size: 16px; }
+        .card-content p { margin-bottom: 12px; }
         .highlight {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-weight: 600;
+            font-weight: 700;
+        }
+        .quote {
+            background: white;
+            border-left: 4px solid #f5576c;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: #4a5568;
         }
         .podcast {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 30px;
             color: white;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-        .podcast-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
-        .podcast-desc { font-size: 14px; opacity: 0.95; line-height: 1.6; }
+        .podcast-title { font-size: 22px; font-weight: 700; margin-bottom: 15px; }
+        .podcast-desc { font-size: 16px; opacity: 0.98; line-height: 1.8; }
+        .podcast-desc strong { font-weight: 700; }
+        .podcast-meta {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .podcast-meta a { color: white; text-decoration: underline; }
         .footer {
             background: #f7f9fa;
-            padding: 20px 30px;
+            padding: 30px;
             text-align: center;
             color: #657786;
-            font-size: 14px;
+            font-size: 15px;
         }
-        .footer a { color: #1DA1F2; text-decoration: none; }
+        .footer a { color: #1DA1F2; text-decoration: none; font-weight: 600; }
+        .footer a:hover { text-decoration: underline; }
         .tag {
             display: inline-block;
             background: #1DA1F2;
             color: white;
-            padding: 4px 12px;
+            padding: 6px 16px;
             border-radius: 20px;
-            font-size: 12px;
-            margin-right: 8px;
-            margin-bottom: 8px;
+            font-size: 13px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-weight: 500;
         }
         .stats {
             display: flex;
-            gap: 20px;
-            margin-top: 15px;
-            padding-top: 15px;
+            gap: 25px;
+            margin-top: 18px;
+            padding-top: 18px;
             border-top: 1px solid #e1e8ed;
         }
         .stat-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             color: #657786;
-            font-size: 14px;
+            font-size: 15px;
         }
-        .stat-value { font-weight: 600; color: #1DA1F2; }
+        .stat-value { font-weight: 700; color: #1DA1F2; font-size: 16px; }
         .tweet-meta {
-            font-size: 13px;
+            font-size: 14px;
             color: #657786;
-            margin-top: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e1e8ed;
         }
-        .tweet-meta a { color: #1DA1F2; text-decoration: none; }
+        .tweet-meta a { color: #1DA1F2; text-decoration: none; font-weight: 500; }
+        .tweet-meta a:hover { text-decoration: underline; }
+        .link-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1DA1F2 0%, #0d8bd9 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+        .link-btn:hover {
+            transform: scale(1.05);
+        }
+        .key-points {
+            background: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+        }
+        .key-points h4 {
+            color: #1DA1F2;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .key-points li {
+            padding: 5px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #4a5568;
+        }
+        .key-points li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -133,26 +207,35 @@
         <div class="header">
             <div class="emoji">🤖</div>
             <h1>AI Builders Digest</h1>
-            <div class="date">2026 年 4 月 9 日 · 每日精选</div>
+            <div class="date">2026 年 4 月 9 日 · 每日精选 · 第 1 期</div>
         </div>
         
         <div class="content">
             <!-- 重点亮点 -->
             <div class="section">
                 <div class="section-title">
-                    <span>🔥</span> 今日核心看点
+                    <span>🔥</span> 核心看点
                 </div>
                 
                 <div class="podcast">
                     <div class="podcast-title">🎙️ Latent Space Podcast: OpenAI Harness Engineering</div>
                     <div class="podcast-desc">
-                        <strong>Ryan Lopopolo (OpenAI Frontier)</strong> 分享 5 个月零手写代码构建百万行代码 Electron 应用的经验。
+                        <strong>嘉宾：</strong>Ryan Lopopolo (OpenAI Frontier Product Exploration)<br>
+                        <strong>主题：</strong>5 个月零手写代码构建百万行代码 Electron 应用<br>
+                        <br>
+                        <strong>关键成就：</strong>
+                        <br>• 100 万 + 行代码，1500 个 PR，零手写代码
+                        <br>• 构建速度比传统方式快 10 倍
+                        <br>• 人类只决定"可合并/不可合并"，后合并审查
+                        <br>• 500 个 npm 包，深度分解架构
                         <br><br>
-                        关键洞察：
-                        <br>• 人类成为瓶颈 → 后合并审查，人类只决定可合并/不可合并
-                        <br>• 代码即上下文，代码即提示词
-                        <br>• 构建 10000 人级架构：500 个 npm 包，深度分解
-                        <br>• Symphony：用 Elixir 实现任务编排，移除人类循环
+                        <strong>核心洞察：</strong>
+                        <br>"代码即上下文，代码即提示词。当 tokens 便宜到可以忽略不计时，我们可以不断修剪代码库，保持 invariant。"
+                    </div>
+                    <div class="podcast-meta">
+                        📺 <a href="https://www.youtube.com/@LatentSpacePod" target="_blank">YouTube 观看</a> · 
+                        🎧 播客收听 · 
+                        📝 <a href="https://github.com/zarazhangrui/follow-builders" target="_blank">Follow Builders</a>
                     </div>
                 </div>
                 
@@ -161,14 +244,22 @@
                         <div class="avatar">OA</div>
                         <div class="author-info">
                             <div class="author-name">OpenAI</div>
-                            <div class="author-handle">@OpenAI</div>
+                            <div class="author-handle"><a href="https://x.com/OpenAI" target="_blank">@OpenAI</a></div>
                         </div>
                     </div>
                     <div class="card-content">
-                        <span class="highlight">Codex 达到每周 300 万用户</span>，将重置使用限制。增长速度惊人，25% 周增长率。
+                        <p><span class="highlight">Codex 达到每周 300 万用户</span>，增长速度惊人（25% 周增长率）。将重置使用限制以满足需求。</p>
+                        <div class="key-points">
+                            <h4>📊 关键数据</h4>
+                            <ul>
+                                <li>周活跃用户：300 万</li>
+                                <li>周增长率：25%</li>
+                                <li>使用限制：即将重置</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="tweet-meta">
-                        <a href="#">查看详情 →</a>
+                        <a href="https://x.com/OpenAI" target="_blank">查看原文 →</a>
                     </div>
                 </div>
             </div>
@@ -183,19 +274,31 @@
                     <div class="card-header">
                         <div class="avatar">AL</div>
                         <div class="author-info">
-                            <div class="author-name">Aaron Levie (Box CEO)</div>
-                            <div class="author-handle">@levie</div>
+                            <div class="author-name">Aaron Levie</div>
+                            <div class="author-handle"><a href="https://x.com/levie" target="_blank">@levie</a> · Box CEO</div>
                         </div>
                     </div>
                     <div class="card-content">
-                        Box Agent 展示 AI 如何自动完成 RFP 填写——原本需要数小时的工作，现在 Agent 可自主规划、提取信息、生成完整文档。
-                        <br><br>
-                        <strong>核心观点：</strong>Agents 正在将工作"提升到一个抽象层次"——你将成为编辑/管理者，而不是执行者。
+                        <p><strong>Box Agent 展示 AI 如何自动完成 RFP 填写</strong>——原本需要数小时的工作，现在 Agent 可自主规划、提取信息、生成完整文档。</p>
+                        <div class="quote">
+                            "Agents 正在将工作'提升到一个抽象层次'——你将成为编辑/管理者，而不是执行者。"
+                        </div>
+                        <div class="key-points">
+                            <h4>🎯 核心观点</h4>
+                            <ul>
+                                <li>AI 将工作提升到更高抽象层次</li>
+                                <li>人类角色从执行者转变为编辑/管理者</li>
+                                <li>Box Agent 可自主完成复杂文档工作</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="stats">
                         <div class="stat-item"><span class="stat-value">❤️</span> 2.3K</div>
                         <div class="stat-item"><span class="stat-value">🔁</span> 456</div>
                         <div class="stat-item"><span class="stat-value">💬</span> 189</div>
+                    </div>
+                    <div class="tweet-meta">
+                        <a href="https://x.com/levie" target="_blank">查看原文 →</a>
                     </div>
                 </div>
                 
@@ -203,17 +306,29 @@
                     <div class="card-header">
                         <div class="avatar">KW</div>
                         <div class="author-info">
-                            <div class="author-name">Kevin Weil (OpenAI VP)</div>
-                            <div class="author-handle">@kevinweil</div>
+                            <div class="author-name">Kevin Weil</div>
+                            <div class="author-handle"><a href="https://x.com/kevinweil" target="_blank">@kevinweil</a> · OpenAI VP</div>
                         </div>
                     </div>
                     <div class="card-content">
-                        <span class="highlight">OpenAI Prism 新增 Paper Review 功能</span>——像技术审稿人一样检查数学推导、符号、结构等问题。由 @hemal 用 Codex skill 在几小时内构建。
+                        <p><span class="highlight">OpenAI Prism 新增 Paper Review 功能</span>——像技术审稿人一样检查数学推导、符号、结构等问题。</p>
+                        <div class="key-points">
+                            <h4>🔬 功能亮点</h4>
+                            <ul>
+                                <li>检查数学推导正确性</li>
+                                <li>验证符号使用规范性</li>
+                                <li>分析论文结构完整性</li>
+                                <li>由 @hemal 用 Codex skill 在几小时内构建</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="stats">
                         <div class="stat-item"><span class="stat-value">❤️</span> 85</div>
                         <div class="stat-item"><span class="stat-value">🔁</span> 7</div>
                         <div class="stat-item"><span class="stat-value">💬</span> 4</div>
+                    </div>
+                    <div class="tweet-meta">
+                        <a href="https://x.com/kevinweil" target="_blank">查看原文 →</a>
                     </div>
                 </div>
                 
@@ -221,17 +336,23 @@
                     <div class="card-header">
                         <div class="avatar">GT</div>
                         <div class="author-info">
-                            <div class="author-name">Garry Tan (YC CEO)</div>
-                            <div class="author-handle">@garrytan</div>
+                            <div class="author-name">Garry Tan</div>
+                            <div class="author-handle"><a href="https://x.com/garrytan" target="_blank">@garrytan</a> · YC CEO</div>
                         </div>
                     </div>
                     <div class="card-content">
-                        现在是几代人中最好的建设时机。AI 工具链成熟，部署成本降低，市场接受度提高。
+                        <p><span class="highlight">现在是几代人中最好的建设时机。</span>AI 工具链成熟，部署成本降低，市场接受度提高。</p>
+                        <div class="quote">
+                            "AI 工具链成熟，部署成本降低，市场接受度提高。现在是建设者的黄金时代。"
+                        </div>
                     </div>
                     <div class="stats">
                         <div class="stat-item"><span class="stat-value">❤️</span> 1.5K</div>
                         <div class="stat-item"><span class="stat-value">🔁</span> 320</div>
                         <div class="stat-item"><span class="stat-value">💬</span> 145</div>
+                    </div>
+                    <div class="tweet-meta">
+                        <a href="https://x.com/garrytan" target="_blank">查看原文 →</a>
                     </div>
                 </div>
             </div>
@@ -239,19 +360,30 @@
             <!-- 开发者工具 -->
             <div class="section">
                 <div class="section-title">
-                    <span>🔧</span> 开发者工具
+                    <span>🔧</span> 开发者工具 & 设计
                 </div>
                 
                 <div class="card">
                     <div class="card-header">
                         <div class="avatar">NY</div>
                         <div class="author-info">
-                            <div class="author-name">Nan Yu (Linear)</div>
-                            <div class="author-handle">@ny</div>
+                            <div class="author-name">Nan Yu</div>
+                            <div class="author-handle"><a href="https://x.com/ny" target="_blank">@ny</a> · Linear 产品负责人</div>
                         </div>
                     </div>
                     <div class="card-content">
-                        <strong>更多设计师应该成为 PM</strong>。设计师对产品细节的理解深度，让他们能做出更好的产品决策。
+                        <p><strong>更多设计师应该成为 PM。</strong>设计师对产品细节的理解深度，让他们能做出更好的产品决策。</p>
+                        <div class="key-points">
+                            <h4>💡 核心观点</h4>
+                            <ul>
+                                <li>设计师对产品细节理解更深</li>
+                                <li>能做出更好的产品决策</li>
+                                <li>设计与产品管理的边界正在模糊</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tweet-meta">
+                        <a href="https://x.com/ny" target="_blank">查看原文 →</a>
                     </div>
                 </div>
                 
@@ -259,12 +391,42 @@
                     <div class="card-header">
                         <div class="avatar">RL</div>
                         <div class="author-info">
-                            <div class="author-name">Ryo Lu (Cursor)</div>
-                            <div class="author-handle">@ryuukyo</div>
+                            <div class="author-name">Ryo Lu</div>
+                            <div class="author-handle"><a href="https://x.com/ryuukyo" target="_blank">@ryuukyo</a> · Cursor 设计师</div>
                         </div>
                     </div>
                     <div class="card-content">
-                        展示极简交互设计：点击、绘制、对话。减少认知负担，让用户专注核心任务。
+                        <p>展示极简交互设计：<strong>点击、绘制、对话</strong>。减少认知负担，让用户专注核心任务。</p>
+                        <div class="key-points">
+                            <h4>🎨 设计原则</h4>
+                            <ul>
+                                <li>点击：最直观的交互方式</li>
+                                <li>绘制：可视化表达意图</li>
+                                <li>对话：自然语言沟通</li>
+                                <li>减少认知负担，专注核心任务</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tweet-meta">
+                        <a href="https://x.com/ryuukyo" target="_blank">查看原文 →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 资源链接 -->
+            <div class="section">
+                <div class="section-title">
+                    <span>📚</span> 相关资源
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <p><strong>🔗 重要链接：</strong></p>
+                        <ul style="list-style: none; padding-left: 0; line-height: 2;">
+                            <li>🎙️ <a href="https://www.youtube.com/@LatentSpacePod" target="_blank" class="link-btn">Latent Space Podcast</a></li>
+                            <li>📝 <a href="https://github.com/zarazhangrui/follow-builders" target="_blank" class="link-btn">Follow Builders (数据源)</a></li>
+                            <li>🤖 <a href="https://openclaw.ai" target="_blank" class="link-btn">OpenClaw (本简报生成工具)</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -283,15 +445,21 @@
                     <span class="tag">#Symphony</span>
                     <span class="tag">#Prism</span>
                     <span class="tag">#BoxAgent</span>
+                    <span class="tag">#DesignThinking</span>
+                    <span class="tag">#ProductManagement</span>
                 </div>
             </div>
         </div>
         
         <div class="footer">
             <p>🦞 由 <strong>薇拉 (Vera)</strong> 为您精心整理</p>
-            <p style="margin-top: 8px; font-size: 12px;">数据来源：X/Twitter AI Builders · Latent Space Podcast · Follow Builders</p>
-            <p style="margin-top: 8px; font-size: 12px;">
+            <p style="margin-top: 10px; font-size: 14px;">数据来源：X/Twitter AI Builders · Latent Space Podcast · Follow Builders</p>
+            <p style="margin-top: 10px; font-size: 14px;">
+                生成工具：<a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a> · 
                 <a href="https://github.com/zarazhangrui/follow-builders" target="_blank">Follow Builders</a>
+            </p>
+            <p style="margin-top: 15px; font-size: 13px; color: #a0aec0;">
+                每日更新 · 免费订阅 · 如有建议请联系薇拉
             </p>
         </div>
     </div>
