@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Builders Digest - 2026 年 4 月 9 日</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1DA1F2 0%, #0d8bd9 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 10px; font-weight: 700; }
+        .header .date { font-size: 14px; opacity: 0.9; }
+        .header .emoji { font-size: 48px; margin-bottom: 10px; }
+        .content { padding: 30px; }
+        .section { margin-bottom: 30px; }
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1DA1F2;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1DA1F2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card {
+            background: #f7f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #1DA1F2;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .author-info { flex: 1; }
+        .author-name { font-weight: 600; color: #14171a; font-size: 16px; }
+        .author-handle { color: #657786; font-size: 14px; }
+        .card-content { color: #14171a; line-height: 1.6; font-size: 15px; }
+        .highlight {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+        .podcast {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 15px;
+        }
+        .podcast-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+        .podcast-desc { font-size: 14px; opacity: 0.95; line-height: 1.6; }
+        .footer {
+            background: #f7f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #657786;
+            font-size: 14px;
+        }
+        .footer a { color: #1DA1F2; text-decoration: none; }
+        .tag {
+            display: inline-block;
+            background: #1DA1F2;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e1e8ed;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #657786;
+            font-size: 14px;
+        }
+        .stat-value { font-weight: 600; color: #1DA1F2; }
+        .tweet-meta {
+            font-size: 13px;
+            color: #657786;
+            margin-top: 10px;
+        }
+        .tweet-meta a { color: #1DA1F2; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="emoji">🤖</div>
+            <h1>AI Builders Digest</h1>
+            <div class="date">2026 年 4 月 9 日 · 每日精选</div>
+        </div>
+        
+        <div class="content">
+            <!-- 重点亮点 -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🔥</span> 今日核心看点
+                </div>
+                
+                <div class="podcast">
+                    <div class="podcast-title">🎙️ Latent Space Podcast: OpenAI Harness Engineering</div>
+                    <div class="podcast-desc">
+                        <strong>Ryan Lopopolo (OpenAI Frontier)</strong> 分享 5 个月零手写代码构建百万行代码 Electron 应用的经验。
+                        <br><br>
+                        关键洞察：
+                        <br>• 人类成为瓶颈 → 后合并审查，人类只决定可合并/不可合并
+                        <br>• 代码即上下文，代码即提示词
+                        <br>• 构建 10000 人级架构：500 个 npm 包，深度分解
+                        <br>• Symphony：用 Elixir 实现任务编排，移除人类循环
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="avatar">OA</div>
+                        <div class="author-info">
+                            <div class="author-name">OpenAI</div>
+                            <div class="author-handle">@OpenAI</div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <span class="highlight">Codex 达到每周 300 万用户</span>，将重置使用限制。增长速度惊人，25% 周增长率。
+                    </div>
+                    <div class="tweet-meta">
+                        <a href="#">查看详情 →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI 大佬观点 -->
+            <div class="section">
+                <div class="section-title">
+                    <span>💡</span> AI 大佬观点
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="avatar">AL</div>
+                        <div class="author-info">
+                            <div class="author-name">Aaron Levie (Box CEO)</div>
+                            <div class="author-handle">@levie</div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        Box Agent 展示 AI 如何自动完成 RFP 填写——原本需要数小时的工作，现在 Agent 可自主规划、提取信息、生成完整文档。
+                        <br><br>
+                        <strong>核心观点：</strong>Agents 正在将工作"提升到一个抽象层次"——你将成为编辑/管理者，而不是执行者。
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item"><span class="stat-value">❤️</span> 2.3K</div>
+                        <div class="stat-item"><span class="stat-value">🔁</span> 456</div>
+                        <div class="stat-item"><span class="stat-value">💬</span> 189</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="avatar">KW</div>
+                        <div class="author-info">
+                            <div class="author-name">Kevin Weil (OpenAI VP)</div>
+                            <div class="author-handle">@kevinweil</div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <span class="highlight">OpenAI Prism 新增 Paper Review 功能</span>——像技术审稿人一样检查数学推导、符号、结构等问题。由 @hemal 用 Codex skill 在几小时内构建。
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item"><span class="stat-value">❤️</span> 85</div>
+                        <div class="stat-item"><span class="stat-value">🔁</span> 7</div>
+                        <div class="stat-item"><span class="stat-value">💬</span> 4</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="avatar">GT</div>
+                        <div class="author-info">
+                            <div class="author-name">Garry Tan (YC CEO)</div>
+                            <div class="author-handle">@garrytan</div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        现在是几代人中最好的建设时机。AI 工具链成熟，部署成本降低，市场接受度提高。
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item"><span class="stat-value">❤️</span> 1.5K</div>
+                        <div class="stat-item"><span class="stat-value">🔁</span> 320</div>
+                        <div class="stat-item"><span class="stat-value">💬</span> 145</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 开发者工具 -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🔧</span> 开发者工具
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="avatar">NY</div>
+                        <div class="author-info">
+                            <div class="author-name">Nan Yu (Linear)</div>
+                            <div class="author-handle">@ny</div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <strong>更多设计师应该成为 PM</strong>。设计师对产品细节的理解深度，让他们能做出更好的产品决策。
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="avatar">RL</div>
+                        <div class="author-info">
+                            <div class="author-name">Ryo Lu (Cursor)</div>
+                            <div class="author-handle">@ryuukyo</div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        展示极简交互设计：点击、绘制、对话。减少认知负担，让用户专注核心任务。
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 标签 -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🏷️</span> 热门标签
+                </div>
+                <div>
+                    <span class="tag">#AI</span>
+                    <span class="tag">#Agents</span>
+                    <span class="tag">#Codex</span>
+                    <span class="tag">#OpenAI</span>
+                    <span class="tag">#HarnessEngineering</span>
+                    <span class="tag">#Symphony</span>
+                    <span class="tag">#Prism</span>
+                    <span class="tag">#BoxAgent</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🦞 由 <strong>薇拉 (Vera)</strong> 为您精心整理</p>
+            <p style="margin-top: 8px; font-size: 12px;">数据来源：X/Twitter AI Builders · Latent Space Podcast · Follow Builders</p>
+            <p style="margin-top: 8px; font-size: 12px;">
+                <a href="https://github.com/zarazhangrui/follow-builders" target="_blank">Follow Builders</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
