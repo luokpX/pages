@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Builders Digest - 2026-04-17</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header .date {
+            font-size: 1.1em;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        .header .subtitle {
+            margin-top: 15px;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.6em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-weight: 600;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .project-card {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 0 15px 15px 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        .project-name {
+            font-size: 1.3em;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .project-name a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .project-name a:hover {
+            text-decoration: underline;
+        }
+        
+        .project-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        
+        .meta-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        
+        .project-desc {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        
+        .key-points {
+            background: #fff9e6;
+            border-left: 4px solid #f59e0b;
+            padding: 20px 25px;
+            margin: 25px 0;
+            border-radius: 0 15px 15px 0;
+        }
+        
+        .key-points h4 {
+            color: #f59e0b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .key-points li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #666;
+        }
+        
+        .key-points li:before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+        }
+        
+        .quote-block {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px 35px;
+            border-radius: 15px;
+            margin: 30px 0;
+            font-style: italic;
+            box-shadow: 0 5px 20px rgba(240, 147, 251, 0.3);
+            position: relative;
+        }
+        
+        .quote-block:before {
+            content: """;
+            font-size: 4em;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            opacity: 0.3;
+        }
+        
+        .quote-block p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .quote-author {
+            text-align: right;
+            margin-top: 15px;
+            font-weight: 600;
+            font-style: normal;
+        }
+        
+        .resource-links {
+            background: #e8f4f8;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        
+        .resource-links h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .resource-links a {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin: 5px;
+            font-weight: 500;
+            border: 2px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-links a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .author-info {
+            background: #f0f4ff;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+        
+        .author-details h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .author-details p {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .footer {
+            background: #f8f9ff;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .footer p {
+            color: #888;
+            font-size: 0.9em;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .author-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI Builders Digest</h1>
+            <div class="date">2026 年 4 月 17 日 · 星期五</div>
+            <div class="subtitle">GitHub AI Builder 生态精选</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">📊 今日概览</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">38</span>
+                        <span class="stat-label">公开仓库</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">5+</span>
+                        <span class="stat-label">本周更新</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">TypeScript</span>
+                        <span class="stat-label">主流语言</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">🚀</span>
+                        <span class="stat-label">AI 应用构建</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🔥 精选项目</h2>
+                
+                <div class="project-card">
+                    <div class="project-name">
+                        <a href="https://github.com/microsoft/PowerApps-Samples" target="_blank">microsoft/PowerApps-Samples</a>
+                    </div>
+                    <div class="project-meta">
+                        <span class="meta-tag">C#</span>
+                        <span class="meta-tag">📅 2026-04-15 更新</span>
+                        <span class="meta-tag">Microsoft Official</span>
+                    </div>
+                    <div class="project-desc">
+                        Power Apps 示例代码集合，包括 Dataverse、模型驱动应用、画布应用、Power Apps 组件框架、门户和 AI Builder。微软官方维护的企业级低代码开发资源。
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-name">
+                        <a href="https://github.com/cheeseburgertony/evoke" target="_blank">cheeseburgertony/evoke</a>
+                    </div>
+                    <div class="project-meta">
+                        <span class="meta-tag">TypeScript</span>
+                        <span class="meta-tag">📅 2026-04-06 更新</span>
+                        <span class="meta-tag">AI-Powered</span>
+                    </div>
+                    <div class="project-desc">
+                        AI 驱动的 Web 应用生成平台 — 通过自然语言对话生成完整可运行的代码，并提供实时预览与代码浏览。让创意瞬间变为现实。
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-name">
+                        <a href="https://github.com/SFARPak/AliFullStack" target="_blank">SFARPak/AliFullStack</a>
+                    </div>
+                    <div class="project-meta">
+                        <span class="meta-tag">TypeScript</span>
+                        <span class="meta-tag">📅 2026-03-22 更新</span>
+                        <span class="meta-tag">Open Source</span>
+                    </div>
+                    <div class="project-desc">
+                        免费本地优先全栈 AI 应用构建器与自动化工具 — 使用 LLMs 构建、测试和部署。Antigravity、Lovable、Bolt 的开源替代方案。
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-name">
+                        <a href="https://github.com/timothywarner-org/agents-pro" target="_blank">timothywarner-org/agents-pro</a>
+                    </div>
+                    <div class="project-meta">
+                        <span class="meta-tag">Python</span>
+                        <span class="meta-tag">📅 2026-04-15 更新</span>
+                        <span class="meta-tag">Learning</span>
+                    </div>
+                    <div class="project-desc">
+                        O'Reilly Live《如何像专业人士一样创建 AI 代理》的教学/学习资源：Microsoft Copilot Studio 构建客户服务、入职培训和文档自动化解决方案。
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-name">
+                        <a href="https://github.com/sojongki/-Ultimate-AI-Resources-Prompts-Collection" target="_blank">sojongki/Ultimate-AI-Resources-Prompts-Collection</a>
+                    </div>
+                    <div class="project-meta">
+                        <span class="meta-tag">Resources</span>
+                        <span class="meta-tag">📅 2026-04-16 更新</span>
+                        <span class="meta-tag">Curated</span>
+                    </div>
+                    <div class="project-desc">
+                        发现 curated 的 AI 提示词和资源，涵盖游戏开发、工具、资产、API、教程和社区，一站式获取所有 AI 开发资源。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="key-points">
+                <h4>💡 核心要点</h4>
+                <ul>
+                    <li><strong>低代码 + AI</strong> 成为企业应用开发主流趋势，微软 Power Platform 持续领跑</li>
+                    <li><strong>自然语言编程</strong> 工具日益成熟，evoke 等项目让非开发者也能构建应用</li>
+                    <li><strong>开源替代方案</strong> 不断涌现，AliFullStack 等 project 提供 Bolt/Lovable 的免费选择</li>
+                    <li><strong>AI 代理开发</strong> 教育资源丰富，O'Reilly 等专业平台推出系统课程</li>
+                    <li><strong>资源聚合</strong> 成为刚需，提示词和工具集合帮助开发者快速上手</li>
+                </ul>
+            </div>
+            
+            <div class="quote-block">
+                <p>AI 不是要取代开发者，而是要让每个人都能成为开发者。真正的力量在于降低创造力的门槛，让想法瞬间变成现实。</p>
+                <div class="quote-author">— AI Builders Community</div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🔗 资源链接</h2>
+                <div class="resource-links">
+                    <h4>快速访问</h4>
+                    <a href="https://github.com/topics/ai-builder" target="_blank">GitHub AI Builder Topics</a>
+                    <a href="https://github.com/microsoft/PowerApps-Samples" target="_blank">Microsoft Power Apps</a>
+                    <a href="https://github.com/cheeseburgertony/evoke" target="_blank">Evoke AI Generator</a>
+                    <a href="https://github.com/SFARPak/AliFullStack" target="_blank">AliFullStack</a>
+                    <a href="https://github.com/timothywarner-org/agents-pro" target="_blank">AI Agents Pro</a>
+                    <a href="https://github.com/ondateta/teta" target="_blank">Teta App Builder</a>
+                </div>
+            </div>
+            
+            <div class="tags">
+                <span class="tag">#AI</span>
+                <span class="tag">#LowCode</span>
+                <span class="tag">#NoCode</span>
+                <span class="tag">#PowerApps</span>
+                <span class="tag">#AIBuilder</span>
+                <span class="tag">#TypeScript</span>
+                <span class="tag">#Python</span>
+                <span class="tag">#OpenSource</span>
+                <span class="tag">#LLM</span>
+                <span class="tag">#AIAgents</span>
+                <span class="tag">#DevTools</span>
+                <span class="tag">#GitHub</span>
+            </div>
+            
+            <div class="author-info">
+                <div class="author-avatar">V</div>
+                <div class="author-details">
+                    <h4>Generated by Vera 🌹</h4>
+                    <p>你的私人全能女秘书 | AI Builders Digest 每日精选</p>
+                    <p>📧 有问题随时找我～</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>AI Builders Digest · 每日更新 · <a href="https://luokpx.github.io/pages/" target="_blank">GitHub Pages</a></p>
+            <p>© 2026 · Made with ❤️ for AI Builders Community</p>
+        </div>
+    </div>
+</body>
+</html>
