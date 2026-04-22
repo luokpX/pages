@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Builders Digest | 2026-04-22</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            padding: 50px 40px;
+            color: white;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header .date {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-style: italic;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: linear-gradient(90deg, #f5f7fa 0%, #e4e8ec 100%);
+            padding: 25px 40px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.6em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }
+        
+        .repo-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+            border-left: 5px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .repo-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        
+        .repo-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .repo-name a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .repo-name a:hover {
+            text-decoration: underline;
+        }
+        
+        .repo-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .repo-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .repo-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .repo-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .repo-stat strong {
+            color: #667eea;
+        }
+        
+        .authors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .author-tag {
+            background: #e8ecff;
+            color: #667eea;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        .quote-block {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
+            border-left: 5px solid #f59e0b;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            font-style: italic;
+            color: #555;
+            position: relative;
+        }
+        
+        .quote-block::before {
+            content: '"';
+            font-size: 4em;
+            color: #f59e0b;
+            opacity: 0.3;
+            position: absolute;
+            top: -10px;
+            left: 15px;
+        }
+        
+        .key-points {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .key-points h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .key-points li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .key-points li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+        
+        .resource-links {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .resource-links h3 {
+            color: #1565c0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .resource-links a {
+            display: inline-block;
+            background: white;
+            color: #1565c0;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-links a:hover {
+            background: #1565c0;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tags-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px dashed #ddd;
+        }
+        
+        .tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .author-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+        
+        .author-details h4 {
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .author-details p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .repo-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI Builders Digest</h1>
+            <div class="date">Wednesday, April 22nd, 2026</div>
+            <div class="subtitle">今日 GitHub AI 开发者精选 · 探索最前沿的 AI 项目</div>
+            
+            <div class="author-info">
+                <div class="author-avatar">AB</div>
+                <div class="author-details">
+                    <h4>AI Builders Digest</h4>
+                    <p>每日精选 GitHub 热门 AI 项目与开发者动态</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">精选项目</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">89K+</div>
+                <div class="stat-label">总星数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">今日热门</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">36K+</div>
+                <div class="stat-label">AI 仓库总数</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">🔥 今日 Trending 热门项目</h2>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/Fincept-Corporation/FinceptTerminal" target="_blank">Fincept-Corporation/FinceptTerminal</a>
+                    </div>
+                    <div class="repo-description">
+                        FinceptTerminal 是一款现代化金融应用，提供高级市场分析、投资研究和经济数据工具，专为交互式探索和数据驱动决策而设计。
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">Python</span>
+                        <span class="repo-stat">⭐ <strong>11,563</strong> stars</span>
+                        <span class="repo-stat">🍴 <strong>1,520</strong> forks</span>
+                        <span class="repo-stat">📈 <strong>2,548</strong> stars today</span>
+                    </div>
+                    <div class="authors">
+                        <span class="author-tag">@tilakpatel22</span>
+                        <span class="author-tag">@claude</span>
+                        <span class="author-tag">@Jaimin-ptl07</span>
+                        <span class="author-tag">@rudrasheth</span>
+                    </div>
+                </div>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/thunderbird/thunderbolt" target="_blank">thunderbird/thunderbolt</a>
+                    </div>
+                    <div class="repo-description">
+                        AI You Control: Choose your models. Own your data. Eliminate vendor lock-in.
+                        让你掌控 AI：选择你的模型，拥有你的数据，消除供应商锁定。
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">TypeScript</span>
+                        <span class="repo-stat">⭐ <strong>3,456</strong> stars</span>
+                        <span class="repo-stat">🍴 <strong>202</strong> forks</span>
+                        <span class="repo-stat">📈 <strong>596</strong> stars today</span>
+                    </div>
+                    <div class="authors">
+                        <span class="author-tag">@cjroth</span>
+                        <span class="author-tag">@raivieiraadriano92</span>
+                        <span class="author-tag">@ital0</span>
+                        <span class="author-tag">@darkbanjo</span>
+                    </div>
+                </div>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/zilliztech/claude-context" target="_blank">zilliztech/claude-context</a>
+                    </div>
+                    <div class="repo-description">
+                        Code search MCP for Claude Code. Make entire codebase the context for any coding agent.
+                        为 Claude Code 提供代码搜索 MCP，让整个代码库成为任何编码代理的上下文。
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">TypeScript</span>
+                        <span class="repo-stat">⭐ <strong>6,583</strong> stars</span>
+                        <span class="repo-stat">🍴 <strong>568</strong> forks</span>
+                        <span class="repo-stat">📈 <strong>169</strong> stars today</span>
+                    </div>
+                    <div class="authors">
+                        <span class="author-tag">@zc277584121</span>
+                        <span class="author-tag">@Shawnzheng011019</span>
+                        <span class="author-tag">@codingjaguar</span>
+                        <span class="author-tag">@jaxkodex</span>
+                    </div>
+                </div>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/microsoft/ai-agents-for-beginners" target="_blank">microsoft/ai-agents-for-beginners</a>
+                    </div>
+                    <div class="repo-description">
+                        12 Lessons to Get Started Building AI Agents
+                        12 节课程带你入门 AI 智能体开发
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">Jupyter Notebook</span>
+                        <span class="repo-stat">⭐ <strong>57,634</strong> stars</span>
+                        <span class="repo-stat">🍴 <strong>19,865</strong> forks</span>
+                        <span class="repo-stat">📈 <strong>200</strong> stars today</span>
+                    </div>
+                    <div class="authors">
+                        <span class="author-tag">@leestott</span>
+                        <span class="author-tag">@skytin1004</span>
+                        <span class="author-tag">@koreyspace</span>
+                        <span class="author-tag">@ShivamGoyal03</span>
+                    </div>
+                </div>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/simstudioai/sim" target="_blank">simstudioai/sim</a>
+                    </div>
+                    <div class="repo-description">
+                        Build, deploy, and orchestrate AI agents. Sim is the central intelligence layer for your AI workforce.
+                        构建、部署和编排 AI 智能体。Sim 是你的 AI 劳动力的中央智能层。
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">TypeScript</span>
+                        <span class="repo-stat">⭐ <strong>Updated Apr 22</strong></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🎯 AI 领域精选项目</h2>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/Significant-Gravitas/AutoGPT" target="_blank">Significant-Gravitas/AutoGPT</a>
+                    </div>
+                    <div class="repo-description">
+                        AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.
+                        AutoGPT 的愿景是让每个人都能使用和构建可访问的 AI。我们的使命是提供工具，让你专注于重要的事情。
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">Python</span>
+                        <span class="repo-stat">⭐ Updated Apr 22, 2026</span>
+                    </div>
+                </div>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/OpenHands/OpenHands" target="_blank">OpenHands/OpenHands</a>
+                    </div>
+                    <div class="repo-description">
+                        🙌 OpenHands: AI-Driven Development
+                        AI 驱动的开发平台
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">Python</span>
+                        <span class="repo-stat">⭐ Updated Apr 22, 2026</span>
+                    </div>
+                </div>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/FlowiseAI/Flowise" target="_blank">FlowiseAI/Flowise</a>
+                    </div>
+                    <div class="repo-description">
+                        Build AI Agents, Visually
+                        可视化构建 AI 智能体
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">TypeScript</span>
+                        <span class="repo-stat">⭐ Updated Apr 21, 2026</span>
+                    </div>
+                </div>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/rasbt/LLMs-from-scratch" target="_blank">rasbt/LLMs-from-scratch</a>
+                    </div>
+                    <div class="repo-description">
+                        Implement a ChatGPT-like LLM in PyTorch from scratch, step by step
+                        从零开始用 PyTorch 逐步实现类似 ChatGPT 的大语言模型
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">Jupyter Notebook</span>
+                        <span class="repo-stat">⭐ Updated Apr 16, 2026</span>
+                    </div>
+                </div>
+                
+                <div class="repo-card">
+                    <div class="repo-name">
+                        <a href="https://github.com/HKUDS/RAG-Anything" target="_blank">HKUDS/RAG-Anything</a>
+                    </div>
+                    <div class="repo-description">
+                        "RAG-Anything: All-in-One RAG Framework"
+                        一体化 RAG 框架
+                    </div>
+                    <div class="repo-meta">
+                        <span class="repo-tag">Python</span>
+                        <span class="repo-stat">⭐ Updated Apr 21, 2026</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quote-block">
+                <p>"AI is not just about building smarter machines; it's about empowering developers to create solutions that matter. The GitHub community continues to push boundaries, making AI accessible to everyone."</p>
+            </div>
+            
+            <div class="key-points">
+                <h3>💡 今日关键洞察</h3>
+                <ul>
+                    <li><strong>金融 AI 崛起：</strong>FinceptTerminal 单日获得 2,548 星，显示金融分析领域的 AI 应用需求激增</li>
+                    <li><strong>自主 AI 控制：</strong>thunderbolt 项目强调"选择你的模型，拥有你的数据"，反映开发者对 AI 自主权的关注</li>
+                    <li><strong>MCP 生态扩展：</strong>claude-context 等项目推动 Model Context Protocol 在代码搜索中的应用</li>
+                    <li><strong>教育普及：</strong>microsoft/ai-agents-for-beginners 拥有 57K+ 星，显示 AI 智能体学习需求旺盛</li>
+                    <li><strong>可视化开发：</strong>Flowise 等项目让非专业开发者也能构建 AI 智能体</li>
+                </ul>
+            </div>
+            
+            <div class="resource-links">
+                <h3>🔗 资源链接</h3>
+                <a href="https://github.com/trending" target="_blank">GitHub Trending</a>
+                <a href="https://github.com/topics/artificial-intelligence" target="_blank">AI Topics</a>
+                <a href="https://github.com/explore" target="_blank">GitHub Explore</a>
+                <a href="https://github.com/features/copilot" target="_blank">GitHub Copilot</a>
+                <a href="https://github.com/mcp" target="_blank">MCP Registry</a>
+            </div>
+            
+            <div class="tags-section">
+                <span class="tag">#AI</span>
+                <span class="tag">#MachineLearning</span>
+                <span class="tag">#DeepLearning</span>
+                <span class="tag">#LLM</span>
+                <span class="tag">#AIAgents</span>
+                <span class="tag">#RAG</span>
+                <span class="tag">#MCP</span>
+                <span class="tag">#OpenSource</span>
+                <span class="tag">#GitHub</span>
+                <span class="tag">#Developers</span>
+                <span class="tag">#Python</span>
+                <span class="tag">#TypeScript</span>
+                <span class="tag">#FinTech</span>
+                <span class="tag">#CodeSearch</span>
+                <span class="tag">#AIEducation</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Generated by <strong>AI Builders Digest</strong> | Data from <a href="https://github.com" target="_blank">GitHub</a></p>
+            <p style="margin-top: 10px; font-size: 0.85em; color: #999;">
+                📅 2026-04-22 | 🌏 Asia/Shanghai | 🤖 Automated Daily Digest
+            </p>
+        </div>
+    </div>
+</body>
+</html>
