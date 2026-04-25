@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤖 AI Builders Digest — 2026.04.25 周刊</title>
+<style>
+  :root {
+    --bg: #0a0a1a;
+    --card: #12122a;
+    --accent1: #6366f1;
+    --accent2: #a855f7;
+    --accent3: #ec4899;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --star: #fbbf24;
+    --green: #22c55e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  .hero {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    padding: 60px 20px 40px;
+    text-align: center;
+    border-bottom: 2px solid var(--accent1);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(99,102,241,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(168,85,247,0.1) 0%, transparent 50%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+  .hero h1 {
+    font-size: 2.5em;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .subtitle {
+    color: var(--muted);
+    font-size: 1.1em;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .date {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-top: 15px;
+    position: relative;
+    z-index: 1;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 35px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-3px); }
+  .stat-card .num {
+    font-size: 2em;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-card .label { color: var(--muted); font-size: 0.85em; margin-top: 4px; }
+
+  .section-title {
+    font-size: 1.5em;
+    margin: 35px 0 20px;
+    padding-left: 15px;
+    border-left: 4px solid var(--accent2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .repo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 25px;
+    margin-bottom: 16px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .repo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--accent1), var(--accent3));
+  }
+  .repo-card:hover {
+    border-color: var(--accent1);
+    box-shadow: 0 4px 25px rgba(99,102,241,0.15);
+  }
+  .repo-card .rank {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2.5em;
+    font-weight: 900;
+    color: rgba(99,102,241,0.15);
+  }
+  .repo-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 6px;
+  }
+  .repo-card h3 a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .repo-card h3 a:hover { color: var(--accent2); }
+  .repo-card .desc { color: var(--muted); font-size: 0.95em; margin-bottom: 12px; }
+  .repo-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.85em;
+  }
+  .repo-card .meta span { display: flex; align-items: center; gap: 4px; }
+  .repo-card .stars { color: var(--star); }
+  .repo-card .weekly { color: var(--green); font-weight: 600; }
+  .repo-card .lang {
+    background: var(--accent1);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.8em;
+  }
+  .repo-card .builders { color: var(--muted); font-size: 0.8em; margin-top: 8px; }
+
+  .quote-block {
+    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.05));
+    border-left: 4px solid var(--accent2);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 25px;
+    margin: 25px 0;
+    font-style: italic;
+    color: var(--muted);
+  }
+  .quote-block .author {
+    margin-top: 10px;
+    font-style: normal;
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .tag {
+    background: rgba(99,102,241,0.15);
+    color: var(--accent2);
+    padding: 5px 14px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    border: 1px solid rgba(99,102,241,0.3);
+  }
+
+  .resources {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 25px;
+    margin: 25px 0;
+  }
+  .resources h3 { margin-bottom: 12px; color: var(--accent2); }
+  .resources ul { list-style: none; }
+  .resources li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .resources li:last-child { border-bottom: none; }
+  .resources a { color: var(--accent1); text-decoration: none; }
+  .resources a:hover { color: var(--accent2); text-decoration: underline; }
+
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 0.85em;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  .footer a { color: var(--accent2); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.8em; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .repo-card .rank { font-size: 1.8em; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🤖 AI Builders Digest</h1>
+  <div class="subtitle">每周精选 GitHub 最火的 AI / Agent 开源项目</div>
+  <div class="date">📅 2026 年 4 月 25 日 · 第 17 期</div>
+</div>
+
+<div class="container">
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card"><div class="num">15</div><div class="label">精选项目</div></div>
+    <div class="stat-card"><div class="num">327K+</div><div class="label">总 Star 数</div></div>
+    <div class="stat-card"><div class="num">64K+</div><div class="label">本周新增 Star</div></div>
+    <div class="stat-card"><div class="num">6</div><div class="label">编程语言</div></div>
+  </div>
+
+  <!-- Key Insight -->
+  <div class="quote-block">
+    <p>"本周 AI Agent 生态持续爆发，NousResearch hermes-agent 单周新增 1.9 万 Star，多 Agent 框架、代码上下文优化、语音克隆成为三大热点方向。"</p>
+    <div class="author">— AI Builders Digest 编辑部</div>
+  </div>
+
+  <div class="tags">
+    <span class="tag"># AI-Agent</span>
+    <span class="tag"># Claude-Code</span>
+    <span class="tag"># Multi-Agent</span>
+    <span class="tag"># Code-Context</span>
+    <span class="tag"># Voice-Cloning</span>
+    <span class="tag"># Self-Evolving</span>
+    <span class="tag"># FP8-GEMM</span>
+    <span class="tag"># LLM-Education</span>
+  </div>
+
+  <!-- Top Repos -->
+  <h2 class="section-title">🏆 本周热门项目</h2>
+
+  <!-- #1 -->
+  <div class="repo-card">
+    <div class="rank">#1</div>
+    <h3><a href="https://github.com/NousResearch/hermes-agent" target="_blank">NousResearch / hermes-agent</a></h3>
+    <div class="desc">The agent that grows with you — 本周 GitHub 最火 AI 项目，单周暴涨 19,019 Star！</div>
+    <div class="meta">
+      <span class="stars">⭐ 115,153</span>
+      <span class="weekly">🔥 +19,019 / 周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: teknium1, OutThisLife, 0xbyt4, kshitijk4poor, claude</div>
+  </div>
+
+  <!-- #2 -->
+  <div class="repo-card">
+    <div class="rank">#2</div>
+    <h3><a href="https://github.com/thedotmack/claude-mem" target="_blank">thedotmack / claude-mem</a></h3>
+    <div class="desc">Claude Code 记忆插件——自动捕获编码会话中的全部操作，用 AI 压缩后在下次会话注入相关上下文。</div>
+    <div class="meta">
+      <span class="stars">⭐ 67,028</span>
+      <span class="weekly">🔥 +5,961 / 周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: thedotmack, claude, ousamabenyounes, rodboev</div>
+  </div>
+
+  <!-- #3 -->
+  <div class="repo-card">
+    <div class="rank">#3</div>
+    <h3><a href="https://github.com/multica-ai/multica" target="_blank">multica-ai / multica</a></h3>
+    <div class="desc">开源托管 Agent 平台——将编码 Agent 变成真正的团队成员：分配任务、追踪进度、复合技能。</div>
+    <div class="meta">
+      <span class="stars">⭐ 20,668</span>
+      <span class="weekly">🔥 +5,421 / 周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: claude, forrestchang, NevilleQingNY, Bohan-J, ldnvnbl</div>
+  </div>
+
+  <!-- #4 -->
+  <div class="repo-card">
+    <div class="rank">#4</div>
+    <h3><a href="https://github.com/Alishahryar1/free-claude-code" target="_blank">Alishahryar1 / free-claude-code</a></h3>
+    <div class="desc">免费使用 Claude Code——在终端、VSCode 扩展或 Discord 中像 OpenClaw 一样使用。</div>
+    <div class="meta">
+      <span class="stars">⭐ 8,842</span>
+      <span class="weekly">🔥 +5,160 / 周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: Alishahryar1, cursoragent, claude, rishiskhare</div>
+  </div>
+
+  <!-- #5 -->
+  <div class="repo-card">
+    <div class="rank">#5</div>
+    <h3><a href="https://github.com/jamiepine/voicebox" target="_blank">jamiepine / voicebox</a></h3>
+    <div class="desc">开源 AI 语音工作室——克隆声音、口述生成、创作语音内容。</div>
+    <div class="meta">
+      <span class="stars">⭐ 23,124</span>
+      <span class="weekly">🔥 +3,540 / 周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: jamiepine, claude, tomasmach, mvanhorn, selop</div>
+  </div>
+
+  <!-- #6 -->
+  <div class="repo-card">
+    <div class="rank">#6</div>
+    <h3><a href="https://github.com/lsdefine/GenericAgent" target="_blank">lsdefine / GenericAgent</a></h3>
+    <div class="desc">自进化 Agent——从 3,300 行种子代码长出技能树，实现全系统控制，Token 消耗降低 6 倍。</div>
+    <div class="meta">
+      <span class="stars">⭐ 6,869</span>
+      <span class="weekly">🔥 +3,483 / 周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: lsdefine, ViviqwerAsd, shenhao-stu, JinyiHan99, wjl2023</div>
+  </div>
+
+  <!-- #7 -->
+  <div class="repo-card">
+    <div class="rank">#7</div>
+    <h3><a href="https://github.com/openai/openai-agents-python" target="_blank">openai / openai-agents-python</a></h3>
+    <div class="desc">OpenAI 官方轻量级多 Agent 工作流框架——让多 Agent 编排变得简单优雅。</div>
+    <div class="meta">
+      <span class="stars">⭐ 24,990</span>
+      <span class="weekly">🔥 +3,372 / 周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: seratch, rm-openai, MartinEBravo, dmitry-openai</div>
+  </div>
+
+  <!-- #8 -->
+  <div class="repo-card">
+    <div class="rank">#8</div>
+    <h3><a href="https://github.com/EvoMap/evolver" target="_blank">EvoMap / evolver</a></h3>
+    <div class="desc">GEP 驱动的 AI Agent 自进化引擎——通过 Genes、Capsules、Events 实现可审计的进化。</div>
+    <div class="meta">
+      <span class="stars">⭐ 6,813</span>
+      <span class="weekly">🔥 +3,099 / 周</span>
+      <span class="lang">JavaScript</span>
+    </div>
+    <div class="builders">👷 Built by: autogame-17, cursoragent, penggaolai, onthebigtree</div>
+  </div>
+
+  <!-- #9 -->
+  <div class="repo-card">
+    <div class="rank">#9</div>
+    <h3><a href="https://github.com/zilliztech/claude-context" target="_blank">zilliztech / claude-context</a></h3>
+    <div class="desc">代码搜索 MCP——让整份代码库成为任何编码 Agent 的上下文。</div>
+    <div class="meta">
+      <span class="stars">⭐ 9,001</span>
+      <span class="weekly">🔥 +2,878 / 周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: zc277584121, Shawnzheng011019, codingjaguar, jaxkodex, mvanhorn</div>
+  </div>
+
+  <!-- #10 -->
+  <div class="repo-card">
+    <div class="rank">#10</div>
+    <h3><a href="https://github.com/Lordog/dive-into-llms" target="_blank">Lordog / dive-into-llms</a></h3>
+    <div class="desc">《动手学大模型 Dive into LLMs》系列编程实践教程——中文 LLM 学习者的宝藏资源。</div>
+    <div class="meta">
+      <span class="stars">⭐ 34,243</span>
+      <span class="weekly">🔥 +2,886 / 周</span>
+      <span class="lang">Jupyter Notebook</span>
+    </div>
+    <div class="builders">👷 Built by: Lordog, cooelf, zwhe99, dongdongzhaoUP, scofield7419</div>
+  </div>
+
+  <!-- #11 -->
+  <div class="repo-card">
+    <div class="rank">#11</div>
+    <h3><a href="https://github.com/mksglu/context-mode" target="_blank">mksglu / context-mode</a></h3>
+    <div class="desc">AI 编码 Agent 上下文窗口优化——沙盒化输出，减少 98% 的上下文消耗，支持 12 个平台。</div>
+    <div class="meta">
+      <span class="stars">⭐ 9,819</span>
+      <span class="weekly">🔥 +2,315 / 周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: mksglu, claude, ipedro, rjkaes</div>
+  </div>
+
+  <!-- #12 -->
+  <div class="repo-card">
+    <div class="rank">#12</div>
+    <h3><a href="https://github.com/SimoneAvogadro/android-reverse-engineering-skill" target="_blank">SimoneAvogadro / android-reverse-engineering-skill</a></h3>
+    <div class="desc">Claude Code 技能——支持 Android 应用逆向工程。</div>
+    <div class="meta">
+      <span class="stars">⭐ 4,851</span>
+      <span class="weekly">🔥 +2,258 / 周</span>
+      <span class="lang">Shell</span>
+    </div>
+    <div class="builders">👷 Built by: SimoneAvogadro, claude</div>
+  </div>
+
+  <!-- #13 -->
+  <div class="repo-card">
+    <div class="rank">#13</div>
+    <h3><a href="https://github.com/Tracer-Cloud/opensre" target="_blank">Tracer-Cloud / opensre</a></h3>
+    <div class="desc">构建你自己的 AI SRE Agent——AI 时代的开源运维工具箱 ✨</div>
+    <div class="meta">
+      <span class="stars">⭐ 2,914</span>
+      <span class="weekly">🔥 +1,623 / 周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: davincios, aliya-tracer, VaibhavUpreti, cursoragent, arnetracer</div>
+  </div>
+
+  <!-- #14 -->
+  <div class="repo-card">
+    <div class="rank">#14</div>
+    <h3><a href="https://github.com/deepseek-ai/DeepGEMM" target="_blank">deepseek-ai / DeepGEMM</a></h3>
+    <div class="desc">DeepGEMM：干净高效的 FP8 GEMM 内核，支持细粒度缩放——为 AI 推理加速而生。</div>
+    <div class="meta">
+      <span class="stars">⭐ 6,996</span>
+      <span class="weekly">🔥 +605 / 周</span>
+      <span class="lang">Cuda</span>
+    </div>
+    <div class="builders">👷 Built by: LyricZhao, soundOfDestiny, zheanxu, RayWang96, ko3n1g</div>
+  </div>
+
+  <!-- #15 -->
+  <div class="repo-card">
+    <div class="rank">#15</div>
+    <h3><a href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank">forrestchang / andrej-karpathy-skills</a></h3>
+    <div class="desc">一个 CLAUDE.md 文件，从 Andrej Karpathy 对 LLM 编码痛点的观察中提炼，提升 Claude Code 表现。</div>
+    <div class="meta">
+      <span class="stars">⭐ —</span>
+      <span class="lang">Markdown</span>
+    </div>
+    <div class="builders">👷 Built by: forrestchang</div>
+  </div>
+
+  <!-- Trend Analysis -->
+  <h2 class="section-title">📊 趋势洞察</h2>
+
+  <div class="quote-block">
+    <p>"本周三大趋势：① Agent 自进化（GenericAgent、Evolver）成为新范式；② 上下文优化（claude-mem、context-mode、claude-context）解决 Token 焦虑；③ 语音 AI（voicebox）从实验室走向开源工具链。"</p>
+    <div class="author">— AI Builders Digest 趋势分析</div>
+  </div>
+
+  <div class="resources">
+    <h3>🔗 延伸阅读</h3>
+    <ul>
+      <li>📌 <a href="https://github.com/trending?since=weekly" target="_blank">GitHub Weekly Trending</a> — 完整榜单</li>
+      <li>📌 <a href="https://github.com/NousResearch/hermes-agent" target="_blank">NousResearch Hermes Agent</a> — 本周冠军项目</li>
+      <li>📌 <a href="https://github.com/openai/openai-agents-python" target="_blank">OpenAI Agents Python SDK</a> — 官方多 Agent 框架</li>
+      <li>📌 <a href="https://github.com/deepseek-ai/DeepGEMM" target="_blank">DeepSeek DeepGEMM</a> — FP8 推理加速内核</li>
+      <li>📌 <a href="https://github.com/Lordog/dive-into-llms" target="_blank">动手学大模型</a> — 中文 LLM 实战教程</li>
+      <li>📌 <a href="https://github.com/topics/ai-builders" target="_blank">GitHub AI Builders Topic</a> — AI 构建者社区</li>
+    </ul>
+  </div>
+
+  <div class="tags">
+    <span class="tag"># 自进化Agent</span>
+    <span class="tag"># 上下文优化</span>
+    <span class="tag"># 语音克隆</span>
+    <span class="tag"># 多Agent框架</span>
+    <span class="tag"># FP8推理</span>
+    <span class="tag"># Android逆向</span>
+    <span class="tag"># AI-SRE</span>
+    <span class="tag"># Claude-Code生态</span>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>🤖 AI Builders Digest — 每周精选 GitHub 最火的 AI 开源项目</p>
+  <p>Generated on 2026-04-25 · Data from <a href="https://github.com/trending" target="_blank">GitHub Trending</a></p>
+  <p style="margin-top: 10px;">Made with 💜 by <a href="https://github.com/luokpX/pages" target="_blank">Vera's AI Digest Engine</a></p>
+</div>
+
+</body>
+</html>
