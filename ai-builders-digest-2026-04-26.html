@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤖 AI Builders Digest — 2026.04.26 周刊</title>
+<style>
+  :root {
+    --bg: #0a0a1a;
+    --card: #12122a;
+    --accent1: #6366f1;
+    --accent2: #a855f7;
+    --accent3: #ec4899;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --star: #fbbf24;
+    --green: #22c55e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  .hero {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    padding: 60px 20px 40px;
+    text-align: center;
+    border-bottom: 2px solid var(--accent1);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(99,102,241,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(168,85,247,0.1) 0%, transparent 50%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+  .hero h1 {
+    font-size: 2.5em;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .subtitle {
+    color: var(--muted);
+    font-size: 1.1em;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .date {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-top: 15px;
+    position: relative;
+    z-index: 1;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 35px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-3px); }
+  .stat-card .num {
+    font-size: 2em;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-card .label { color: var(--muted); font-size: 0.85em; margin-top: 4px; }
+
+  .section-title {
+    font-size: 1.5em;
+    margin: 35px 0 20px;
+    padding-left: 15px;
+    border-left: 4px solid var(--accent2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .repo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 25px;
+    margin-bottom: 16px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .repo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--accent1), var(--accent3));
+  }
+  .repo-card:hover {
+    border-color: var(--accent1);
+    box-shadow: 0 4px 25px rgba(99,102,241,0.15);
+  }
+  .repo-card .rank {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2.5em;
+    font-weight: 900;
+    color: rgba(99,102,241,0.15);
+  }
+  .repo-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 6px;
+  }
+  .repo-card h3 a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .repo-card h3 a:hover { color: var(--accent2); }
+  .repo-card .desc { color: var(--muted); font-size: 0.95em; margin-bottom: 12px; }
+  .repo-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.85em;
+  }
+  .repo-card .meta span { display: flex; align-items: center; gap: 4px; }
+  .repo-card .stars { color: var(--star); }
+  .repo-card .weekly { color: var(--green); font-weight: 600; }
+  .repo-card .lang {
+    background: var(--accent1);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.8em;
+  }
+  .repo-card .builders { color: var(--muted); font-size: 0.8em; margin-top: 8px; }
+
+  .quote-block {
+    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.05));
+    border-left: 4px solid var(--accent2);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 25px;
+    margin: 25px 0;
+    font-style: italic;
+    color: var(--muted);
+  }
+  .quote-block .author {
+    margin-top: 10px;
+    font-style: normal;
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .tag {
+    background: rgba(99,102,241,0.15);
+    color: var(--accent2);
+    padding: 5px 14px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    border: 1px solid rgba(99,102,241,0.3);
+  }
+
+  .resources {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 25px;
+    margin: 25px 0;
+  }
+  .resources h3 { margin-bottom: 12px; color: var(--accent2); }
+  .resources ul { list-style: none; }
+  .resources li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .resources li:last-child { border-bottom: none; }
+  .resources a { color: var(--accent1); text-decoration: none; }
+  .resources a:hover { color: var(--accent2); text-decoration: underline; }
+
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 0.85em;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  .footer a { color: var(--accent2); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.8em; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .repo-card .rank { font-size: 1.8em; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🤖 AI Builders Digest</h1>
+  <div class="subtitle">每周精选 GitHub 最火的 AI / Agent 开源项目</div>
+  <div class="date">📅 2026 年 4 月 26 日 · 第 18 期</div>
+</div>
+
+<div class="container">
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card"><div class="num">15</div><div class="label">精选项目</div></div>
+    <div class="stat-card"><div class="num">310K+</div><div class="label">总 Star 数</div></div>
+    <div class="stat-card"><div class="num">12</div><div class="label">编程语言</div></div>
+    <div class="stat-card"><div class="num">5</div><div class="label">新趋势</div></div>
+  </div>
+
+  <!-- Key Insight -->
+  <div class="quote-block">
+    <p>"本周 AI 生态呈现三大新方向：Claude Code 技能生态爆发（guizang-ppt-skill 单周 2600+ Star）、Agent 编排平台走向标准化（harmonist 186 个 Agent 零依赖）、以及 AI 评估观测工具链成熟（future-agi 一站式平台）。"</p>
+    <div class="author">— AI Builders Digest 编辑部</div>
+  </div>
+
+  <div class="tags">
+    <span class="tag"># Claude-Code-Skills</span>
+    <span class="tag"># Agent-Orchestration</span>
+    <span class="tag"># AI-Evaluation</span>
+    <span class="tag"># Knowledge-Management</span>
+    <span class="tag"># AI-Gateway</span>
+    <span class="tag"># Android-AI</span>
+    <span class="tag"># Continual-Learning</span>
+  </div>
+
+  <!-- Top Repos -->
+  <h2 class="section-title">🏆 本周热门项目</h2>
+
+  <!-- #1 -->
+  <div class="repo-card">
+    <div class="rank">#1</div>
+    <h3><a href="https://github.com/langflow-ai/langflow" target="_blank">langflow-ai / langflow</a></h3>
+    <div class="desc">AI Agent 与工作流构建平台——可视化搭建和部署 AI 驱动的智能应用，支持多 Agent 编排。</div>
+    <div class="meta">
+      <span class="stars">⭐ 147,353</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: langflow-ai 团队 · Topics: agents, multiagent, generative-ai</div>
+  </div>
+
+  <!-- #2 -->
+  <div class="repo-card">
+    <div class="rank">#2</div>
+    <h3><a href="https://github.com/langchain-ai/langchain" target="_blank">langchain-ai / langchain</a></h3>
+    <div class="desc">Agent Engineering Platform——LLM 应用开发的行业标准框架，支持 RAG、多 Agent、DeepAgents。</div>
+    <div class="meta">
+      <span class="stars">⭐ 134,903</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: langchain-ai 团队 · Topics: ai-agents, langgraph, rag, openai, anthropic</div>
+  </div>
+
+  <!-- #3 -->
+  <div class="repo-card">
+    <div class="rank">#3</div>
+    <h3><a href="https://github.com/tw93/Kami" target="_blank">tw93 / Kami</a></h3>
+    <div class="desc">「好的内容值得被好好记录」——tw93 出品的知识管理工具，一周暴涨 3,251 Star！</div>
+    <div class="meta">
+      <span class="stars">⭐ 3,251</span>
+      <span class="weekly">🔥 本周新上榜</span>
+      <span class="lang">HTML</span>
+    </div>
+    <div class="builders">👷 Built by: tw93 · 167 forks · 官网: kami.tw93.fun</div>
+  </div>
+
+  <!-- #4 -->
+  <div class="repo-card">
+    <div class="rank">#4</div>
+    <h3><a href="https://github.com/op7418/guizang-ppt-skill" target="_blank">op7418 / guizang-ppt-skill</a></h3>
+    <div class="desc">Claude Code 技能——将提示词转化为横向滑动的杂志风格 HTML 演示文稿，10 种布局、5 种主题、WebGL 背景。</div>
+    <div class="meta">
+      <span class="stars">⭐ 2,675</span>
+      <span class="weekly">🔥 本周新上榜</span>
+      <span class="lang">HTML</span>
+    </div>
+    <div class="builders">👷 Built by: op7418 · 296 forks · Claude Code 技能生态代表</div>
+  </div>
+
+  <!-- #5 -->
+  <div class="repo-card">
+    <div class="rank">#5</div>
+    <h3><a href="https://github.com/cosmicstack-labs/mercury-agent" target="_blank">cosmicstack-labs / mercury-agent</a></h3>
+    <div class="desc">灵魂驱动的 AI Agent——权限加固的工具、Token 预算控制、多通道接入，CLI 或 Telegram 24/7 运行。</div>
+    <div class="meta">
+      <span class="stars">⭐ 1,088</span>
+      <span class="weekly">🔥 本周新上榜</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: cosmicstack-labs · 124 forks · 官网: mercury.cosmicstack.org</div>
+  </div>
+
+  <!-- #6 -->
+  <div class="repo-card">
+    <div class="rank">#6</div>
+    <h3><a href="https://github.com/ConardLi/garden-skills" target="_blank">ConardLi / garden-skills</a></h3>
+    <div class="desc">ConardLi 的开源 Skills 合集——涵盖网页设计、知识检索、图像生成等 Claude Code 技能。</div>
+    <div class="meta">
+      <span class="stars">⭐ 1,000+</span>
+      <span class="weekly">🔥 本周新上榜</span>
+      <span class="lang">多种语言</span>
+    </div>
+    <div class="builders">👷 Built by: ConardLi · Claude Code 技能生态标杆</div>
+  </div>
+
+  <!-- #7 -->
+  <div class="repo-card">
+    <div class="rank">#7</div>
+    <h3><a href="https://github.com/GammaLabTechnologies/harmonist" target="_blank">GammaLabTechnologies / harmonist</a></h3>
+    <div class="desc">便携式 AI Agent 编排平台——机械协议强制执行，支持 186 个 Agent，零运行时依赖。</div>
+    <div class="meta">
+      <span class="stars">⭐ 600</span>
+      <span class="weekly">🔥 本周新上榜</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: GammaLabTechnologies · 248 forks · 官网: gammalab.ae</div>
+  </div>
+
+  <!-- #8 -->
+  <div class="repo-card">
+    <div class="rank">#8</div>
+    <h3><a href="https://github.com/future-agi/future-agi" target="_blank">future-agi / future-agi</a></h3>
+    <div class="desc">开源 LLM/AI Agent 评估观测平台——Tracing · Evals · Simulations · Datasets · Gateway · Guardrails，可自托管。</div>
+    <div class="meta">
+      <span class="stars">⭐ 404</span>
+      <span class="weekly">🔥 本周新上榜</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: future-agi · 59 forks · 官网: futureagi.com · Apache 2.0</div>
+  </div>
+
+  <!-- #9 -->
+  <div class="repo-card">
+    <div class="rank">#9</div>
+    <h3><a href="https://github.com/agentodyssey/agentodyssey" target="_blank">agentodyssey / agentodyssey</a></h3>
+    <div class="desc">开放域长周期文本游戏生成——用于测试时持续学习 Agent 的训练环境。</div>
+    <div class="meta">
+      <span class="stars">⭐ 300+</span>
+      <span class="weekly">🔥 本周新上榜</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: agentodyssey · 持续学习 Agent 研究前沿</div>
+  </div>
+
+  <!-- #10 -->
+  <div class="repo-card">
+    <div class="rank">#10</div>
+    <h3><a href="https://github.com/Zhou-Shilin/Aether" target="_blank">Zhou-Shilin / Aether</a></h3>
+    <div class="desc">惊艳的本地化通用 AI Agent for Android——在手机上运行你的私人 AI 助手。</div>
+    <div class="meta">
+      <span class="stars">⭐ 16</span>
+      <span class="weekly">🔥 今日新星</span>
+      <span class="lang">Kotlin</span>
+    </div>
+    <div class="builders">👷 Built by: Zhou-Shilin · GPL-3.0 · Android AI Agent 新方向</div>
+  </div>
+
+  <!-- #11 -->
+  <div class="repo-card">
+    <div class="rank">#11</div>
+    <h3><a href="https://github.com/basta/OpenDesign" target="_blank">basta / OpenDesign</a></h3>
+    <div class="desc">AI 驱动的 Figma 式 HTML 画布——用编码 Agent 实时生成和编辑网页设计。</div>
+    <div class="meta">
+      <span class="stars">⭐ 14</span>
+      <span class="weekly">🔥 今日新星</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: basta · MIT · AI + 设计工具融合</div>
+  </div>
+
+  <!-- #12 -->
+  <div class="repo-card">
+    <div class="rank">#12</div>
+    <h3><a href="https://github.com/TrainWithShubham/skills" target="_blank">TrainWithShubham / skills</a></h3>
+    <div class="desc">AI Agent 技能库——DevOps、云计算、职业工具，面向 AI Agent 的实用技能集合。</div>
+    <div class="meta">
+      <span class="stars">⭐ 14</span>
+      <span class="weekly">🔥 今日新星</span>
+      <span class="lang">Shell</span>
+    </div>
+    <div class="builders">👷 Built by: TrainWithShubham · 21 forks · MIT</div>
+  </div>
+
+  <!-- #13 -->
+  <div class="repo-card">
+    <div class="rank">#13</div>
+    <h3><a href="https://github.com/masterking32/MasterHttpRelayVPN" target="_blank">masterking32 / MasterHttpRelayVPN</a></h3>
+    <div class="desc">通过 Google Apps Script 的域名前置 HTTP/SOCKS5 代理隧道——MITM TLS 拦截、HTTP/1-2 多路复用、DPI 规避。</div>
+    <div class="meta">
+      <span class="stars">⭐ 1,242</span>
+      <span class="weekly">🔥 本周新上榜</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: masterking32 · 121 forks · Topics: dpi, mitm, proxy, vpn</div>
+  </div>
+
+  <!-- Trend Analysis -->
+  <h2 class="section-title">📊 趋势洞察</h2>
+
+  <div class="quote-block">
+    <p>"本周五大趋势：① Claude Code 技能生态全面爆发（guizang-ppt-skill、garden-skills 等）；② Agent 编排从实验走向工程化（harmonist 186 Agent 零依赖）；③ AI 评估观测工具链成熟（future-agi 一站式平台）；④ 知识管理工具 AI 化（Kami 单周 3K+ Star）；⑤ Android 端 AI Agent 开始涌现（Aether）。"</p>
+    <div class="author">— AI Builders Digest 趋势分析</div>
+  </div>
+
+  <div class="resources">
+    <h3>🔗 延伸阅读</h3>
+    <ul>
+      <li>📌 <a href="https://github.com/trending?since=weekly" target="_blank">GitHub Weekly Trending</a> — 完整榜单</li>
+      <li>📌 <a href="https://github.com/langflow-ai/langflow" target="_blank">Langflow</a> — AI Agent 工作流可视化构建</li>
+      <li>📌 <a href="https://github.com/langchain-ai/langchain" target="_blank">LangChain</a> — Agent Engineering 行业标准</li>
+      <li>📌 <a href="https://github.com/future-agi/future-agi" target="_blank">Future AGI</a> — LLM 评估观测一站式平台</li>
+      <li>📌 <a href="https://github.com/GammaLabTechnologies/harmonist" target="_blank">Harmonist</a> — 186 Agent 零依赖编排</li>
+      <li>📌 <a href="https://github.com/topics/ai-builders" target="_blank">GitHub AI Builders Topic</a> — AI 构建者社区</li>
+    </ul>
+  </div>
+
+  <div class="tags">
+    <span class="tag"># Claude-Code生态</span>
+    <span class="tag"># Agent编排</span>
+    <span class="tag"># AI评估</span>
+    <span class="tag"># 知识管理</span>
+    <span class="tag"># Android-AI</span>
+    <span class="tag"># 持续学习</span>
+    <span class="tag"># AI-Gateway</span>
+    <span class="tag"># 技能生态</span>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>🤖 AI Builders Digest — 每周精选 GitHub 最火的 AI 开源项目</p>
+  <p>Generated on 2026-04-26 · Data from <a href="https://github.com/trending" target="_blank">GitHub Trending</a> &amp; <a href="https://api.github.com" target="_blank">GitHub API</a></p>
+  <p style="margin-top: 10px;">Made with 💜 by <a href="https://github.com/luokpX/pages" target="_blank">Vera's AI Digest Engine</a></p>
+</div>
+
+</body>
+</html>
