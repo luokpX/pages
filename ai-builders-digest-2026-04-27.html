@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤖 AI Builders Digest — 2026.04.27 周刊</title>
+<style>
+  :root {
+    --bg: #0a0a1a;
+    --card: #12122a;
+    --accent1: #6366f1;
+    --accent2: #a855f7;
+    --accent3: #ec4899;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --star: #fbbf24;
+    --green: #22c55e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  .hero {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    padding: 60px 20px 40px;
+    text-align: center;
+    border-bottom: 2px solid var(--accent1);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(99,102,241,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(168,85,247,0.1) 0%, transparent 50%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+  .hero h1 {
+    font-size: 2.5em;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .subtitle {
+    color: var(--muted);
+    font-size: 1.1em;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .date {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-top: 15px;
+    position: relative;
+    z-index: 1;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 35px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-3px); }
+  .stat-card .num {
+    font-size: 2em;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-card .label { color: var(--muted); font-size: 0.85em; margin-top: 4px; }
+
+  .section-title {
+    font-size: 1.5em;
+    margin: 35px 0 20px;
+    padding-left: 15px;
+    border-left: 4px solid var(--accent2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .repo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 25px;
+    margin-bottom: 16px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .repo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--accent1), var(--accent3));
+  }
+  .repo-card:hover {
+    border-color: var(--accent1);
+    box-shadow: 0 4px 25px rgba(99,102,241,0.15);
+  }
+  .repo-card .rank {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2.5em;
+    font-weight: 900;
+    color: rgba(99,102,241,0.15);
+  }
+  .repo-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 6px;
+  }
+  .repo-card h3 a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .repo-card h3 a:hover { color: var(--accent2); }
+  .repo-card .desc { color: var(--muted); font-size: 0.95em; margin-bottom: 12px; }
+  .repo-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.85em;
+  }
+  .repo-card .meta span { display: flex; align-items: center; gap: 4px; }
+  .repo-card .stars { color: var(--star); }
+  .repo-card .weekly { color: var(--green); font-weight: 600; }
+  .repo-card .lang {
+    background: var(--accent1);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.8em;
+  }
+  .repo-card .builders { color: var(--muted); font-size: 0.8em; margin-top: 8px; }
+
+  .quote-block {
+    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.05));
+    border-left: 4px solid var(--accent2);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 25px;
+    margin: 25px 0;
+    font-style: italic;
+    color: var(--muted);
+  }
+  .quote-block .author {
+    margin-top: 10px;
+    font-style: normal;
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .tag {
+    background: rgba(99,102,241,0.15);
+    color: var(--accent2);
+    padding: 5px 14px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    border: 1px solid rgba(99,102,241,0.3);
+  }
+
+  .resources {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 25px;
+    margin: 25px 0;
+  }
+  .resources h3 { margin-bottom: 12px; color: var(--accent2); }
+  .resources ul { list-style: none; }
+  .resources li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .resources li:last-child { border-bottom: none; }
+  .resources a { color: var(--accent1); text-decoration: none; }
+  .resources a:hover { color: var(--accent2); text-decoration: underline; }
+
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 0.85em;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  .footer a { color: var(--accent2); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.8em; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .repo-card .rank { font-size: 1.8em; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🤖 AI Builders Digest</h1>
+  <div class="subtitle">每周精选 GitHub 最火的 AI / Agent 开源项目</div>
+  <div class="date">📅 2026 年 4 月 27 日 · 第 19 期</div>
+</div>
+
+<div class="container">
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card"><div class="num">15</div><div class="label">精选项目</div></div>
+    <div class="stat-card"><div class="num">560K+</div><div class="label">总 Star 数</div></div>
+    <div class="stat-card"><div class="num">10</div><div class="label">编程语言</div></div>
+    <div class="stat-card"><div class="num">6</div><div class="label">新趋势</div></div>
+  </div>
+
+  <!-- Key Insight -->
+  <div class="quote-block">
+    <p>"本周 GitHub 被 Claude Code 生态彻底点燃：free-claude-code 单周暴涨 10,335 Star 登顶，claude-mem 以 67,934 Star 成为最大黑马，mattpocock/skills 和 multica 分别以 5,013 和 4,882 周增 Star 证明 Agent 技能平台化已成主流。与此同时，OpenAI 推出 openai-agents-python 正式入局多 Agent 框架赛道。"</p>
+    <div class="author">— AI Builders Digest 编辑部</div>
+  </div>
+
+  <div class="tags">
+    <span class="tag"># Claude-Code-Ecosystem</span>
+    <span class="tag"># Agent-Skills</span>
+    <span class="tag"># Multi-Agent</span>
+    <span class="tag"># RAG-Framework</span>
+    <span class="tag"># AI-Voice</span>
+    <span class="tag"># AI-SRE</span>
+    <span class="tag"># Code-Search-MCP</span>
+    <span class="tag"># AI-Pentest</span>
+  </div>
+
+  <!-- Top Repos -->
+  <h2 class="section-title">🏆 本周热门项目</h2>
+
+  <!-- #1 -->
+  <div class="repo-card">
+    <div class="rank">#1</div>
+    <h3><a href="https://github.com/Alishahryar1/free-claude-code" target="_blank">Alishahryar1 / free-claude-code</a></h3>
+    <div class="desc">在终端、VSCode 扩展或 Discord 中免费使用 Claude Code——类似 OpenClaw 的免费替代方案，本周暴涨 10,335 Star 登顶 Trending！</div>
+    <div class="meta">
+      <span class="stars">⭐ 13,541</span>
+      <span class="weekly">🔥 +10,335/周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: Alishahryar, cursoragent, claude · 1,947 forks</div>
+  </div>
+
+  <!-- #2 -->
+  <div class="repo-card">
+    <div class="rank">#2</div>
+    <h3><a href="https://github.com/thedotmack/claude-mem" target="_blank">thedotmack / claude-mem</a></h3>
+    <div class="desc">Claude Code 记忆插件——自动捕获编码会话中的所有内容，用 AI 压缩并注入未来会话上下文，67,934 Star 的超级项目！</div>
+    <div class="meta">
+      <span class="stars">⭐ 67,934</span>
+      <span class="weekly">🔥 +4,967/周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: thedotmack, claude · 5,785 forks</div>
+  </div>
+
+  <!-- #3 -->
+  <div class="repo-card">
+    <div class="rank">#3</div>
+    <h3><a href="https://github.com/multica-ai/multica" target="_blank">multica-ai / multica</a></h3>
+    <div class="desc">开源托管 Agent 平台——将编码 Agent 变成真正的队友：分配任务、追踪进度、复合技能，4,882 周增 Star！</div>
+    <div class="meta">
+      <span class="stars">⭐ 21,448</span>
+      <span class="weekly">🔥 +4,882/周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: forrestchang, NevilleQingNY, Bohan-J · 2,611 forks</div>
+  </div>
+
+  <!-- #4 -->
+  <div class="repo-card">
+    <div class="rank">#4</div>
+    <h3><a href="https://github.com/mattpocock/skills" target="_blank">mattpocock / skills</a></h3>
+    <div class="desc">面向真实工程师的 Agent Skills 合集——直接从 .claude 目录提取的实战技能，5,013 周增 Star！</div>
+    <div class="meta">
+      <span class="stars">⭐ 23,533</span>
+      <span class="weekly">🔥 +5,013/周</span>
+      <span class="lang">Shell</span>
+    </div>
+    <div class="builders">👷 Built by: mattpocock, claude · 1,910 forks</div>
+  </div>
+
+  <!-- #5 -->
+  <div class="repo-card">
+    <div class="rank">#5</div>
+    <h3><a href="https://github.com/microsoft/markitdown" target="_blank">microsoft / markitdown</a></h3>
+    <div class="desc">微软出品的文件转 Markdown 工具——支持 Office 文档、PDF、图片等格式转换，117,419 Star 的超级项目！</div>
+    <div class="meta">
+      <span class="stars">⭐ 117,419</span>
+      <span class="weekly">🔥 +4,947/周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: microsoft 团队 · 7,700 forks</div>
+  </div>
+
+  <!-- #6 -->
+  <div class="repo-card">
+    <div class="rank">#6</div>
+    <h3><a href="https://github.com/zilliztech/claude-context" target="_blank">zilliztech / claude-context</a></h3>
+    <div class="desc">Claude Code 的代码搜索 MCP——让整个代码库成为任何编码 Agent 的上下文，3,537 周增 Star！</div>
+    <div class="meta">
+      <span class="stars">⭐ 9,608</span>
+      <span class="weekly">🔥 +3,537/周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: zc277584121, Shawnzheng011019, codingjaguar · 730 forks</div>
+  </div>
+
+  <!-- #7 -->
+  <div class="repo-card">
+    <div class="rank">#7</div>
+    <h3><a href="https://github.com/HKUDS/RAG-Anything" target="_blank">HKUDS / RAG-Anything</a></h3>
+    <div class="desc">「RAG-Anything: All-in-One RAG Framework」——一站式 RAG 框架，支持多模态检索增强生成，2,639 周增 Star！</div>
+    <div class="meta">
+      <span class="stars">⭐ 18,810</span>
+      <span class="weekly">🔥 +2,639/周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: LarFii, Jah-yee, chaohuang-ai · 2,156 forks</div>
+  </div>
+
+  <!-- #8 -->
+  <div class="repo-card">
+    <div class="rank">#8</div>
+    <h3><a href="https://github.com/openai/openai-agents-python" target="_blank">openai / openai-agents-python</a></h3>
+    <div class="desc">OpenAI 官方多 Agent 工作流框架——轻量、强大，OpenAI 正式入局 Agent 编排赛道！</div>
+    <div class="meta">
+      <span class="stars">⭐ 25,303</span>
+      <span class="weekly">🔥 +2,387/周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: OpenAI 官方 · 3,866 forks</div>
+  </div>
+
+  <!-- #9 -->
+  <div class="repo-card">
+    <div class="rank">#9</div>
+    <h3><a href="https://github.com/lsdefine/GenericAgent" target="_blank">lsdefine / GenericAgent</a></h3>
+    <div class="desc">自进化 Agent——从 3,300 行种子代码生长出技能树，实现全系统控制，Token 消耗降低 6 倍！</div>
+    <div class="meta">
+      <span class="stars">⭐ 7,370</span>
+      <span class="weekly">🔥 +2,936/周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: lsdefine, ViviqwerAsd, shenhao-stu · 837 forks</div>
+  </div>
+
+  <!-- #10 -->
+  <div class="repo-card">
+    <div class="rank">#10</div>
+    <h3><a href="https://github.com/thunderbird/thunderbolt" target="_blank">thunderbird / thunderbolt</a></h3>
+    <div class="desc">「AI You Control」——选择你的模型、拥有你的数据、消除供应商锁定，Thunderbird 出品的 AI 客户端！</div>
+    <div class="meta">
+      <span class="stars">⭐ 4,177</span>
+      <span class="weekly">🔥 +2,244/周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: cjroth, raivieiraadriano92 · 265 forks</div>
+  </div>
+
+  <!-- #11 -->
+  <div class="repo-card">
+    <div class="rank">#11</div>
+    <h3><a href="https://github.com/jamiepine/voicebox" target="_blank">jamiepine / voicebox</a></h3>
+    <div class="desc">开源 AI 语音工作室——克隆声音、口述生成、创作语音内容，2,647 周增 Star！</div>
+    <div class="meta">
+      <span class="stars">⭐ 23,514</span>
+      <span class="weekly">🔥 +2,647/周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: jamiepine, claude · 2,788 forks</div>
+  </div>
+
+  <!-- #12 -->
+  <div class="repo-card">
+    <div class="rank">#12</div>
+    <h3><a href="https://github.com/badlogic/pi-mono" target="_blank">badlogic / pi-mono</a></h3>
+    <div class="desc">AI Agent 工具包——编码 Agent CLI、统一 LLM API、TUI 和 Web UI 库、Slack Bot、vLLM Pods！</div>
+    <div class="meta">
+      <span class="stars">⭐ 40,666</span>
+      <span class="weekly">🔥 +3,173/周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: badlogic, hjanuschka, mitsuhiko · 4,758 forks</div>
+  </div>
+
+  <!-- #13 -->
+  <div class="repo-card">
+    <div class="rank">#13</div>
+    <h3><a href="https://github.com/Tracer-Cloud/opensre" target="_blank">Tracer-Cloud / opensre</a></h3>
+    <div class="desc">构建你自己的 AI SRE Agent——AI 时代的开源运维工具包 ✨，1,511 周增 Star！</div>
+    <div class="meta">
+      <span class="stars">⭐ 3,366</span>
+      <span class="weekly">🔥 +1,511/周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: davincios, aliya-tracer, VaibhavUpreti · 377 forks</div>
+  </div>
+
+  <!-- #14 -->
+  <div class="repo-card">
+    <div class="rank">#14</div>
+    <h3><a href="https://github.com/hugohe3/ppt-master" target="_blank">hugohe3 / ppt-master</a></h3>
+    <div class="desc">AI 从任意文档生成原生可编辑 PPTX——真正的 PowerPoint 形状而非图片，无需设计技能！</div>
+    <div class="meta">
+      <span class="stars">⭐ 8,324</span>
+      <span class="weekly">🔥 +1,850/周</span>
+      <span class="lang">Python</span>
+    </div>
+    <div class="builders">👷 Built by: hugohe3, claude · 923 forks</div>
+  </div>
+
+  <!-- #15 -->
+  <div class="repo-card">
+    <div class="rank">#15</div>
+    <h3><a href="https://github.com/KeygraphHQ/shannon" target="_blank">KeygraphHQ / shannon</a></h3>
+    <div class="desc">Shannon Lite——自主白盒 AI 渗透测试器，分析源码、识别攻击向量、执行真实漏洞利用！</div>
+    <div class="meta">
+      <span class="stars">⭐ 40,455</span>
+      <span class="weekly">🔥 +1,883/周</span>
+      <span class="lang">TypeScript</span>
+    </div>
+    <div class="builders">👷 Built by: ajmallesh, ezl-keygraph, claude · 4,507 forks</div>
+  </div>
+
+  <!-- Trend Analysis -->
+  <h2 class="section-title">📊 本周趋势分析</h2>
+
+  <div class="quote-block">
+    <p>"Claude Code 生态正在形成完整的工具链：free-claude-code（免费接入）→ claude-mem（记忆管理）→ claude-context（代码搜索）→ skills（技能生态）→ multica（Agent 编排）。这个生态链的完整度已经超越了大多数商业 AI 开发平台。"</p>
+    <div class="author">— AI Builders Digest 趋势观察</div>
+  </div>
+
+  <div class="repo-card">
+    <h3>🔥 趋势一：Claude Code 工具链爆发</h3>
+    <div class="desc">本周 Top 15 中有 6 个项目与 Claude Code 直接相关，形成一个从接入→记忆→上下文→技能→编排的完整生态。free-claude-code 单周 +10,335 Star 的增速令人震惊。</div>
+  </div>
+
+  <div class="repo-card">
+    <h3>🔥 趋势二：Agent 平台化与技能市场</h3>
+    <div class="desc">multica（托管 Agent 平台）和 mattpocock/skills（技能合集）证明 Agent 正在从「工具」走向「平台」。Agent 技能市场雏形初现。</div>
+  </div>
+
+  <div class="repo-card">
+    <h3>🔥 趋势三：OpenAI 正式入局 Agent 框架</h3>
+    <div class="desc">openai-agents-python 以 25,303 Star 成为 OpenAI 官方 Agent 框架，标志着 Agent 编排从开源社区走向大厂标准。</div>
+  </div>
+
+  <!-- Resources -->
+  <div class="resources">
+    <h3>📚 延伸阅读</h3>
+    <ul>
+      <li>🔗 <a href="https://github.com/trending?since=weekly" target="_blank">GitHub Trending 总榜</a> — 本周所有热门仓库</li>
+      <li>🔗 <a href="https://github.com/trending/python?since=weekly" target="_blank">GitHub Trending Python</a> — Python 项目精选</li>
+      <li>🔗 <a href="https://github.com/trending/typescript?since=weekly" target="_blank">GitHub Trending TypeScript</a> — TypeScript 项目精选</li>
+      <li>🔗 <a href="https://github.com/topics/ai" target="_blank">GitHub AI 主题</a> — AI 相关项目集合</li>
+      <li>🔗 <a href="https://github.com/topics/agents" target="_blank">GitHub Agents 主题</a> — Agent 项目集合</li>
+    </ul>
+  </div>
+
+  <div class="tags">
+    <span class="tag"># AI</span>
+    <span class="tag"># Agent</span>
+    <span class="tag"># Claude-Code</span>
+    <span class="tag"># OpenAI</span>
+    <span class="tag"># RAG</span>
+    <span class="tag"># MCP</span>
+    <span class="tag"># SRE</span>
+    <span class="tag"># Voice-AI</span>
+    <span class="tag"># Pentest</span>
+    <span class="tag"># Skills</span>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>🤖 AI Builders Digest — 每周精选 GitHub 最火的 AI / Agent 开源项目</p>
+  <p>数据来源: <a href="https://github.com/trending" target="_blank">GitHub Trending</a> · 生成时间: 2026-04-27 08:00 CST</p>
+  <p style="margin-top:10px;">Made with 💜 by <a href="https://github.com/luokpX" target="_blank">Vera (薇拉)</a></p>
+</div>
+
+</body>
+</html>
