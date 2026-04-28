@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — April 28, 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a0a1a;
+    --card-bg: #111133;
+    --card-hover: #181845;
+    --accent: #6c5ce7;
+    --accent2: #a29bfe;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --border: #1e1e4a;
+    --tag-bg: #1a1a40;
+    --tag-text: #a29bfe;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+    --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(108, 92, 231, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(240, 147, 251, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(79, 172, 254, 0.1) 0%, transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: var(--gradient-1);
+    color: white;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    background: linear-gradient(135deg, #a29bfe, #6c5ce7, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+
+  .header .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  .header .edition {
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    padding: 30px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Featured section */
+  .featured-section {
+    margin-bottom: 50px;
+  }
+
+  .section-title {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    margin-bottom: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 18px;
+    background: var(--gradient-1);
+    border-radius: 2px;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .card:hover {
+    background: var(--card-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(108, 92, 231, 0.2);
+    border-color: var(--accent);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card.featured {
+    border-color: var(--accent);
+  }
+  .card.featured::before {
+    opacity: 1;
+    background: var(--gradient-3);
+  }
+  .card.hot::before {
+    opacity: 1;
+    background: var(--gradient-2);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .card-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--gradient-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .card-avatar img {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  .card-author {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .card-author span {
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 12px;
+    display: block;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .card-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .card-title a:hover {
+    color: var(--accent2);
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .card-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .card-stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .card-stat .icon { font-size: 15px; }
+  .card-stat.stars { color: var(--gold); }
+  .card-stat.forks { color: var(--silver); }
+
+  .card-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .tag:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* Key Points */
+  .key-points {
+    background: rgba(108, 92, 231, 0.1);
+    border: 1px solid rgba(108, 92, 231, 0.3);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+
+  .key-points-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .key-points ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .key-points li {
+    font-size: 13px;
+    color: var(--text);
+    padding: 4px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .key-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent2);
+  }
+
+  /* Quote block */
+  blockquote {
+    background: linear-gradient(135deg, rgba(162, 155, 254, 0.1), rgba(108, 92, 231, 0.05));
+    border-left: 3px solid var(--accent2);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+    color: var(--accent2);
+    font-size: 14px;
+  }
+
+  blockquote::before {
+    content: '"';
+    font-size: 24px;
+    color: var(--accent);
+    font-weight: 700;
+    font-style: normal;
+    line-height: 0;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+
+  /* Resources section */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 50px;
+  }
+
+  .resource-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .resource-card:hover {
+    background: var(--card-hover);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .resource-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--gradient-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .resource-info h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .resource-info p {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Trend tags */
+  .trend-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 50px;
+    justify-content: center;
+  }
+
+  .trend-tag {
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .trend-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent2);
+    background: rgba(108, 92, 231, 0.1);
+  }
+
+  .trend-tag.hot {
+    background: rgba(245, 87, 108, 0.15);
+    border-color: #f5576c;
+    color: #f5576c;
+  }
+
+  .trend-tag.rising {
+    background: rgba(79, 172, 254, 0.15);
+    border-color: #4facfe;
+    color: #4facfe;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .footer a {
+    color: var(--accent2);
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Rank badge */
+  .rank-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    background: var(--gradient-1);
+  }
+
+  .rank-badge.top1 { background: var(--gradient-2); }
+  .rank-badge.top2 { background: var(--gradient-3); }
+  .rank-badge.top3 { background: var(--gradient-5); }
+
+  /* How it works section */
+  .how-it-works {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 50px;
+  }
+
+  .how-it-works h3 {
+    color: var(--accent2);
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+
+  .how-it-works p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .how-it-works code {
+    background: var(--tag-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent2);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container { padding: 20px 16px; }
+    .header { padding: 40px 16px 30px; }
+    .stats-bar { gap: 20px; }
+    .featured-grid { grid-template-columns: 1fr; }
+    .resources-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-badge">🤖 AI Builders Digest</div>
+    <h1>Weekly AI Builder Report</h1>
+    <p class="subtitle">
+      <span class="edition">Edition #20</span> · April 28, 2026 · Week 18
+    </p>
+    <p class="subtitle" style="margin-top:8px;font-size:13px;">
+      Sourced from GitHub API · AI/LLM/Agent repos created Apr 14–28, 2026
+    </p>
+  </header>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value">2,383+</div>
+      <div class="stat-label">MCP Repos This Week</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">2,404 ⭐</div>
+      <div class="stat-label">Top Repo Stars</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">14</div>
+      <div class="stat-label">Projects Featured</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">5+</div>
+      <div class="stat-label">Trending Topics</div>
+    </div>
+  </div>
+
+  <!-- Featured Projects -->
+  <section class="featured-section">
+    <div class="section-title">🔥 Top Projects This Week</div>
+
+    <div class="featured-grid">
+
+      <!-- #1 hermes-web-ui -->
+      <div class="card featured" style="position:relative;">
+        <div class="rank-badge top1">#1</div>
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/152005280?v=4" alt="EKKOLearnAI" loading="lazy"></div>
+          <div class="card-author">
+            EKKOLearnAI
+            <span>@EKKOLearnAI · Organization</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/EKKOLearnAI/hermes-web-ui" target="_blank" rel="noopener">hermes-web-ui</a>
+        </div>
+        <div class="card-desc">
+          Web dashboard for Hermes Agent — multi-platform AI chat, session management, scheduled jobs, usage analytics & channel configuration (Telegram, Discord, Slack, WhatsApp).
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 2,404</span>
+          <span class="card-stat forks">🍴 300</span>
+          <span class="card-stat">📝 TypeScript</span>
+          <span class="card-stat">📅 Apr 11</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">ai-agent</span><span class="tag">chat-ui</span><span class="tag">dashboard</span><span class="tag">hermes</span><span class="tag">self-hosted</span><span class="tag">multi-platform</span>
+        </div>
+        <div class="key-points">
+          <div class="key-points-title">💡 Key Points</div>
+          <ul>
+            <li>Production-ready web UI for the Hermes Agent ecosystem</li>
+            <li>Supports Telegram, Discord, Slack, WhatsApp channels</li>
+            <li>Built-in session management and usage analytics</li>
+            <li>MIT licensed, 94 open issues — active development</li>
+          </ul>
+        </div>
+        <blockquote>The definitive dashboard for multi-platform AI agents. If you're deploying Hermes in production, this is the UI layer you need.</blockquote>
+      </div>
+
+      <!-- #2 mercury-agent -->
+      <div class="card hot" style="position:relative;">
+        <div class="rank-badge top2">#2</div>
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/277752932?v=4" alt="cosmicstack-labs" loading="lazy"></div>
+          <div class="card-author">
+            cosmicstack-labs
+            <span>@cosmicstack-labs · Organization</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/cosmicstack-labs/mercury-agent" target="_blank" rel="noopener">mercury-agent</a>
+        </div>
+        <div class="card-desc">
+          Soul-driven AI agent with permission-hardened tools, token budgets, and multi-channel access. Runs 24/7 from CLI or Telegram.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 1,544</span>
+          <span class="card-stat forks">🍴 164</span>
+          <span class="card-stat">📝 TypeScript</span>
+          <span class="card-stat">📅 Apr 20</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">ai-agent</span><span class="tag">ai-assistant</span><span class="tag">llm</span><span class="tag">permission-hardened</span><span class="tag">cli</span>
+        </div>
+        <div class="key-points">
+          <div class="key-points-title">💡 Key Points</div>
+          <ul>
+            <li>"Soul-driven" personality with permission-hardened security</li>
+            <li>Token budget enforcement for cost control</li>
+            <li>Multi-channel: CLI + Telegram out of the box</li>
+            <li>1,544 stars in just 8 days — explosive growth</li>
+          </ul>
+        </div>
+        <blockquote>Soul-driven agents are the next frontier. Permission hardening and token budgets make this production-ready from day one.</blockquote>
+      </div>
+
+      <!-- #3 harmonist -->
+      <div class="card" style="position:relative;">
+        <div class="rank-badge top3">#3</div>
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/278484961?v=4" alt="GammaLab" loading="lazy"></div>
+          <div class="card-author">
+            GammaLabTechnologies
+            <span>@GammaLabTechnologies</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/GammaLabTechnologies/harmonist" target="_blank" rel="noopener">harmonist</a>
+        </div>
+        <div class="card-desc">
+          Portable AI agent orchestration with mechanical protocol enforcement. 186 agents, zero runtime dependencies.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 745</span>
+          <span class="card-stat forks">🍴 293</span>
+          <span class="card-stat">📝 Python</span>
+          <span class="card-stat">📅 Apr 23</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">agent-framework</span><span class="tag">orchestration</span><span class="tag">multi-agent</span><span class="tag">python</span><span class="tag">llm</span>
+        </div>
+        <div class="key-points">
+          <div class="key-points-title">💡 Key Points</div>
+          <ul>
+            <li>186 pre-configured agents with mechanical protocol enforcement</li>
+            <li>Zero runtime dependencies — pure portable Python</li>
+            <li>Extremely high fork ratio (293 forks for 745 stars)</li>
+            <li>Protocol-level guarantees for agent behavior</li>
+          </ul>
+        </div>
+        <blockquote>Zero-dependency agent orchestration with protocol-level enforcement. The fork ratio tells you builders are cloning this fast.</blockquote>
+      </div>
+
+      <!-- #4 esp-claw -->
+      <div class="card" style="position:relative;">
+        <div class="rank-badge">#4</div>
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/9460735?v=4" alt="espressif" loading="lazy"></div>
+          <div class="card-author">
+            espressif
+            <span>@espressif · Organization</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/espressif/esp-claw" target="_blank" rel="noopener">esp-claw</a>
+        </div>
+        <div class="card-desc">
+          ESP-Claw, a "Chat Coding" AI agent framework for IoT devices. Bring AI-powered coding to embedded systems.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 617</span>
+          <span class="card-stat forks">🍴 127</span>
+          <span class="card-stat">📝 C</span>
+          <span class="card-stat">📅 Apr 17</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">iot</span><span class="tag">ai-agent</span><span class="tag">embedded</span><span class="tag">esp32</span><span class="tag">chat-coding</span>
+        </div>
+        <div class="key-points">
+          <div class="key-points-title">💡 Key Points</div>
+          <ul>
+            <li>First major AI agent framework specifically for IoT/embedded devices</li>
+            <li>Backed by Espressif (ESP32 chip maker) — enterprise-grade</li>
+            <li>Written in C for maximum performance on constrained devices</li>
+            <li>Bridging AI assistants and the physical world</li>
+          </ul>
+        </div>
+        <blockquote>AI meets IoT. Espressif bringing "Chat Coding" to embedded devices is a massive unlock for smart hardware builders.</blockquote>
+      </div>
+
+      <!-- #5 agent-style -->
+      <div class="card" style="position:relative;">
+        <div class="rank-badge">#5</div>
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/15079146?v=4" alt="yzhao062" loading="lazy"></div>
+          <div class="card-author">
+            yzhao062
+            <span>@yzhao062</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/yzhao062/agent-style" target="_blank" rel="noopener">agent-style</a>
+        </div>
+        <div class="card-desc">
+          21 writing rules for AI coding and writing agents. Drop-in for Claude Code, Codex, Copilot, Cursor, and Aider.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 363</span>
+          <span class="card-stat forks">🍴 19</span>
+          <span class="card-stat">📝 Python</span>
+          <span class="card-stat">📅 Apr 19</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">prompt-engineering</span><span class="tag">style-guide</span><span class="tag">writing-style</span><span class="tag">ai-agents</span>
+        </div>
+        <div class="key-points">
+          <div class="key-points-title">💡 Key Points</div>
+          <ul>
+            <li>21 opinionated rules to make AI output read like a tech pro</li>
+            <li>Drop-in support for Claude Code, Codex, Copilot, Cursor, Aider</li>
+            <li>Solves the "AI-generated tone" problem at scale</li>
+            <li>Rapid community adoption — 363 stars in 9 days</li>
+          </ul>
+        </div>
+        <blockquote>Finally, a style guide that makes AI output sound human. Drop it into any coding agent and watch the magic.</blockquote>
+      </div>
+
+      <!-- #6 free-ai-tools -->
+      <div class="card" style="position:relative;">
+        <div class="rank-badge">#6</div>
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/86195374?v=4" alt="ShaikhWarsi" loading="lazy"></div>
+          <div class="card-author">
+            ShaikhWarsi
+            <span>@ShaikhWarsi</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/ShaikhWarsi/free-ai-tools" target="_blank" rel="noopener">free-ai-tools</a>
+        </div>
+        <div class="card-desc">
+          Curated list of free and low-cost AI tools, LLM APIs, IDEs, agents, and infrastructure for building real AI apps.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 170</span>
+          <span class="card-stat forks">🍴 20</span>
+          <span class="card-stat">📝 TypeScript</span>
+          <span class="card-stat">📅 Apr 11</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">awesome-list</span><span class="tag">ai-tools</span><span class="tag">free</span><span class="tag">directory</span><span class="tag">vibe-coding</span>
+        </div>
+        <div class="key-points">
+          <div class="key-points-title">💡 Key Points</div>
+          <ul>
+            <li>Comprehensive directory of free & low-cost AI tooling</li>
+            <li>Covers LLM APIs, IDEs, agents, and infrastructure</li>
+            <li>Live website at FreeAiToolsList.vercel.app</li>
+            <li>Essential resource for budget-conscious AI builders</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- #7 agent-browser-mcp -->
+      <div class="card" style="position:relative;">
+        <div class="rank-badge">#7</div>
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/64576230?v=4" alt="335234131" loading="lazy"></div>
+          <div class="card-author">
+            335234131
+            <span>@335234131</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/335234131/agent-browser-mcp" target="_blank" rel="noopener">agent-browser-mcp</a>
+        </div>
+        <div class="card-desc">
+          让 Agent 直接操作真实 Chrome 的 MCP 服务，支持页面扫描、CDP、截图与物理输入。Let AI agents operate real Chrome browsers via MCP.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 154</span>
+          <span class="card-stat forks">🍴 15</span>
+          <span class="card-stat">📝 Python</span>
+          <span class="card-stat">📅 Apr 15</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">mcp</span><span class="tag">browser-automation</span><span class="tag">chrome</span><span class="tag">ai-agent</span><span class="tag">hermes</span>
+        </div>
+        <div class="key-points">
+          <div class="key-points-title">💡 Key Points</div>
+          <ul>
+            <li>Bridges MCP protocol with real Chrome browser control</li>
+            <li>Supports CDP, screenshots, physical input simulation</li>
+            <li>Chinese developer community — growing MCP ecosystem</li>
+            <li>Essential for agents that need to interact with web UIs</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- #8 ijfw -->
+      <div class="card" style="position:relative;">
+        <div class="rank-badge">#8</div>
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/273815545?v=4" alt="SeanDonahoe" loading="lazy"></div>
+          <div class="card-author">
+            TheRealSeanDonahoe
+            <span>@TheRealSeanDonahoe</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/TheRealSeanDonahoe/ijfw" target="_blank" rel="noopener">ijfw</a>
+        </div>
+        <div class="card-desc">
+          One install. Shared memory, smart routing, disciplined workflow, multi-AI audits — across every AI coding agent. No BS.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 136</span>
+          <span class="card-stat forks">🍴 21</span>
+          <span class="card-stat">📝 JavaScript</span>
+          <span class="card-stat">📅 Apr 16</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">mcp</span><span class="tag">memory</span><span class="tag">ai-coding</span><span class="tag">claude-code</span><span class="tag">codex</span><span class="tag">cursor</span>
+        </div>
+        <div class="key-points">
+          <div class="key-points-title">💡 Key Points</div>
+          <ul>
+            <li>Universal shared memory layer across Claude Code, Codex, Cursor, Windsurf</li>
+            <li>Smart routing and multi-AI audit capabilities</li>
+            <li>npm installable: @ijfw/install</li>
+            <li>One of the most practical multi-agent workflow tools</li>
+          </ul>
+        </div>
+        <blockquote>One memory layer to rule them all. ijfw is the pragmatic bridge every multi-agent developer needs.</blockquote>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- More Notable Projects -->
+  <section class="featured-section">
+    <div class="section-title">🌟 More Notable Projects</div>
+
+    <div class="featured-grid">
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/276926484?v=4" alt="Blink-h" loading="lazy"></div>
+          <div class="card-author">
+            Blink-h
+            <span>@Blink-h</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/Blink-h/agent-startup-kit" target="_blank" rel="noopener">agent-startup-kit</a>
+        </div>
+        <div class="card-desc">
+          Reusable AI coding workflows for Claude Code and VS Code to ship auth, billing, and landing pages faster.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 53</span>
+          <span class="card-stat forks">🍴 7</span>
+          <span class="card-stat">📝 TypeScript</span>
+          <span class="card-stat">📅 Apr 17</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">claude-code</span><span class="tag">startup</span><span class="tag">workflow</span><span class="tag">auth</span><span class="tag">billing</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/90562155?v=4" alt="codesstar" loading="lazy"></div>
+          <div class="card-author">
+            codesstar
+            <span>@codesstar</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/codesstar/hermes-skill-atlas" target="_blank" rel="noopener">hermes-skill-atlas</a>
+        </div>
+        <div class="card-desc">
+          The complete, interactive map of Hermes Agent skills — 70+ curated, verified, open source. 🗺️
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 18</span>
+          <span class="card-stat forks">🍴 1</span>
+          <span class="card-stat">📝 HTML</span>
+          <span class="card-stat">📅 Apr 25</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">hermes</span><span class="tag">skills</span><span class="tag">skill-atlas</span><span class="tag">ai-agent</span><span class="tag">nous-research</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/87884337?v=4" alt="fkyah3" loading="lazy"></div>
+          <div class="card-author">
+            fkyah3
+            <span>@fkyah3</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/fkyah3/opencode-yg" target="_blank" rel="noopener">opencode-yg</a>
+        </div>
+        <div class="card-desc">
+          A research fork of opencode demonstrating Language Anchoring — making LLMs think consistently in your language. Verified: 95%+ Chinese thinking compliance.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 18</span>
+          <span class="card-stat forks">🍴 1</span>
+          <span class="card-stat">📝 TypeScript</span>
+          <span class="card-stat">📅 Apr 22</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">language-anchoring</span><span class="tag">chinese-llm</span><span class="tag">deepseek</span><span class="tag">opencode</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/130839968?v=4" alt="Benboerba620" loading="lazy"></div>
+          <div class="card-author">
+            Benboerba620
+            <span>@Benboerba620</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/Benboerba620/pod2wiki" target="_blank" rel="noopener">pod2wiki</a>
+        </div>
+        <div class="card-desc">
+          把高质量播客和长文 RSS 自动转成 karpathy-claude-wiki 兼容的 source-summary 页面。Zero-code AI investment research toolkit.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 12</span>
+          <span class="card-stat forks">🍴 2</span>
+          <span class="card-stat">📝 Python</span>
+          <span class="card-stat">📅 Apr 26</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">podcast</span><span class="tag">rss</span><span class="tag">whisper</span><span class="tag">investment-research</span><span class="tag">claude-code</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/203659203?v=4" alt="Louciano22" loading="lazy"></div>
+          <div class="card-author">
+            Louciano22
+            <span>@Louciano22</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/Louciano22/appfinisher-ai" target="_blank" rel="noopener">appfinisher-ai</a>
+        </div>
+        <div class="card-desc">
+          Find launch blockers, bugs, duplicate files, and generate builder-ready fix prompts for AI-built apps.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 1</span>
+          <span class="card-stat forks">🍴 0</span>
+          <span class="card-stat">📝 TypeScript</span>
+          <span class="card-stat">📅 Apr 26</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">app-builder</span><span class="tag">claude-code</span><span class="tag">codex</span><span class="tag">cursor</span><span class="tag">vibe-coding</span><span class="tag">open-claw</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-avatar"><img src="https://avatars.githubusercontent.com/u/26172042?v=4" alt="fahmiwol" loading="lazy"></div>
+          <div class="card-author">
+            fahmiwol
+            <span>@fahmiwol</span>
+          </div>
+        </div>
+        <div class="card-title">
+          <a href="https://github.com/fahmiwol/sidix" target="_blank" rel="noopener">sidix</a>
+        </div>
+        <div class="card-desc">
+          Free & Open Source AI Agent — Self-Hosted, Self-Learning, No Vendor API. Qwen2.5-7B + LoRA. 35 tools.
+        </div>
+        <div class="card-stats">
+          <span class="card-stat stars">⭐ 11</span>
+          <span class="card-stat forks">🍴 5</span>
+          <span class="card-stat">📝 Python</span>
+          <span class="card-stat">📅 Apr 17</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">self-hosted</span><span class="tag">qwen</span><span class="tag">lora</span><span class="tag">local-ai</span><span class="tag">open-source</span><span class="tag">rag</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <h3>📊 About This Digest</h3>
+    <p>
+      This digest is auto-generated by <strong>Vera 🌹</strong> using the <code>GitHub Search API</code>.
+      It scans repositories created in the past 2 weeks with topics like
+      <code>ai-agent</code>, <code>llm</code>, <code>mcp</code>, <code>ai</code>, <code>prompt-engineering</code>,
+      and ranks them by stars. Each project is hand-curated for builder relevance.
+    </p>
+    <p style="margin-top:12px;">
+      Want your project featured? Tag it with <code>ai-agent</code> or <code>ai-builder</code> on GitHub
+      and we'll find it next week!
+    </p>
+  </section>
+
+  <!-- Trending Topics -->
+  <section>
+    <div class="section-title">🏷️ Trending Topics This Week</div>
+    <div class="trend-tags">
+      <span class="trend-tag hot">🔥 AI Agents</span>
+      <span class="trend-tag hot">🔥 MCP Protocol</span>
+      <span class="trend-tag rising">📈 Soul-Driven Agents</span>
+      <span class="trend-tag rising">📈 Agent Orchestration</span>
+      <span class="trend-tag rising">📈 Language Anchoring</span>
+      <span class="trend-tag">Multi-Platform UI</span>
+      <span class="trend-tag">IoT + AI</span>
+      <span class="trend-tag">Shared Memory</span>
+      <span class="trend-tag">Prompt Engineering</span>
+      <span class="trend-tag">Vibe Coding</span>
+      <span class="trend-tag">Self-Hosted AI</span>
+      <span class="trend-tag">Podcast → Wiki</span>
+    </div>
+  </section>
+
+  <!-- Resource Links -->
+  <section>
+    <div class="section-title">🔗 Builder Resources</div>
+    <div class="resources-grid">
+      <a href="https://github.com/EKKOLearnAI/hermes-web-ui" class="resource-card" target="_blank" rel="noopener">
+        <div class="resource-icon">🖥️</div>
+        <div class="resource-info">
+          <h4>Hermes Web UI</h4>
+          <p>Production dashboard for AI agents</p>
+        </div>
+      </a>
+      <a href="https://github.com/cosmicstack-labs/mercury-agent" class="resource-card" target="_blank" rel="noopener">
+        <div class="resource-icon">🧠</div>
+        <div class="resource-info">
+          <h4>Mercury Agent</h4>
+          <p>Soul-driven agent framework</p>
+        </div>
+      </a>
+      <a href="https://github.com/GammaLabTechnologies/harmonist" class="resource-card" target="_blank" rel="noopener">
+        <div class="resource-icon">🎯</div>
+        <div class="resource-info">
+          <h4>Harmonist</h4>
+          <p>Zero-dep agent orchestration</p>
+        </div>
+      </a>
+      <a href="https://github.com/espressif/esp-claw" class="resource-card" target="_blank" rel="noopener">
+        <div class="resource-icon">🔌</div>
+        <div class="resource-info">
+          <h4>ESP-Claw</h4>
+          <p>AI agents for IoT devices</p>
+        </div>
+      </a>
+      <a href="https://github.com/TheRealSeanDonahoe/ijfw" class="resource-card" target="_blank" rel="noopener">
+        <div class="resource-icon">🔗</div>
+        <div class="resource-info">
+          <h4>ijfw</h4>
+          <p>Shared memory for all AI coding agents</p>
+        </div>
+      </a>
+      <a href="https://github.com/yzhao062/agent-style" class="resource-card" target="_blank" rel="noopener">
+        <div class="resource-icon">✍️</div>
+        <div class="resource-info">
+          <h4>Agent Style</h4>
+          <p>21 rules for professional AI output</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      🤖 Generated by <a href="https://github.com/luokpX/pages" target="_blank" rel="noopener">Vera 🌹</a> ·
+      Powered by GitHub Search API ·
+      <a href="https://luokpx.github.io/pages/" target="_blank" rel="noopener">More Digests</a>
+    </p>
+    <p style="margin-top:8px;font-size:12px;">
+      © 2026 AI Builders Digest · Updated every Tuesday · Data sourced from public GitHub repositories
+    </p>
+  </footer>
+
+</div>
+
+</body>
+</html>
