@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>auth-service 统一认证与权限中心详细设计</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 15mm 14mm 16mm;
+    }
+
+    :root {
+      --ink: #10233d;
+      --muted: #64748b;
+      --line: #dbe7f0;
+      --blue: #2563eb;
+      --teal: #14b8a6;
+      --green: #16a34a;
+      --amber: #f59e0b;
+      --soft: #f7fbff;
+      --soft2: #eefaf6;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.58;
+      background: #f5f8fb;
+    }
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 3cm 32px;
+      background: #fff;
+      min-height: 100vh;
+    }
+    .cover {
+      padding: 24px 0 18px;
+    }
+    .cover-kicker {
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 8px 0 12px;
+      font-size: 34px;
+      line-height: 1.16;
+      font-weight: 900;
+      color: var(--ink);
+    }
+    .subtitle {
+      width: 82%;
+      color: #42566c;
+      font-size: 15px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .meta div, .callout, .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff, var(--soft));
+    }
+    .meta div {
+      padding: 11px 12px;
+      min-height: 54px;
+    }
+    .meta b {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .meta span {
+      display: block;
+      margin-top: 3px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .cover img.hero {
+      width: 100%;
+      border-radius: 24px;
+      margin: 24px 0 12px;
+      border: 1px solid #d4e4ee;
+    }
+    .icon-strip {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 18px;
+    }
+    .cover-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+    section { page-break-inside: avoid; }
+    h2 {
+      margin: 22px 0 10px;
+      padding-top: 6px;
+      font-size: 22px;
+      line-height: 1.25;
+      color: var(--ink);
+      border-top: 3px solid #e7f0f7;
+    }
+    h3 {
+      margin: 16px 0 8px;
+      font-size: 15.5px;
+      color: #19324c;
+    }
+    p { margin: 6px 0 9px; }
+    ul, ol { margin: 6px 0 10px 20px; padding: 0; }
+    li { margin: 2px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px;
+      font-size: 11.7px;
+      page-break-inside: avoid;
+    }
+    th {
+      background: linear-gradient(90deg, #eaf3ff, #e6f8f4);
+      color: #16314b;
+      font-weight: 800;
+      text-align: left;
+    }
+    th, td {
+      border: 1px solid #d9e6ef;
+      padding: 8px 9px;
+      vertical-align: top;
+    }
+    code {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.92em;
+      color: #0f5f87;
+      background: #eef7fb;
+      border-radius: 5px;
+      padding: 1px 4px;
+    }
+    pre {
+      margin: 10px 0 14px;
+      padding: 12px 14px;
+      color: #d9e9ff;
+      background: #10233d;
+      border-radius: 12px;
+      font-size: 10.8px;
+      line-height: 1.52;
+      white-space: pre-wrap;
+      page-break-inside: avoid;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 10px 0 14px;
+    }
+    .card {
+      padding: 12px 14px;
+      min-height: 92px;
+    }
+    .card h3 {
+      margin-top: 0;
+    }
+    .callout {
+      padding: 13px 15px;
+      border-left: 5px solid var(--teal);
+      margin: 10px 0 14px;
+    }
+    .diagram {
+      width: 100%;
+      margin: 10px 0 16px;
+      border-radius: 18px;
+      border: 1px solid #d7e5ee;
+      page-break-inside: avoid;
+    }
+    .tag {
+      display: inline-block;
+      margin: 0 5px 6px 0;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #0f5f87;
+      background: #e8f7f9;
+      border: 1px solid #c4e7ec;
+    }
+    .page-break { page-break-before: always; }
+    .small { color: var(--muted); font-size: 11.5px; }
+    .mermaid {
+      margin: 14px 0 18px;
+      padding: 10px;
+      border: 1px solid #d7e5ee;
+      border-radius: 12px;
+      background: #fff;
+      page-break-inside: avoid;
+      white-space: pre-wrap;
+    }
+    .architecture-image {
+      width: 100%;
+      margin: 8px 0 18px;
+      border: 1px solid #d7e5ee;
+      border-radius: 12px;
+    }
+    @media print {
+      body {
+        background: #fff;
+      }
+      main {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+      .cover {
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <article class="cover">
+      <div>
+        <div class="cover-kicker">Unified Identity & Authorization Service</div>
+        <h1>auth-service<br />统一认证与权限中心详细设计</h1>
+        <p class="subtitle">面向 `aihub` 与 `aipipeline` 等多个业务系统的统一用户、系统、成员、认证与鉴权体系设计，支持后续内网部署和公司统一认证平台接入。</p>
+        <div class="meta">
+          <div><b>版本</b><span>v0.1</span></div>
+          <div><b>日期</b><span>2026-04-29</span></div>
+          <div><b>部署形态</b><span>独立微服务</span></div>
+          <div><b>接入系统</b><span>aihub / aipipeline / newapi / ...</span></div>
+        </div>
+      </div>
+      <div class="cover-footer">
+        <span>auth-service/docs/auth-service-detailed-design.html</span>
+        <span>Internal Architecture Design</span>
+      </div>
+    </article>
+
+    <section>
+      <img class="architecture-image" src="auth-service-layered-app-architecture.png" alt="AI 平台系统群应用架构图" />
+    </section>
+
+    <section>
+      <h2>1. 背景与设计目标</h2>
+      <p>`aihub` 与 `aipipeline` 当前都包含用户、登录、JWT、系统成员和权限控制相关能力。两个系统的业务域不同，但身份域正在趋同，适合抽出统一的身份权限中心。</p>
+      <div class="grid">
+        <div class="card">
+          <h3>设计目标</h3>
+          <p>统一登录、用户、系统、成员、全局角色、系统角色和权限视图，支持 JWT 本地验签和后续公司统一认证平台接入。</p>
+        </div>
+        <div class="card">
+          <h3>非目标</h3>
+          <p>不接管 Skill/Prompt 审批、Nacos、流水线执行、模板 scope、节点状态等业务资源规则。</p>
+        </div>
+      </div>
+      <p><span class="tag">统一认证</span><span class="tag">统一鉴权</span><span class="tag">系统成员</span><span class="tag">SSO Ready</span><span class="tag">JWT / JWKS</span></p>
+    </section>
+
+    <section>
+      <h2>2. 总体架构</h2>
+      <div class="mermaid">
+flowchart LR
+    U["用户浏览器"]
+
+    subgraph GW["统一入口层"]
+        NGINX["内网网关 / Nginx / API Gateway"]
+    end
+
+    subgraph IAM["统一认证与权限中心 auth-service"]
+        IAM_FE["认证管理前端\n登录页 / 用户管理 / 系统成员管理"]
+        IAM_BE["认证权限后端\n登录 / Token / 用户 / 系统 / 成员 / 鉴权"]
+        IAM_DB[("auth_db\n用户 / 全局角色 / 系统 / 成员 / 外部身份映射")]
+    end
+
+    subgraph SSO["内网统一认证平台"]
+        CORP_AUTH["UIAS"]
+    end
+
+    subgraph AIHUB["aihub：AI 资源管理平台"]
+        AIHUB_FE["aihub-frontend\nVue3 / Element Plus"]
+        AIHUB_BE["aihub-backend\nSpring Boot API"]
+        AIHUB_DB[("aihub MySQL\n资源元数据 / 审批 / 审计 / 业务数据")]
+        NACOS["Nacos AI Registry\nSkills / MCP / Agents / Prompts"]
+    end
+
+    subgraph AIPIPE["aipipeline：AI 流水线平台"]
+        PIPE_FE["aipipeline-frontend\nReact / Zustand"]
+        PIPE_BE["aipipeline-backend\nSpring Boot API / Pipeline Engine"]
+        PIPE_DB[("aipipeline PostgreSQL\n流水线 / 模板 / 节点 / 执行历史")]
+        REDIS[("Redis\n状态 / 缓存 / 并发控制")]
+        MINIO[("MinIO\n执行资源 / 附件 / 产物")]
+        EXEC["Docker / Kubernetes Executor"]
+    end
+
+    subgraph OTHER["后续可接入系统"]
+        OTHER_FE["other-frontend"]
+        OTHER_BE["other-backend"]
+    end
+
+    U --> NGINX
+    NGINX -->|/auth| IAM_FE
+    NGINX -->|/auth/api| IAM_BE
+    NGINX -->|/aihub| AIHUB_FE
+    NGINX -->|/aihub/api| AIHUB_BE
+    NGINX -->|/pipeline| PIPE_FE
+    NGINX -->|/pipeline/api| PIPE_BE
+    NGINX -->|/pipeline/ws| PIPE_BE
+    NGINX -->|/other| OTHER_FE
+    NGINX -->|/other/api| OTHER_BE
+
+    IAM_FE --> IAM_BE
+    IAM_BE --> IAM_DB
+    IAM_BE -.统一认证接入.-> CORP_AUTH
+
+    AIHUB_FE -->|Bearer Token| AIHUB_BE
+    AIHUB_BE --> AIHUB_DB
+    AIHUB_BE --> NACOS
+    AIHUB_BE -.JWKS 验签 / 权限查询.-> IAM_BE
+
+    PIPE_FE -->|Bearer Token| PIPE_BE
+    PIPE_BE --> PIPE_DB
+    PIPE_BE --> REDIS
+    PIPE_BE --> MINIO
+    PIPE_BE --> EXEC
+    PIPE_BE -.JWKS 验签 / 权限查询.-> IAM_BE
+
+    OTHER_FE -->|Bearer Token| OTHER_BE
+    OTHER_BE -.JWKS 验签 / 权限查询.-> IAM_BE
+      </div>
+      <table>
+        <thead><tr><th>服务</th><th>主要职责</th></tr></thead>
+        <tbody>
+          <tr><td><code>auth-service</code></td><td>认证、Token、用户、全局角色、系统、系统成员、系统角色、权限视图、鉴权 API、外部身份映射。</td></tr>
+          <tr><td><code>aihub-backend</code></td><td>AI 资源、Nacos、审批、资源 owner、资源审计、模型广场、最佳实践。</td></tr>
+          <tr><td><code>aipipeline-backend</code></td><td>流水线、模板、节点、执行引擎、执行历史、MinIO/Redis/K8s 等运行时能力。</td></tr>
+          <tr><td>网关</td><td>统一入口、TLS 终止、静态资源转发、API 转发、内网访问控制。</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>核心边界：</strong>`auth-service` 判断“用户具备什么身份能力”；业务服务判断“这个具体业务资源当前能否操作”。</div>
+    </section>
+
+    <section class="page-break">
+      <h2>3. 服务职责边界</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>auth-service 负责</h3>
+          <ul>
+            <li>登录、登出、刷新 Token、JWKS 发布</li>
+            <li>用户资料、账号状态、外部身份映射</li>
+            <li>全局角色、系统、系统成员、系统角色</li>
+            <li>权限视图、鉴权 API、管理审计</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>业务服务保留</h3>
+          <ul>
+            <li>`aihub` 保留资源 owner、审批状态、Nacos namespace</li>
+            <li>`aipipeline` 保留 pipeline/template scope、执行状态、节点规则</li>
+            <li>业务数据库不被 `auth-service` 直接访问</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. 权限模型</h2>
+      <h3>双层角色</h3>
+      <table>
+        <thead><tr><th>层级</th><th>角色</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>全局角色</td><td><code>USER</code></td><td>普通平台用户，可登录并访问自己所属系统。</td></tr>
+          <tr><td>全局角色</td><td><code>ADMIN</code></td><td>平台管理员，可管理系统、成员、平台级配置和公开资源入口。</td></tr>
+          <tr><td>系统角色</td><td><code>MEMBER</code></td><td>系统普通成员，可查看和使用本系统资源。</td></tr>
+          <tr><td>系统角色</td><td><code>SYSTEM_ADMIN</code></td><td>系统管理员，可管理本系统成员和本系统配置。</td></tr>
+        </tbody>
+      </table>
+      <h3>综合权限矩阵</h3>
+      <table>
+        <thead><tr><th>场景</th><th>普通成员</th><th>系统管理员</th><th>平台管理员</th></tr></thead>
+        <tbody>
+          <tr><td>查看本系统资源</td><td>支持</td><td>支持</td><td>支持</td></tr>
+          <tr><td>查看其他系统私有资源</td><td>不支持</td><td>不支持</td><td>支持</td></tr>
+          <tr><td>使用 public 资源</td><td>支持</td><td>支持</td><td>支持</td></tr>
+          <tr><td>管理本系统成员</td><td>不支持</td><td>支持</td><td>支持</td></tr>
+          <tr><td>管理其他系统成员</td><td>不支持</td><td>不支持</td><td>支持</td></tr>
+          <tr><td>禁用系统</td><td>不支持</td><td>不支持</td><td>支持</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="page-break">
+      <h2>5. 登录与鉴权链路</h2>
+      <div class="mermaid">
+sequenceDiagram
+    participant User as 用户
+    participant GW as 网关
+    participant AuthFE as auth 前端
+    participant AuthBE as auth 后端
+    participant UIAS as 公司统一认证
+    participant AihubFE as aihub 前端
+    participant AihubBE as aihub 后端
+    participant PipeFE as aipipeline 前端
+    participant PipeBE as aipipeline 后端
+
+    User->>GW: 访问 aihub 或 aipipeline
+    GW->>AuthFE: 未登录，跳转统一登录页
+    AuthFE->>AuthBE: 发起登录
+    AuthBE->>UIAS: 后续接入公司统一认证
+    UIAS-->>AuthBE: 返回企业用户身份
+    AuthBE->>AuthBE: 创建或更新本地影子用户
+    AuthBE-->>AuthFE: 返回 Access Token / Refresh Token
+    AuthFE-->>User: 登录完成
+
+    User->>GW: 打开 aihub
+    GW->>AihubFE: 返回 aihub 前端
+    AihubFE->>AihubBE: 调用业务 API，携带 Bearer Token
+    AihubBE->>AuthBE: JWKS 验签或查询权限视图
+    AuthBE-->>AihubBE: 返回用户、系统、角色、权限
+    AihubBE-->>AihubFE: 返回资源数据
+
+    User->>GW: 打开 aipipeline
+    GW->>PipeFE: 返回 aipipeline 前端
+    PipeFE->>PipeBE: 调用流水线 API，携带 Bearer Token
+    PipeBE->>AuthBE: JWKS 验签或查询权限视图
+    AuthBE-->>PipeBE: 返回用户、系统、角色、权限
+    PipeBE-->>PipeFE: 返回流水线数据
+      </div>
+      <ol>
+        <li>用户访问 `aihub` 或 `aipipeline`，未登录时跳转 `auth-service`。</li>
+        <li>第一阶段使用本地账号；后续由 `auth-service` 对接公司统一认证平台。</li>
+        <li>认证成功后签发 Access Token 与 Refresh Token。</li>
+        <li>业务后端通过 JWKS 本地验签，必要时调用 `/api/authz/check`。</li>
+        <li>业务后端继续校验资源归属、scope、owner、审批状态、执行状态等本地规则。</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>6. Token 设计</h2>
+      <p>JWT 只放稳定且轻量的信息，不把完整系统成员列表塞进 Token。</p>
+      <pre>{
+  "iss": "http://auth-service.internal",
+  "sub": "u_001",
+  "username": "alice",
+  "globalRole": "USER",
+  "source": "SSO",
+  "aud": ["aihub", "aipipeline"],
+  "iat": 1710000000,
+  "exp": 1710001800
+}</pre>
+      <table>
+        <thead><tr><th>项目</th><th>建议</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>Access Token</td><td>30 分钟</td><td>业务 API 使用，短期有效。</td></tr>
+          <tr><td>Refresh Token</td><td>14 天</td><td>用于静默刷新，可服务端撤销。</td></tr>
+          <tr><td>JWKS Cache</td><td>5 到 15 分钟</td><td>业务后端缓存公钥。</td></tr>
+          <tr><td>Permission View Cache</td><td>1 到 5 分钟</td><td>用户系统角色视图缓存。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="page-break">
+      <h2>7. 核心数据模型</h2>
+      <table>
+        <thead><tr><th>表</th><th>关键字段</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>users</code></td><td>id, username, display_name, employee_id, email, source, status</td><td>统一用户主体。</td></tr>
+          <tr><td><code>global_roles</code></td><td>user_id, role, granted_by</td><td>平台级角色。</td></tr>
+          <tr><td><code>biz_systems</code></td><td>ipmp_system_num, name, status, created_by</td><td>系统上下文。</td></tr>
+          <tr><td><code>system_members</code></td><td>user_id, ipmp_system_num, role, status, joined_by</td><td>用户与系统的多对多关系。</td></tr>
+          <tr><td><code>external_identities</code></td><td>provider, external_subject, raw_profile_json</td><td>公司统一认证身份映射。</td></tr>
+          <tr><td><code>app_clients</code></td><td>client_id, redirect_uris, status</td><td>接入应用配置。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>8. API 设计</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>认证接口</h3>
+          <p><code>POST /api/auth/login</code><br /><code>POST /api/auth/logout</code><br /><code>POST /api/auth/refresh</code><br /><code>GET /.well-known/jwks.json</code></p>
+        </div>
+        <div class="card">
+          <h3>权限接口</h3>
+          <p><code>GET /api/authz/permission-view</code><br /><code>POST /api/authz/check</code><br /><code>POST /api/authz/batch-check</code></p>
+        </div>
+        <div class="card">
+          <h3>系统接口</h3>
+          <p><code>GET /api/systems</code><br /><code>POST /api/systems</code><br /><code>GET /api/systems/my</code><br /><code>PUT /api/systems/{id}/status</code></p>
+        </div>
+        <div class="card">
+          <h3>成员接口</h3>
+          <p><code>GET /api/systems/{id}/members</code><br /><code>POST /api/systems/{id}/members</code><br /><code>PUT /api/systems/{id}/members/{userId}/role</code></p>
+        </div>
+      </div>
+      <pre>{
+  "userId": "u_001",
+  "app": "aipipeline",
+  "ipmpSystemNum": "SYS001",
+  "resourceType": "PIPELINE_TEMPLATE",
+  "action": "UPDATE",
+  "resourceScope": "SYSTEM",
+  "resourceOwner": "alice"
+}</pre>
+    </section>
+
+    <section class="page-break">
+      <h2>9. 与 aihub / aipipeline 集成</h2>
+      <table>
+        <thead><tr><th>系统</th><th>改造点</th><th>保留本地规则</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>aihub</code></td>
+            <td>登录入口改为 `auth-service`；后端改为 JWKS 验签；用户搜索、系统列表、成员管理迁往 `auth-service`。</td>
+            <td>Skill/Prompt/MCP/Agent 的 owner、approval、namespace、resource scope。</td>
+          </tr>
+          <tr>
+            <td><code>aipipeline</code></td>
+            <td>登录入口改为 `auth-service`；`SysUser`、`BizSystem`、`SystemMember` 迁入或改为只读镜像。</td>
+            <td>Pipeline、Template、Node 的 `ipmpSystemNum`、scope、执行状态和资源状态。</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout">服务间调用使用 `client_credentials`、mTLS 或网关内网白名单；常用权限视图可缓存，敏感变更通过版本号或事件通知失效。</div>
+    </section>
+
+    <section>
+      <h2>10. 公司统一认证平台接入</h2>
+      <p>UIAS，在 `auth-service` 内部新增 provider adapter，业务系统无感知。</p>
+      <table>
+        <thead><tr><th>能力</th><th>设计</th></tr></thead>
+        <tbody>
+          <tr><td>影子用户</td><td>企业认证成功后，根据外部唯一标识查找或创建本地用户。</td></tr>
+          <tr><td>映射优先级</td><td>`provider + external_subject`，其次 employeeId、email，最后人工绑定。</td></tr>
+          <tr><td>默认权限</td><td>首次登录默认 `USER`，不自动授予 `SYSTEM_ADMIN`。</td></tr>
+          <tr><td>故障兜底</td><td>保留本地平台管理员账号，用于统一认证故障应急。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>11. 安全与部署</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>安全控制</h3>
+          <ul>
+            <li>Access Token 非对称签名，业务服务只持有公钥。</li>
+            <li>Refresh Token 服务端保存 hash，支持撤销。</li>
+            <li>管理员操作强制审计，记录 traceId 和 reason。</li>
+            <li>防止自删、自降级、最后系统管理员删除。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>部署建议</h3>
+          <ul>
+            <li>`auth-service` 后端无状态多副本部署。</li>
+            <li>`auth_db` 使用主备或托管高可用。</li>
+            <li>Redis 可用于权限视图缓存和 Token 黑名单。</li>
+            <li>密钥挂载或接入内部 KMS。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-break">
+      <h2>12. 迁移计划</h2>
+      <table>
+        <thead><tr><th>阶段</th><th>目标</th><th>关键动作</th></tr></thead>
+        <tbody>
+          <tr><td>一</td><td>统一模型和文档</td><td>建立工程，固化用户、系统、成员、角色、接口设计。</td></tr>
+          <tr><td>二</td><td>抽只读权限中心</td><td>导入用户、系统、成员数据，业务系统开始读取权限视图。</td></tr>
+          <tr><td>三</td><td>统一登录入口</td><td>前端跳转统一登录页，业务后端改为 JWKS 验签。</td></tr>
+          <tr><td>四</td><td>接入公司统一认证</td><td>新增 provider adapter，建立外部身份映射。</td></tr>
+          <tr><td>五</td><td>收敛本地用户表</td><td>业务系统用户表改为只读缓存、审计冗余字段，或完全移除。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>13. 测试与验收</h2>
+      <table>
+        <thead><tr><th>类别</th><th>验收点</th></tr></thead>
+        <tbody>
+          <tr><td>认证</td><td>登录、刷新、登出、Token 撤销、JWKS key rotation。</td></tr>
+          <tr><td>权限</td><td>普通成员、系统管理员、平台管理员权限符合矩阵。</td></tr>
+          <tr><td>集成</td><td>`aihub` 与 `aipipeline` 携带同一 Token 调用业务 API。</td></tr>
+          <tr><td>变更</td><td>用户禁用、角色调整、成员移除后权限视图按预期失效。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>14. 风险与应对</h2>
+      <table>
+        <thead><tr><th>风险</th><th>应对</th></tr></thead>
+        <tbody>
+          <tr><td>权限中心不可用影响业务</td><td>JWT 本地验签、权限视图短期缓存、只在敏感操作回源。</td></tr>
+          <tr><td>角色变更生效延迟</td><td>权限版本号、缓存短 TTL、变更事件通知。</td></tr>
+          <tr><td>历史用户数据不一致</td><td>先做数据盘点和映射表，迁移时保留 username 与 external subject。</td></tr>
+          <tr><td>公司统一认证字段不稳定</td><td>通过 `external_identities` 做 provider 适配，不把外部字段散落业务系统。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>15. 设计结论</h2>
+      <p>`auth-service` 应作为统一身份权限中心独立部署。它集中管理用户、系统、成员、角色、Token、权限视图和公司统一认证接入；`aihub` 与 `aipipeline` 保留各自业务资源和资源状态校验。</p>
+      <p>这条边界既能解决重复用户权限体系的问题，又能避免把业务规则全部堆进认证中心。后续接入公司统一认证平台时，只需要改造 `auth-service` 的认证适配层，两个业务系统基本保持稳定。</p>
+    </section>
+  </main>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
+    mermaid.initialize({ startOnLoad: true })
+  </script>
+</body>
+</html>
