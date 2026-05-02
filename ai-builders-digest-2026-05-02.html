@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — May 2, 2026</title>
+<style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a0a1a;
+    --card-bg: #111133;
+    --card-hover: #181845;
+    --accent: #6c5ce7;
+    --accent2: #a29bfe;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --border: #1e1e4a;
+    --tag-bg: #1a1a40;
+    --tag-text: #a29bfe;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+    --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --gradient-6: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(108, 92, 231, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(240, 147, 251, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(79, 172, 254, 0.1) 0%, transparent 50%);
+    z-index: 0; pointer-events: none;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; position: relative; z-index: 1; }
+
+  .header { text-align: center; padding: 60px 20px 40px; position: relative; }
+  .header-badge {
+    display: inline-block; background: var(--gradient-1); color: white;
+    padding: 6px 18px; border-radius: 20px; font-size: 13px;
+    font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: clamp(28px, 5vw, 48px); font-weight: 800;
+    background: linear-gradient(135deg, #a29bfe, #6c5ce7, #4facfe);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 10px;
+  }
+  .header .subtitle { color: var(--muted); font-size: 16px; font-weight: 400; }
+  .header .edition { color: var(--accent2); font-weight: 600; }
+  .header .sourced { margin-top: 8px; font-size: 13px; color: var(--muted); }
+
+  .stats-bar {
+    display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+    padding: 30px 0; border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border); margin-bottom: 40px;
+  }
+  .stat-item { text-align: center; }
+  .stat-value {
+    font-size: 28px; font-weight: 700; background: var(--gradient-1);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .section-title {
+    font-size: 14px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--accent2); margin-bottom: 24px; font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::before {
+    content: ''; display: block; width: 4px; height: 18px;
+    background: var(--gradient-1); border-radius: 2px;
+  }
+
+  .featured-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px; margin-bottom: 50px;
+  }
+
+  .card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px; transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+  }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gradient-1); opacity: 0; transition: opacity 0.3s ease;
+  }
+  .card:hover {
+    background: var(--card-hover); transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(108, 92, 231, 0.2); border-color: var(--accent);
+  }
+  .card:hover::before { opacity: 1; }
+  .card.featured { border-color: var(--accent); }
+  .card.featured::before { opacity: 1; background: var(--gradient-3); }
+  .card.hot::before { opacity: 1; background: var(--gradient-2); }
+  .card.rising::before { opacity: 1; background: var(--gradient-4); }
+
+  .card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .card-avatar {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--gradient-1);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px; flex-shrink: 0; overflow: hidden;
+  }
+  .card-avatar img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
+  .card-author { font-size: 14px; font-weight: 600; color: var(--text); }
+  .card-author span { color: var(--muted); font-weight: 400; font-size: 12px; display: block; }
+
+  .card-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: var(--text); line-height: 1.4; word-break: break-word; }
+  .card-title a { color: inherit; text-decoration: none; transition: color 0.2s; }
+  .card-title a:hover { color: var(--accent2); }
+
+  .card-desc { font-size: 14px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
+  .card-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .card-stat {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 13px; color: var(--muted); font-family: 'JetBrains Mono', monospace;
+  }
+  .card-stat .icon { font-size: 15px; }
+  .card-stat.stars { color: var(--gold); }
+  .card-stat.forks { color: var(--silver); }
+  .card-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg); color: var(--tag-text);
+    padding: 4px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 500; transition: all 0.2s;
+  }
+  .tag:hover { background: var(--accent); color: white; }
+
+  .key-points {
+    background: rgba(108, 92, 231, 0.1); border: 1px solid rgba(108, 92, 231, 0.3);
+    border-radius: 12px; padding: 16px 20px; margin-top: 16px;
+  }
+  .key-points-title {
+    font-size: 12px; font-weight: 700; color: var(--accent2);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+  }
+  .key-points ul { list-style: none; padding: 0; }
+  .key-points li {
+    font-size: 13px; color: var(--text); padding: 4px 0; padding-left: 18px; position: relative;
+  }
+  .key-points li::before { content: '▸'; position: absolute; left: 0; color: var(--accent2); }
+
+  blockquote {
+    background: linear-gradient(135deg, rgba(162, 155, 254, 0.1), rgba(108, 92, 231, 0.05));
+    border-left: 3px solid var(--accent2);
+    padding: 14px 18px; margin: 16px 0;
+    border-radius: 0 10px 10px 0;
+    font-style: italic; color: var(--accent2); font-size: 14px;
+  }
+  blockquote::before {
+    content: '"'; font-size: 24px; color: var(--accent);
+    font-weight: 700; font-style: normal; line-height: 0;
+    vertical-align: middle; margin-right: 4px;
+  }
+
+  .resources-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px; margin-bottom: 50px;
+  }
+  .resource-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px; transition: all 0.3s ease;
+    text-decoration: none; display: flex; align-items: center; gap: 16px;
+  }
+  .resource-card:hover { background: var(--card-hover); border-color: var(--accent); transform: translateY(-2px); }
+  .resource-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--gradient-1); display: flex; align-items: center;
+    justify-content: center; font-size: 20px; flex-shrink: 0;
+  }
+  .resource-info h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .resource-info p { font-size: 12px; color: var(--muted); }
+
+  .trend-tags {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 50px; justify-content: center;
+  }
+  .trend-tag {
+    padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 600;
+    border: 1px solid var(--border); background: var(--card-bg); color: var(--muted);
+    transition: all 0.3s ease;
+  }
+  .trend-tag:hover { border-color: var(--accent); color: var(--accent2); background: rgba(108, 92, 231, 0.1); }
+  .trend-tag.hot { background: rgba(245, 87, 108, 0.15); border-color: #f5576c; color: #f5576c; }
+  .trend-tag.rising { background: rgba(79, 172, 254, 0.15); border-color: #4facfe; color: #4facfe; }
+
+  .rank-badge {
+    position: absolute; top: 12px; right: 12px;
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: white; background: var(--gradient-1);
+  }
+  .rank-badge.top1 { background: var(--gradient-2); }
+  .rank-badge.top2 { background: var(--gradient-3); }
+  .rank-badge.top3 { background: var(--gradient-5); }
+
+  .footer {
+    text-align: center; padding: 40px 20px;
+    border-top: 1px solid var(--border); color: var(--muted); font-size: 13px;
+  }
+  .footer a { color: var(--accent2); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    .container { padding: 20px 16px; }
+    .header { padding: 40px 16px 30px; }
+    .stats-bar { gap: 20px; }
+    .featured-grid { grid-template-columns: 1fr; }
+    .resources-grid { grid-template-columns: 1fr; }
+  }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="header">
+  <div class="header-badge">🤖 AI Builders Digest</div>
+  <h1>The Agent Landscape Is Fragmenting</h1>
+  <p class="subtitle">
+    <span class="edition">Edition #24</span> · May 2, 2026 · Week 18
+  </p>
+  <p class="sourced">
+    Sourced from GitHub Search API · AI Agent, MCP &amp; LLM Topics · Fresh Data as of May 2, 2026
+  </p>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-value">1,343,099 ⭐</div>
+    <div class="stat-label">Combined Stars</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">186,399 ⭐</div>
+    <div class="stat-label">Top Repo Stars</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">10</div>
+    <div class="stat-label">Projects Featured</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">214,000+</div>
+    <div class="stat-label">Total Forks</div>
+  </div>
+</div>
+
+<section class="featured-section">
+<div class="section-title">🔥 Top AI Builder Projects</div>
+<div class="featured-grid">
+
+<!-- #1 n8n -->
+<div class="card featured">
+<div class="rank-badge top1">#1</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/n8n-io" alt="n8n" loading="lazy"></div>
+<div class="card-author">n8n-io<span>@n8n-io · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/n8n-io/n8n" target="_blank" rel="noopener">n8n-io/n8n</a></div>
+<div class="card-desc">Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 186,399</span>
+<span class="card-stat forks">🍴 ~57,000</span>
+<span class="card-stat">📝 TypeScript</span>
+</div>
+<div class="card-tags">
+<span class="tag">ai-workflows</span>
+<span class="tag">automation</span>
+<span class="tag">low-code</span>
+<span class="tag">self-hosted</span>
+<span class="tag">fair-code</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>186k stars — undisputed open-source workflow automation leader</li>
+<li>Native AI agent capabilities embedded in visual workflow builder</li>
+<li>400+ integrations spanning SaaS, APIs, databases, and AI services</li>
+<li>Enterprise self-hosting: the fair-code model that actually works</li>
+</ul></div>
+<blockquote>The workflow wars have a clear winner. n8n isn't just automating — it's becoming infrastructure.</blockquote>
+</div>
+
+<!-- #2 NousResearch/hermes-agent -->
+<div class="card hot">
+<div class="rank-badge top2">#2</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/NousResearch" alt="NousResearch" loading="lazy"></div>
+<div class="card-author">NousResearch<span>@NousResearch · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">NousResearch/hermes-agent</a></div>
+<div class="card-desc">The agent that grows with you.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 128,256</span>
+<span class="card-stat forks">🍴 ~19,000</span>
+<span class="card-stat">📝 Python</span>
+</div>
+<div class="card-tags">
+<span class="tag">agent</span>
+<span class="tag">personal-ai</span>
+<span class="tag">nous-research</span>
+<span class="tag">adaptive</span>
+<span class="tag">growth</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>128k stars — the breakout AI agent of 2026, launched July 2025</li>
+<li>"Grows with you" — adaptive learning and personalization at the core</li>
+<li>From Nous Research, the team behind Hermes models and fine-tuning innovation</li>
+<li>Represents the shift from static agents to living, evolving AI companions</li>
+</ul></div>
+<blockquote>128k stars in under a year. Hermes-agent proves the next frontier isn't bigger models — it's agents that learn who you are.</blockquote>
+</div>
+
+<!-- #3 everything-claude-code -->
+<div class="card rising">
+<div class="rank-badge top3">#3</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/affaan-m" alt="affaan-m" loading="lazy"></div>
+<div class="card-author">affaan-m<span>@affaan-m</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/affaan-m/everything-claude-code" target="_blank" rel="noopener">affaan-m/everything-claude-code</a></div>
+<div class="card-desc">The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 171,519</span>
+<span class="card-stat forks">🍴 ~26,600</span>
+<span class="card-stat">📝 JavaScript</span>
+</div>
+<div class="card-tags">
+<span class="tag">agent-harness</span>
+<span class="tag">claude-code</span>
+<span class="tag">skills</span>
+<span class="tag">codex</span>
+<span class="tag">developer-tools</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>172k stars — the agent harness ecosystem hits critical mass</li>
+<li>Skills, instincts, memory, security — the universal toolkit pattern</li>
+<li>Cross-platform: Claude Code, Codex, Opencode, Cursor and beyond</li>
+<li>+562 stars in 24 hours — the growth isn't slowing down</li>
+</ul></div>
+<blockquote>The agent harness is now the dominant paradigm in AI development. 172k devs are building on it, not around it.</blockquote>
+</div>
+
+<!-- #4 ollama -->
+<div class="card ">
+<div class="rank-badge ">#4</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/ollama" alt="ollama" loading="lazy"></div>
+<div class="card-author">ollama<span>@ollama · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/ollama/ollama" target="_blank" rel="noopener">ollama/ollama</a></div>
+<div class="card-desc">Get up and running with Kimi-K2.5, GLM-5, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 170,507</span>
+<span class="card-stat forks">🍴 ~15,900</span>
+<span class="card-stat">📝 Go</span>
+</div>
+<div class="card-tags">
+<span class="tag">local-llm</span>
+<span class="tag">model-runner</span>
+<span class="tag">kimi</span>
+<span class="tag">deepseek</span>
+<span class="tag">open-source</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>171k stars — the universal local model runner is now bigger than ever</li>
+<li>First-class support for Chinese frontier models: Kimi-K2.5, GLM-5, MiniMax</li>
+<li>The bridge between cutting-edge research models and everyday developers</li>
+<li>GPU optional — runs on everything from MacBooks to servers</li>
+</ul></div>
+<blockquote>Ollama at 171k stars proves local AI isn't a niche — it's the mainstream. Every model, any hardware, one command.</blockquote>
+</div>
+
+<!-- #5 Dify -->
+<div class="card ">
+<div class="rank-badge ">#5</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/langgenius" alt="langgenius" loading="lazy"></div>
+<div class="card-author">langgenius<span>@langgenius · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/langgenius/dify" target="_blank" rel="noopener">langgenius/dify</a></div>
+<div class="card-desc">Production-ready platform for agentic workflow development.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 139,831</span>
+<span class="card-stat forks">🍴 ~21,900</span>
+<span class="card-stat">📝 TypeScript</span>
+</div>
+<div class="card-tags">
+<span class="tag">agentic-ai</span>
+<span class="tag">llm</span>
+<span class="tag">workflow</span>
+<span class="tag">rag</span>
+<span class="tag">production</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>140k stars — the production-ready standard for agentic workflows</li>
+<li>Visual workflow builder with RAG, multi-model, and enterprise features</li>
+<li>SSO, access control, monitoring — actually deployable in real companies</li>
+<li>The bridge between LLM experimentation and production deployment</li>
+</ul></div>
+<blockquote>Dify at 140k stars: proof that "production-ready" isn't just marketing — it's what the market actually wants.</blockquote>
+</div>
+
+<!-- #6 Open WebUI -->
+<div class="card ">
+<div class="rank-badge ">#6</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/open-webui" alt="open-webui" loading="lazy"></div>
+<div class="card-author">open-webui<span>@open-webui · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/open-webui/open-webui" target="_blank" rel="noopener">open-webui/open-webui</a></div>
+<div class="card-desc">User-friendly AI Interface (Supports Ollama, OpenAI API, ...)</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 135,122</span>
+<span class="card-stat forks">🍴 ~19,200</span>
+<span class="card-stat">📝 Python</span>
+</div>
+<div class="card-tags">
+<span class="tag">chatgpt</span>
+<span class="tag">ollama</span>
+<span class="tag">llm</span>
+<span class="tag">self-hosted</span>
+<span class="tag">ui</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>135k stars — the definitive self-hosted AI chat interface</li>
+<li>Universal backend: Ollama, OpenAI, Anthropic, any OpenAI-compatible API</li>
+<li>Full RAG, web search, multi-user, RBAC, plugin architecture</li>
+<li>The UI that made local LLMs feel like a product, not a project</li>
+</ul></div>
+<blockquote>135k stars for a chat UI. The interface layer is where the real AI product opportunity lives.</blockquote>
+</div>
+
+<!-- #7 LangChain -->
+<div class="card ">
+<div class="rank-badge ">#7</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/langchain-ai" alt="langchain-ai" loading="lazy"></div>
+<div class="card-author">langchain-ai<span>@langchain-ai · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/langchain-ai/langchain" target="_blank" rel="noopener">langchain-ai/langchain</a></div>
+<div class="card-desc">The agent engineering platform.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 135,598</span>
+<span class="card-stat forks">🍴 ~22,400</span>
+<span class="card-stat">📝 Python</span>
+</div>
+<div class="card-tags">
+<span class="tag">agent-framework</span>
+<span class="tag">llm</span>
+<span class="tag">orchestration</span>
+<span class="tag">python</span>
+<span class="tag">engineering</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>136k stars — the OG agent framework, still dominant after 3+ years</li>
+<li>Rebranded as "agent engineering platform" — from chains to full agents</li>
+<li>LangChain + LangGraph + LangSmith: the enterprise agent stack</li>
+<li>The ecosystem that defined how the world thinks about AI agents</li>
+</ul></div>
+<blockquote>LangChain at 136k stars: the framework that taught the world how to build agents, now becoming the platform to run them.</blockquote>
+</div>
+
+<!-- #8 Firecrawl -->
+<div class="card ">
+<div class="rank-badge ">#8</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/firecrawl" alt="firecrawl" loading="lazy"></div>
+<div class="card-author">firecrawl<span>@firecrawl · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/firecrawl/firecrawl" target="_blank" rel="noopener">firecrawl/firecrawl</a></div>
+<div class="card-desc">🔥 The API to search, scrape, and interact with the web for AI</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 113,865</span>
+<span class="card-stat forks">🍴 ~7,200</span>
+<span class="card-stat">📝 TypeScript</span>
+</div>
+<div class="card-tags">
+<span class="tag">web-scraping</span>
+<span class="tag">ai-tools</span>
+<span class="tag">search-api</span>
+<span class="tag">rag</span>
+<span class="tag">data</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>114k stars — the API that connects AI agents to the live web</li>
+<li>Search, scrape, and extract structured data from any website</li>
+<li>Critical RAG infrastructure: turning the web into LLM-readable data</li>
+<li>The internet is AI's training data — Firecrawl is the pipeline</li>
+</ul></div>
+<blockquote>114k stars for web scraping. When AI agents need eyes on the internet, Firecrawl is the retina.</blockquote>
+</div>
+
+<!-- #9 Awesome MCP Servers -->
+<div class="card ">
+<div class="rank-badge ">#9</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/punkpeye" alt="punkpeye" loading="lazy"></div>
+<div class="card-author">punkpeye<span>@punkpeye</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">punkpeye/awesome-mcp-servers</a></div>
+<div class="card-desc">A collection of MCP servers.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 86,079</span>
+<span class="card-stat forks">🍴 ~9,700</span>
+<span class="card-stat">📝 Markdown</span>
+</div>
+<div class="card-tags">
+<span class="tag">mcp</span>
+<span class="tag">awesome-list</span>
+<span class="tag">tools</span>
+<span class="tag">ai-agents</span>
+<span class="tag">protocol</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>86k stars — the Model Context Protocol has its canonical directory</li>
+<li>Covers every domain: databases, APIs, filesystems, browsers, IoT</li>
+<li>MCP is becoming the universal agent-to-tool interface standard</li>
+<li>The ecosystem grows daily — new servers, new capabilities, new possibilities</li>
+</ul></div>
+<blockquote>86k stars for a curated list. The MCP ecosystem is so vast it needs its own yellow pages — and this is it.</blockquote>
+</div>
+
+<!-- #10 LobeHub -->
+<div class="card ">
+<div class="rank-badge ">#10</div>
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/lobehub" alt="lobehub" loading="lazy"></div>
+<div class="card-author">lobehub<span>@lobehub · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/lobehub/lobehub" target="_blank" rel="noopener">lobehub/lobehub</a></div>
+<div class="card-desc">The ultimate space for work and life — to find, build, and collaborate with agent teammates that grow with you. Multi-agent collaboration, effortless agent team design, agents as the unit of work interaction.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 75,923</span>
+<span class="card-stat forks">🍴 ~15,000</span>
+<span class="card-stat">📝 TypeScript</span>
+</div>
+<div class="card-tags">
+<span class="tag">multi-agent</span>
+<span class="tag">collaboration</span>
+<span class="tag">agent-teams</span>
+<span class="tag">llm</span>
+<span class="tag">platform</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>76k stars — reimagining work with AI agents as teammates, not tools</li>
+<li>Multi-agent collaboration: design agent teams, build together</li>
+<li>Agents as the unit of work interaction — a paradigm shift in productivity</li>
+<li>Growing ecosystem of community-built agent teammates</li>
+</ul></div>
+<blockquote>LobeHub isn't building tools — it's building the agent teammate marketplace. The future of work is collaborative AI.</blockquote>
+</div>
+
+</div>
+</section>
+
+<section class="featured-section">
+<div class="section-title">🌟 Rising Stars to Watch</div>
+<div class="featured-grid">
+
+<!-- Rising 1: learn-claude-code -->
+<div class="card ">
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/shareAI-lab" alt="shareAI-lab" loading="lazy"></div>
+<div class="card-author">shareAI-lab<span>@shareAI-lab · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank" rel="noopener">shareAI-lab/learn-claude-code</a></div>
+<div class="card-desc">Bash is all you need — A nano claude code–like agent harness, built from 0 to 1</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 57,732</span>
+<span class="card-stat forks">🍴 ~9,500</span>
+<span class="card-stat">📝 TypeScript</span>
+</div>
+<div class="card-tags">
+<span class="tag">agent-harness</span>
+<span class="tag">claude-code</span>
+<span class="tag">bash</span>
+<span class="tag">nano</span>
+<span class="tag">from-scratch</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>58k stars — the "from scratch" agent harness everyone's studying</li>
+<li>Built 0→1: educational goldmine for understanding agent architecture</li>
+<li>Nano-sized but full-featured: proving agent harnesses don't need bloat</li>
+<li>The "Build Your Own Claude Code" movement has a textbook</li>
+</ul></div>
+</div>
+
+<!-- Rising 2: cherry-studio -->
+<div class="card ">
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/CherryHQ" alt="CherryHQ" loading="lazy"></div>
+<div class="card-author">CherryHQ<span>@CherryHQ · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/CherryHQ/cherry-studio" target="_blank" rel="noopener">CherryHQ/cherry-studio</a></div>
+<div class="card-desc">AI productivity studio with smart chat, autonomous agents, and 300+ assistants. Unified access to frontier LLMs</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 44,863</span>
+<span class="card-stat forks">🍴 ~4,300</span>
+<span class="card-stat">📝 TypeScript</span>
+</div>
+<div class="card-tags">
+<span class="tag">productivity</span>
+<span class="tag">agents</span>
+<span class="tag">chat</span>
+<span class="tag">assistants</span>
+<span class="tag">multi-model</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>45k stars — the AI productivity studio with 300+ built-in assistants</li>
+<li>Unified access to all frontier LLMs through a single interface</li>
+<li>Autonomous agents + smart chat = the complete productivity suite</li>
+<li>The "everything in one place" AI experience done right</li>
+</ul></div>
+</div>
+
+<!-- Rising 3: CowAgent -->
+<div class="card ">
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/zhayujie" alt="zhayujie" loading="lazy"></div>
+<div class="card-author">zhayujie<span>@zhayujie</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/zhayujie/CowAgent" target="_blank" rel="noopener">zhayujie/CowAgent</a></div>
+<div class="card-desc">Super AI assistant with proactive thinking, task planning, OS access, Skills, long-term memory. Supports WeChat, Feishu, DingTalk, QQ, Web and more. Multi-model: DeepSeek/OpenAI/Claude/Gemini.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 43,946</span>
+<span class="card-stat forks">🍴 ~10,000</span>
+<span class="card-stat">📝 Python</span>
+</div>
+<div class="card-tags">
+<span class="tag">ai-assistant</span>
+<span class="tag">wechat</span>
+<span class="tag">feishu</span>
+<span class="tag">multi-model</span>
+<span class="tag">skills</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>44k stars — the super AI assistant that lives where you do</li>
+<li>WeChat, Feishu, DingTalk, QQ, Web — every Chinese platform covered</li>
+<li>Proactive thinking + Skills + long-term memory = a real digital employee</li>
+<li>Lighter than OpenClaw, faster to deploy — the pragmatic agent choice</li>
+</ul></div>
+</div>
+
+<!-- Rising 4: career-ops -->
+<div class="card ">
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/santifer" alt="santifer" loading="lazy"></div>
+<div class="card-author">santifer<span>@santifer</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/santifer/career-ops" target="_blank" rel="noopener">santifer/career-ops</a></div>
+<div class="card-desc">AI-powered job search system built on Claude Code. 14 skill modes, Go dashboard, PDF generation, batch processing.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 41,614</span>
+<span class="card-stat forks">🍴 ~8,600</span>
+<span class="card-stat">📝 JavaScript</span>
+</div>
+<div class="card-tags">
+<span class="tag">job-search</span>
+<span class="tag">claude-code</span>
+<span class="tag">career</span>
+<span class="tag">skills</span>
+<span class="tag">automation</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>42k stars in just 1 month — the fastest-growing agent application of Q2 2026</li>
+<li>14 specialized skill modes for every stage of job hunting</li>
+<li>Go dashboard + PDF generation + batch processing = production-grade</li>
+<li>Proof that Claude Code agents can solve real-world vertical problems</li>
+</ul></div>
+</div>
+
+<!-- Rising 5: nanobot -->
+<div class="card ">
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/HKUDS" alt="HKUDS" loading="lazy"></div>
+<div class="card-author">HKUDS<span>@HKUDS · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/HKUDS/nanobot" target="_blank" rel="noopener">HKUDS/nanobot</a></div>
+<div class="card-desc">🐈 nanobot: The Ultra-Lightweight Personal AI Agent</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 41,468</span>
+<span class="card-stat forks">🍴 ~7,300</span>
+<span class="card-stat">📝 Python</span>
+</div>
+<div class="card-tags">
+<span class="tag">lightweight</span>
+<span class="tag">personal-agent</span>
+<span class="tag">university</span>
+<span class="tag">research</span>
+<span class="tag">python</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>41k stars — HKU's ultra-lightweight agent challenging the heavyweights</li>
+<li>From HKU Data Science Lab: academic rigor meets practical engineering</li>
+<li>Proves that "lightweight" doesn't mean "limited" — nano but mighty</li>
+<li>The anti-bloat agent: do one thing, do it well, stay tiny</li>
+</ul></div>
+</div>
+
+<!-- Rising 6: CopilotKit -->
+<div class="card ">
+<div class="card-header">
+<div class="card-avatar"><img src="https://avatars.githubusercontent.com/CopilotKit" alt="CopilotKit" loading="lazy"></div>
+<div class="card-author">CopilotKit<span>@CopilotKit · Org</span></div>
+</div>
+<div class="card-title"><a href="https://github.com/CopilotKit/CopilotKit" target="_blank" rel="noopener">CopilotKit/CopilotKit</a></div>
+<div class="card-desc">The Frontend Stack for Agents & Generative UI. React + Angular. Makers of the AG-UI Protocol.</div>
+<div class="card-stats">
+<span class="card-stat stars">⭐ 30,567</span>
+<span class="card-stat forks">🍴 ~3,900</span>
+<span class="card-stat">📝 TypeScript</span>
+</div>
+<div class="card-tags">
+<span class="tag">generative-ui</span>
+<span class="tag">react</span>
+<span class="tag">agents</span>
+<span class="tag">ag-ui</span>
+<span class="tag">frontend</span>
+</div>
+<div class="key-points">
+<div class="key-points-title">💡 Key Points</div><ul>
+<li>31k stars — the frontend framework for the agent era</li>
+<li>AG-UI Protocol: a standard for agents to generate dynamic interfaces</li>
+<li>React + Angular: meeting developers where they already are</li>
+<li>The missing piece: how AI agents actually render their output</li>
+</ul></div>
+</div>
+
+</div>
+</section>
+
+<section>
+<div class="section-title">🏷️ Trending Topics This Week</div>
+<div class="trend-tags">
+<span class="trend-tag hot">agent-harness</span>
+<span class="trend-tag hot">personal-agents</span>
+<span class="trend-tag hot">local-ai</span>
+<span class="trend-tag rising">multi-agent</span>
+<span class="trend-tag rising">agent-fragmentation</span>
+<span class="trend-tag rising">mcp</span>
+<span class="trend-tag ">workflow-automation</span>
+<span class="trend-tag ">web-access</span>
+<span class="trend-tag ">skills-ecosystem</span>
+<span class="trend-tag ">lightweight-agents</span>
+<span class="trend-tag ">generative-ui</span>
+<span class="trend-tag ">agent-teams</span>
+</div>
+</section>
+
+<section>
+<div class="section-title">🗺️ Ecosystem Resources</div>
+<div class="resources-grid">
+<a class="resource-card" href="https://github.com/trending?since=weekly" target="_blank" rel="noopener">
+  <div class="resource-icon">📈</div>
+  <div class="resource-info"><h4>GitHub Trending Weekly</h4><p>See what the community is most excited about right now</p></div>
+</a>
+<a class="resource-card" href="https://github.com/topics/ai-agent" target="_blank" rel="noopener">
+  <div class="resource-icon">🔗</div>
+  <div class="resource-info"><h4>GitHub AI Agent Topic</h4><p>Explore all AI agent repositories on GitHub</p></div>
+</a>
+<a class="resource-card" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">
+  <div class="resource-icon">🧠</div>
+  <div class="resource-info"><h4>Hermes Agent</h4><p>The agent that grows with you (128k ⭐)</p></div>
+</a>
+<a class="resource-card" href="https://github.com/ollama/ollama" target="_blank" rel="noopener">
+  <div class="resource-icon">💻</div>
+  <div class="resource-info"><h4>Ollama</h4><p>Run any model locally — no GPU needed (171k ⭐)</p></div>
+</a>
+<a class="resource-card" href="https://github.com/firecrawl/firecrawl" target="_blank" rel="noopener">
+  <div class="resource-icon">🕸️</div>
+  <div class="resource-info"><h4>Firecrawl</h4><p>Web search &amp; scraping API for AI agents (114k ⭐)</p></div>
+</a>
+<a class="resource-card" href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank" rel="noopener">
+  <div class="resource-icon">🛠️</div>
+  <div class="resource-info"><h4>Awesome MCP Servers</h4><p>The definitive MCP server directory (86k ⭐)</p></div>
+</a>
+</div>
+</section>
+
+<section class="featured-section">
+<div class="section-title">📊 The Story This Week</div>
+<div style="background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:30px;">
+  <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:16px;">
+    <strong style="color:var(--accent2);">The agent landscape is fragmenting — and that's a good thing.</strong>
+    The dominance of a single agent harness pattern is giving way to specialization.
+    <code style="background:var(--tag-bg);padding:2px 8px;border-radius:4px;color:var(--accent2);">hermes-agent</code> at <strong style="color:var(--text);">128k stars</strong>
+    represents the "adaptive personal agent," while
+    <code style="background:var(--tag-bg);padding:2px 8px;border-radius:4px;color:var(--accent2);">nanobot</code> at <strong style="color:var(--text);">41k stars</strong>
+    champions the "ultra-lightweight" philosophy. One size no longer fits all — and the ecosystem is richer for it.
+  </p>
+  <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:16px;">
+    <strong style="color:var(--accent2);">Local AI has gone fully mainstream.</strong>
+    <code style="background:var(--tag-bg);padding:2px 8px;border-radius:4px;color:var(--accent2);">ollama</code> at <strong style="color:var(--text);">171k stars</strong>
+    and <code style="background:var(--tag-bg);padding:2px 8px;border-radius:4px;color:var(--accent2);">open-webui</code> at <strong style="color:var(--text);">135k stars</strong>
+    together represent over <strong style="color:var(--text);">305k stars</strong> — the local AI stack has become the default starting point
+    for developers worldwide. Chinese frontier models (Kimi K2.5, GLM-5) are first-class citizens in this ecosystem.
+  </p>
+  <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:16px;">
+    <strong style="color:var(--accent2);">Web access is now critical agent infrastructure.</strong>
+    <code style="background:var(--tag-bg);padding:2px 8px;border-radius:4px;color:var(--accent2);">firecrawl</code> at <strong style="color:var(--text);">114k stars</strong>
+    proves that AI agents need eyes on the internet. The ability to search, scrape, and extract structured data from the live web
+    is no longer optional — it's table stakes for any serious AI agent. RAG without web access is already obsolete.
+  </p>
+  <p style="color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:16px;">
+    <strong style="color:var(--accent2);">Vertical agent applications are the breakout category.</strong>
+    <code style="background:var(--tag-bg);padding:2px 8px;border-radius:4px;color:var(--accent2);">career-ops</code> hitting <strong style="color:var(--text);">42k stars in one month</strong>
+    signals that the next wave isn't about building better agent frameworks — it's about building better agent applications.
+    Job search, productivity, workspace automation — the verticalization of AI agents has begun.
+  </p>
+  <p style="color:var(--muted);font-size:14px;line-height:1.9;">
+    <strong style="color:var(--accent2);">The Chinese AI builder ecosystem is thriving.</strong>
+    <code style="background:var(--tag-bg);padding:2px 8px;border-radius:4px;color:var(--accent2);">CowAgent</code> (44k ⭐),
+    <code style="background:var(--tag-bg);padding:2px 8px;border-radius:4px;color:var(--accent2);">cherry-studio</code> (45k ⭐),
+    and <code style="background:var(--tag-bg);padding:2px 8px;border-radius:4px;color:var(--accent2);">learn-claude-code</code> (58k ⭐)
+    demonstrate that the Chinese developer community is building world-class AI agent infrastructure,
+    deeply integrated with local platforms (WeChat, Feishu, DingTalk) and Chinese frontier models.
+  </p>
+</div>
+</section>
+
+<footer class="footer">
+  <p>
+    🤖 <strong>AI Builders Digest</strong> · Edition #24 · May 2, 2026
+  </p>
+  <p style="margin-top:6px;">
+    Sourced from <a href="https://github.com/search?q=topic:ai-agent&type=repositories" target="_blank" rel="noopener">GitHub AI Agent Repos</a>
+    &amp; <a href="https://github.com/topics/mcp" target="_blank" rel="noopener">MCP Ecosystem</a>
+    &amp; <a href="https://github.com/topics/llm" target="_blank" rel="noopener">LLM Ecosystem</a>
+    · Generated by Vera 🌹 · <a href="https://luokpx.github.io/pages/ai-builders-digest-2026-05-02.html" target="_blank" rel="noopener">Live on GitHub Pages</a>
+  </p>
+</footer>
+
+</div>
+</body>
+</html>
