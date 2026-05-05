@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Builders Digest #27 — May 5, 2026</title>
+  <style>
+    :root {
+      --bg: #0a0a1a;
+      --card-bg: #13132f;
+      --text: #e0e0f0;
+      --muted: #8888aa;
+      --accent: #7c5cfc;
+      --accent2: #4ec9b0;
+      --accent3: #f97316;
+      --accent4: #e879f9;
+      --border: #2a2a4a;
+      --gradient1: linear-gradient(135deg, #0a0a1a 0%, #1a1040 50%, #0a1a2a 100%);
+      --gradient2: linear-gradient(135deg, #7c5cfc, #4ec9b0);
+      --gradient3: linear-gradient(135deg, #f97316, #e879f9);
+      --gold: #fbbf24;
+      --silver: #94a3b8;
+      --bronze: #d97706;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--gradient1);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .header {
+      text-align: center;
+      padding: 4rem 2rem 3rem;
+      background: linear-gradient(180deg, rgba(124,92,252,0.15) 0%, transparent 100%);
+    }
+    .header h1 {
+      font-size: 2.8rem;
+      background: var(--gradient2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    .header .subtitle {
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+    .header .edition {
+      display: inline-block;
+      background: rgba(124,92,252,0.2);
+      color: var(--accent);
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      padding: 2rem;
+      margin: 0 auto;
+      max-width: 700px;
+    }
+    .stat { text-align: center; }
+    .stat .num {
+      font-size: 2rem;
+      font-weight: 700;
+      background: var(--gradient2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat .label { color: var(--muted); font-size: 0.85rem; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+    .section-title {
+      font-size: 1.5rem;
+      margin: 2.5rem 0 1.2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+      color: var(--accent2);
+    }
+    .repo-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .repo-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 32px rgba(124,92,252,0.15);
+    }
+    .repo-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--gradient2);
+      border-radius: 4px 0 0 4px;
+    }
+    .repo-card.rank-1::before { background: linear-gradient(180deg, var(--gold), #b45309); }
+    .repo-card.rank-2::before { background: linear-gradient(180deg, var(--silver), #64748b); }
+    .repo-card.rank-3::before { background: linear-gradient(180deg, var(--bronze), #92400e); }
+    .repo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    .repo-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .repo-name a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .repo-name a:hover { color: var(--accent); }
+    .repo-owner {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .repo-owner img {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+    }
+    .repo-stats {
+      display: flex;
+      gap: 1.2rem;
+      flex-shrink: 0;
+    }
+    .repo-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .repo-stat.stars { color: var(--gold); font-weight: 600; }
+    .repo-stat.forks { color: var(--silver); }
+    .repo-desc {
+      margin-top: 0.8rem;
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .repo-meta {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .meta-badge {
+      font-size: 0.78rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(124,92,252,0.12);
+      color: var(--accent);
+    }
+    .meta-badge.lang { background: rgba(78,201,176,0.12); color: var(--accent2); }
+    .meta-badge.license { background: rgba(249,115,22,0.12); color: var(--accent3); }
+    .key-points {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      background: rgba(124,92,252,0.06);
+      border-radius: 8px;
+      border-left: 3px solid var(--accent);
+    }
+    .key-points h4 {
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .key-points ul {
+      list-style: none;
+      padding: 0;
+    }
+    .key-points li {
+      font-size: 0.88rem;
+      color: var(--text);
+      padding: 0.2rem 0;
+    }
+    .key-points li::before {
+      content: '▸ ';
+      color: var(--accent2);
+    }
+    .quote-block {
+      margin: 1rem 0 0;
+      padding: 0.7rem 1rem;
+      background: rgba(232,121,249,0.06);
+      border-left: 3px solid var(--accent4);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: var(--accent4);
+      font-size: 0.88rem;
+    }
+    .resources {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .res-link {
+      font-size: 0.82rem;
+      padding: 0.3rem 0.7rem;
+      background: rgba(78,201,176,0.1);
+      color: var(--accent2);
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    .res-link:hover {
+      background: rgba(78,201,176,0.2);
+      border-color: var(--accent2);
+    }
+    .trending-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin: 1rem 0;
+    }
+    .trend-tag {
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: rgba(124,92,252,0.15);
+      color: var(--accent);
+      transition: all 0.2s;
+    }
+    .trend-tag:hover {
+      background: rgba(124,92,252,0.3);
+      transform: scale(1.05);
+    }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 640px) {
+      .header h1 { font-size: 1.8rem; }
+      .stats-bar { gap: 1.5rem; }
+      .repo-header { flex-direction: column; }
+      .repo-stats { margin-top: 0.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <h1>🧠 AI Builders Digest</h1>
+  <p class="subtitle">The best AI agent, MCP & LLM projects from the open-source community</p>
+  <span class="edition">Edition #27 — May 5, 2026 (Tuesday)</span>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><div class="num">12</div><div class="label">Featured Repos</div></div>
+  <div class="stat"><div class="num">439K+</div><div class="label">Total Stars</div></div>
+  <div class="stat"><div class="num">4</div><div class="label">Data Sources</div></div>
+  <div class="stat"><div class="num">57K+</div><div class="label">Total Forks</div></div>
+</div>
+
+<div class="container">
+
+  <!-- TRENDING TOPICS -->
+  <div class="section-title">🔥 Trending Topics This Week</div>
+  <div class="trending-tags">
+    <span class="trend-tag">🤖 AI Agents</span>
+    <span class="trend-tag">🔌 MCP Protocol</span>
+    <span class="trend-tag">🧠 Agent Memory</span>
+    <span class="trend-tag">🖥️ Agent OS</span>
+    <span class="trend-tag">🔄 Self-Evolving Agents</span>
+    <span class="trend-tag">📊 AI + Finance</span>
+    <span class="trend-tag">🌐 Web Agents</span>
+    <span class="trend-tag">🏗️ Agent Infrastructure</span>
+  </div>
+
+  <!-- TOP 3 HIGHLIGHTS -->
+  <div class="section-title">🏆 Top Highlights</div>
+
+  <!-- #1 -->
+  <div class="repo-card rank-1">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/NousResearch/hermes-agent" target="_blank">hermes-agent</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/134168893?v=4" alt="NousResearch">
+          NousResearch / hermes-agent
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 132.7K</span>
+        <span class="repo-stat forks">🔀 20.2K</span>
+        <span class="repo-stat">📋 8.2K issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">The agent that grows with you — Nous Research's flagship AI agent framework with multi-model support across Anthropic, OpenAI, and open-source LLMs.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🐍 Python</span>
+      <span class="meta-badge license">📄 MIT</span>
+      <span class="meta-badge">claude-code</span>
+      <span class="meta-badge">openclaw</span>
+      <span class="meta-badge">codex</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Cross-model agent framework supporting Claude, GPT, and open-source LLMs</li>
+        <li>Built-in multi-provider MCP integration for tool extensibility</li>
+        <li>Growing ecosystem with Claude Code & OpenClaw community support</li>
+        <li>20K+ forks indicate massive developer adoption</li>
+      </ul>
+    </div>
+    <div class="quote-block">"The agent that grows with you — from prototype to production, one model at a time."</div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/NousResearch/hermes-agent" target="_blank">📦 Repo</a>
+      <a class="res-link" href="https://hermes-agent.nousresearch.com" target="_blank">🌐 Website</a>
+    </div>
+  </div>
+
+  <!-- #2 -->
+  <div class="repo-card rank-2">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">learn-claude-code</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/189210346?v=4" alt="shareAI-lab">
+          shareAI-lab / learn-claude-code
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 58.1K</span>
+        <span class="repo-stat forks">🔀 9.5K</span>
+        <span class="repo-stat">📋 114 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">Bash is all you need — A nano Claude Code–like agent harness, built from 0 to 1. Educational framework teaching AI agent development from first principles.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🔷 TypeScript</span>
+      <span class="meta-badge license">📄 MIT</span>
+      <span class="meta-badge">agent-harness</span>
+      <span class="meta-badge">educational</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Minimalist agent harness built entirely in TypeScript</li>
+        <li>Step-by-step educational approach: from shell commands to full agents</li>
+        <li>Demonstrates agent architecture patterns for Claude Code clones</li>
+        <li>9.5K forks — widely used in agent development courses</li>
+      </ul>
+    </div>
+    <div class="quote-block">"Bash is all you need — everything else is just abstraction."</div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">📦 Repo</a>
+      <a class="res-link" href="https://learn.shareai.run" target="_blank">🌐 Learn Site</a>
+    </div>
+  </div>
+
+  <!-- #3 -->
+  <div class="repo-card rank-3">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/sansan0/TrendRadar" target="_blank">TrendRadar</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/77180927?v=4" alt="sansan0">
+          sansan0 / TrendRadar
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 56.5K</span>
+        <span class="repo-stat forks">🔀 24.1K</span>
+        <span class="repo-stat">📋 31 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">AI-driven public opinion & trend monitor with multi-platform aggregation, RSS, and smart alerts. Supports MCP architecture for AI-powered natural language analysis, sentiment insights, and trend prediction.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🐍 Python</span>
+      <span class="meta-badge license">📄 GPL-3.0</span>
+      <span class="meta-badge">mcp-server</span>
+      <span class="meta-badge">news</span>
+      <span class="meta-badge">Docker</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Multi-platform hot news aggregation (WeChat, Feishu, DingTalk, Telegram, Email, Slack)</li>
+        <li>MCP integration enables AI agents to query & analyze trends conversationally</li>
+        <li>AI-powered translation, sentiment analysis, and briefing generation</li>
+        <li>Self-hosted with Docker, supports local/cloud data persistence</li>
+      </ul>
+    </div>
+    <div class="quote-block">"告别信息过载 — your AI-powered radar for what matters."</div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/sansan0/TrendRadar" target="_blank">📦 Repo</a>
+      <a class="res-link" href="https://sansan0.github.io/TrendRadar/" target="_blank">🌐 Docs</a>
+    </div>
+  </div>
+
+  <!-- MORE NOTABLE PROJECTS -->
+  <div class="section-title">📦 More Notable Projects</div>
+
+  <!-- #4 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/MemPalace/mempalace" target="_blank">mempalace</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/275135684?v=4" alt="MemPalace">
+          MemPalace / mempalace
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 51.1K</span>
+        <span class="repo-stat forks">🔀 6.7K</span>
+        <span class="repo-stat">📋 525 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">The best-benchmarked open-source AI memory system. Free, MCP-native, powered by ChromaDB with Python-first API design.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🐍 Python</span>
+      <span class="meta-badge license">📄 MIT</span>
+      <span class="meta-badge">memory</span>
+      <span class="meta-badge">chromadb</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Top-benchmarked performance across multiple AI memory benchmarks</li>
+        <li>ChromaDB-powered vector storage with semantic search</li>
+        <li>MCP-native: any AI agent can plug in for persistent memory</li>
+        <li>Rapid growth from 0 to 51K stars in just 1 month since April 2026 launch</li>
+      </ul>
+    </div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/MemPalace/mempalace" target="_blank">📦 Repo</a>
+      <a class="res-link" href="http://mempalaceofficial.com/" target="_blank">🌐 Website</a>
+    </div>
+  </div>
+
+  <!-- #5 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/HKUDS/nanobot" target="_blank">nanobot</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/118165258?v=4" alt="HKUDS">
+          HKUDS / nanobot 🐈
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 41.6K</span>
+        <span class="repo-stat forks">🔀 7.3K</span>
+        <span class="repo-stat">📋 896 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">The Ultra-Lightweight Personal AI Agent — a Python-native agent framework optimized for resource-constrained environments without sacrificing capability.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🐍 Python</span>
+      <span class="meta-badge license">📄 MIT</span>
+      <span class="meta-badge">lightweight</span>
+      <span class="meta-badge">personal-agent</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Ultra-lightweight design — runs on edge devices and low-resource environments</li>
+        <li>Full agent capabilities with minimal dependencies</li>
+        <li>Active community with 896 open issues showing vibrant ecosystem</li>
+      </ul>
+    </div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/HKUDS/nanobot" target="_blank">📦 Repo</a>
+      <a class="res-link" href="https://nanobot.wiki" target="_blank">🌐 Wiki</a>
+    </div>
+  </div>
+
+  <!-- #6 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/NirDiamant/agents-towards-production" target="_blank">agents-towards-production</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/28316913?v=4" alt="NirDiamant">
+          NirDiamant / agents-towards-production
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 19.0K</span>
+        <span class="repo-stat forks">🔀 2.5K</span>
+        <span class="repo-stat">📋 6 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">End-to-end, code-first tutorials for building production-grade GenAI agents. From prototype to enterprise deployment with LangGraph, MLOps, and best practices.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">📓 Jupyter Notebook</span>
+      <span class="meta-badge">langgraph</span>
+      <span class="meta-badge">mlops</span>
+      <span class="meta-badge">production</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Production-first tutorials covering the full agent lifecycle</li>
+        <li>Code-first approach: every tutorial is runnable end-to-end</li>
+        <li>Covers deployment, monitoring, evaluation, and scaling</li>
+        <li>Trusted resource for enterprise AI agent teams</li>
+      </ul>
+    </div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/NirDiamant/agents-towards-production" target="_blank">📦 Repo</a>
+    </div>
+  </div>
+
+  <!-- #7 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/Panniantong/Agent-Reach" target="_blank">Agent-Reach</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/73925474?v=4" alt="Panniantong">
+          Panniantong / Agent-Reach
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 18.7K</span>
+        <span class="repo-stat forks">🔀 1.7K</span>
+        <span class="repo-stat">📋 33 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu — one CLI, zero API fees.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🐍 Python</span>
+      <span class="meta-badge license">📄 MIT</span>
+      <span class="meta-badge">web-scraper</span>
+      <span class="meta-badge">free-api</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Unified CLI for scraping Twitter, Reddit, YouTube, Bilibili, and XiaoHongShu</li>
+        <li>Zero API fees — all scraping is done client-side</li>
+        <li>Native MCP integration for direct AI agent connectivity</li>
+        <li>Essential infrastructure for internet-aware AI agents</li>
+      </ul>
+    </div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/Panniantong/Agent-Reach" target="_blank">📦 Repo</a>
+    </div>
+  </div>
+
+  <!-- #8 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/alibaba/page-agent" target="_blank">page-agent</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/1961952?v=4" alt="alibaba">
+          alibaba / page-agent
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 17.5K</span>
+        <span class="repo-stat forks">🔀 1.5K</span>
+        <span class="repo-stat">📋 51 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">JavaScript in-page GUI agent. Control web interfaces with natural language — a pure TypeScript automation engine running directly in the browser.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🔷 TypeScript</span>
+      <span class="meta-badge license">📄 MIT</span>
+      <span class="meta-badge">browser-automation</span>
+      <span class="meta-badge">web</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>In-browser GUI automation agent — no server-side browser needed</li>
+        <li>Natural language control of any web interface</li>
+        <li>MIT licensed from Alibaba's open-source team</li>
+        <li>TypeScript-first with strong typing and modern tooling</li>
+      </ul>
+    </div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/alibaba/page-agent" target="_blank">📦 Repo</a>
+      <a class="res-link" href="https://alibaba.github.io/page-agent/" target="_blank">🌐 Docs</a>
+    </div>
+  </div>
+
+  <!-- #9 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/RightNow-AI/openfang" target="_blank">openfang</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/226207176?v=4" alt="RightNow-AI">
+          RightNow-AI / openfang
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 17.1K</span>
+        <span class="repo-stat forks">🔀 2.2K</span>
+        <span class="repo-stat">📋 100 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">Open-source Agent Operating System — a Rust-based OS for running, scheduling, and orchestrating AI agents at scale with MCP-native communication.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🦀 Rust</span>
+      <span class="meta-badge license">📄 Apache-2.0</span>
+      <span class="meta-badge">agent-os</span>
+      <span class="meta-badge">openclaw</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>First open-source Agent OS — operating system paradigm for AI agents</li>
+        <li>Built in Rust for performance and safety</li>
+        <li>Native MCP support for inter-agent communication</li>
+        <li>Scheduling, orchestration, and resource management for agent fleets</li>
+      </ul>
+    </div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/RightNow-AI/openfang" target="_blank">📦 Repo</a>
+      <a class="res-link" href="https://www.openfang.sh/" target="_blank">🌐 Website</a>
+    </div>
+  </div>
+
+  <!-- #10 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/eigent-ai/eigent" target="_blank">eigent</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/163795819?v=4" alt="eigent-ai">
+          eigent-ai / eigent
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 13.9K</span>
+        <span class="repo-stat forks">🔀 1.6K</span>
+        <span class="repo-stat">📋 173 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">The Open Source Cowork Desktop — local and free alternative to Claude Cowork. Unlock exceptional productivity with AI-powered workspace automation.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🔷 TypeScript</span>
+      <span class="meta-badge">cowork</span>
+      <span class="meta-badge">desktop</span>
+      <span class="meta-badge">local-first</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Open-source desktop cowork alternative — local, private, free</li>
+        <li>Desktop-native agent that controls your workspace directly</li>
+        <li>Rapid development with active community (173 issues)</li>
+      </ul>
+    </div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/eigent-ai/eigent" target="_blank">📦 Repo</a>
+      <a class="res-link" href="https://www.eigent.ai" target="_blank">🌐 Website</a>
+    </div>
+  </div>
+
+  <!-- #11 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/EvoMap/evolver" target="_blank">evolver</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/263044117?v=4" alt="EvoMap">
+          EvoMap / evolver
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 7.2K</span>
+        <span class="repo-stat forks">🔀 729</span>
+        <span class="repo-stat">📋 3 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">The GEP-powered self-evolving engine for AI agents. Auditable evolution with Genes, Capsules, and Events — agents that improve themselves.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">📜 JavaScript</span>
+      <span class="meta-badge license">📄 GPL-3.0</span>
+      <span class="meta-badge">self-evolving</span>
+      <span class="meta-badge">a2a</span>
+      <span class="meta-badge">skills</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Genes-Capsules-Events architecture for auditable agent evolution</li>
+        <li>Self-evolving agents that improve over time through structured mutation</li>
+        <li>A2A protocol support for agent-to-agent communication</li>
+        <li>Skill library ecosystem for composable agent capabilities</li>
+      </ul>
+    </div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/EvoMap/evolver" target="_blank">📦 Repo</a>
+      <a class="res-link" href="https://evomap.ai" target="_blank">🌐 Website</a>
+    </div>
+  </div>
+
+  <!-- #12 -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div>
+        <div class="repo-name"><a href="https://github.com/HKUDS/Vibe-Trading" target="_blank">Vibe-Trading</a></div>
+        <div class="repo-owner">
+          <img src="https://avatars.githubusercontent.com/u/118165258?v=4" alt="HKUDS">
+          HKUDS / Vibe-Trading
+        </div>
+      </div>
+      <div class="repo-stats">
+        <span class="repo-stat stars">⭐ 5.0K</span>
+        <span class="repo-stat forks">🔀 1.0K</span>
+        <span class="repo-stat">📋 4 issues</span>
+      </div>
+    </div>
+    <div class="repo-desc">Your Personal Trading Agent — AI-powered trading analysis and execution with natural language interface. Available on PyPI.</div>
+    <div class="repo-meta">
+      <span class="meta-badge lang">🐍 Python</span>
+      <span class="meta-badge license">📄 MIT</span>
+      <span class="meta-badge">trading</span>
+      <span class="meta-badge">finance</span>
+      <span class="meta-badge">pypi</span>
+    </div>
+    <div class="key-points">
+      <h4>🔑 Key Points</h4>
+      <ul>
+        <li>Natural language trading agent — talk to your portfolio in plain English</li>
+        <li>MCP integration for connecting to trading platforms and data sources</li>
+        <li>Python-native with PyPI package for easy installation</li>
+        <li>From HKUDS team behind nanobot (41K+ stars)</li>
+      </ul>
+    </div>
+    <div class="resources">
+      <a class="res-link" href="https://github.com/HKUDS/Vibe-Trading" target="_blank">📦 Repo</a>
+      <a class="res-link" href="https://pypi.org/project/vibe-trading-ai/" target="_blank">📦 PyPI</a>
+    </div>
+  </div>
+
+  <!-- WEEKLY INSIGHTS -->
+  <div class="section-title">💡 Weekly Insights & Analysis</div>
+
+  <div class="repo-card">
+    <div class="repo-desc" style="font-size:1rem;line-height:1.8;">
+      <p><strong>📊 This week's stats:</strong> 12 featured projects from 4 GitHub API search queries across the AI agent, MCP, LLM, and agent-framework ecosystems. Combined <strong>439K+ stars</strong> and <strong>57K+ forks</strong> — the open-source AI agent space is accelerating.</p>
+      <p style="margin-top:0.8rem;"><strong>🔑 Key trends observed:</strong></p>
+      <ul style="margin-top:0.4rem;margin-left:1.5rem;">
+        <li><strong>Agent OS is here:</strong> openfang defines a new category — operating systems purpose-built for AI agents, not human users. This represents a paradigm shift in how we think about agent infrastructure.</li>
+        <li><strong>Memory systems are the new frontier:</strong> MemPalace's meteoric rise (51K stars in 1 month) shows that persistent AI memory is no longer optional — it's the next battleground.</li>
+        <li><strong>Self-evolving agents gain traction:</strong> evolver's GEP architecture and hermes-agent's "grows with you" philosophy both point toward agents that improve autonomously over time.</li>
+        <li><strong>China's AI agent ecosystem surges:</strong> HKUDS (nanobot, Vibe-Trading), alibaba (page-agent), and shareAI-lab (learn-claude-code) represent a massive Chinese contribution to the global agent ecosystem.</li>
+        <li><strong>MCP is the universal connector:</strong> Nearly every featured project this week has MCP integration — the protocol has become the de facto standard for AI tool connectivity.</li>
+      </ul>
+      <p style="margin-top:0.8rem;"><strong>🎯 What to watch:</strong> The convergence of Agent OS + Self-Evolution + Memory Systems suggests we're heading toward autonomous agent lifecycles — agents that persist, learn, and improve without human intervention. This is where the puck is going.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>🌹 AI Builders Digest #27 — Generated by <a href="https://github.com/luokpX/pages" target="_blank">Vera's AI Builders Digest</a></p>
+  <p>Data sourced from GitHub Search API &bull; Published May 5, 2026 &bull; <a href="https://github.com/luokpX/pages" target="_blank">View on GitHub Pages</a></p>
+</footer>
+
+</body>
+</html>
