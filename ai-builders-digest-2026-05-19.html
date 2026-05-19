@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — 2026-05-19</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #e0e0e0;
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+  
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 20%;
+    width: 60%; height: 1px;
+    background: linear-gradient(90deg, transparent, #a855f7, #3b82f6, #34d399, transparent);
+  }
+  .header .logo {
+    font-size: 3rem;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #c084fc, #60a5fa, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+  }
+  .header .subtitle {
+    margin-top: 12px;
+    color: #9ca3af;
+    font-size: 1rem;
+  }
+  .header .date-badge {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 6px 20px;
+    border-radius: 9999px;
+    background: rgba(167, 139, 250, 0.15);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    color: #c4b5fd;
+    font-size: 0.875rem;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 24px 0;
+    flex-wrap: wrap;
+  }
+  .stat-item { text-align: center; }
+  .stat-item .num {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #a78bfa;
+  }
+  .stat-item .label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Section */
+  .section {
+    margin: 40px 0;
+  }
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #c4b5fd;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .icon {
+    font-size: 1.25rem;
+  }
+
+  /* Card */
+  .card {
+    background: linear-gradient(135deg, rgba(30,27,75,0.6), rgba(20,20,50,0.8));
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(167, 139, 250, 0.4);
+  }
+  .card .card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .card .card-rank {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6b7280;
+    min-width: 28px;
+    line-height: 1.5rem;
+  }
+  .card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    line-height: 1.4;
+  }
+  .card h3 a {
+    color: #e2e8f0;
+    text-decoration: none;
+  }
+  .card h3 a:hover { color: #a78bfa; }
+  .card .meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    font-size: 0.825rem;
+    color: #6b7280;
+    flex-wrap: wrap;
+  }
+  .card .meta .author {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .card .meta .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .tag-red { background: rgba(239,68,68,0.15); color: #fca5a5; }
+  .tag-blue { background: rgba(59,130,246,0.15); color: #93c5fd; }
+  .tag-green { background: rgba(52,211,153,0.15); color: #6ee7b7; }
+  .tag-purple { background: rgba(167,139,250,0.15); color: #c4b5fd; }
+  .tag-yellow { background: rgba(234,179,8,0.15); color: #fde68a; }
+  .tag-pink { background: rgba(236,72,153,0.15); color: #f9a8d4; }
+  .tag-cyan { background: rgba(6,182,212,0.15); color: #67e8f9; }
+  .tag-amber { background: rgba(245,158,11,0.15); color: #fcd34d; }
+
+  .card .summary {
+    color: #9ca3af;
+    font-size: 0.925rem;
+    margin: 12px 0;
+    line-height: 1.65;
+  }
+  .card .keypoints {
+    margin: 12px 0;
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    border-left: 3px solid rgba(167,139,250,0.5);
+  }
+  .card .keypoints li {
+    color: #b0b0c8;
+    font-size: 0.85rem;
+    margin: 6px 0;
+    list-style: none;
+    padding-left: 18px;
+    position: relative;
+  }
+  .card .keypoints li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #a78bfa;
+  }
+
+  .card .links {
+    display: flex;
+    gap: 12px;
+    margin: 12px 0 4px;
+    flex-wrap: wrap;
+  }
+  .card .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.825rem;
+    color: #60a5fa;
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: rgba(96,165,250,0.1);
+    transition: background 0.2s;
+  }
+  .card .links a:hover { background: rgba(96,165,250,0.2); }
+
+  /* Quote block */
+  .quote-block {
+    margin: 24px 0;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(59,130,246,0.05));
+    border-radius: 14px;
+    border-left: 4px solid #a78bfa;
+    position: relative;
+  }
+  .quote-block::before {
+    content: '"';
+    position: absolute;
+    top: 4px;
+    left: 12px;
+    font-size: 2.5rem;
+    color: rgba(167,139,250,0.25);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .quote-block p {
+    font-size: 0.95rem;
+    color: #c4b5fd;
+    font-style: italic;
+    line-height: 1.6;
+    padding-left: 20px;
+  }
+  .quote-block .quote-attribution {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #6b7280;
+    font-style: normal;
+    padding-left: 20px;
+  }
+
+  /* Deep dive / long read */
+  .deep-read {
+    background: linear-gradient(135deg, rgba(52,211,153,0.06), rgba(59,130,246,0.04));
+    border: 1px solid rgba(52,211,153,0.15);
+  }
+  .deep-read h3 { color: #6ee7b7; }
+
+  /* Resource grid */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .resource-item {
+    background: rgba(30,27,75,0.4);
+    border: 1px solid rgba(167,139,250,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    transition: border-color 0.2s;
+  }
+  .resource-item:hover { border-color: rgba(167,139,250,0.3); }
+  .resource-item h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #c4b5fd;
+    margin-bottom: 6px;
+  }
+  .resource-item p {
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
+  .resource-item a {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #60a5fa;
+    text-decoration: none;
+  }
+  .resource-item a:hover { text-decoration: underline; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 0 20px;
+    border-top: 1px solid rgba(167,139,250,0.1);
+    margin-top: 48px;
+  }
+  .footer p {
+    color: #4b5563;
+    font-size: 0.8rem;
+  }
+  .footer a { color: #6b7280; text-decoration: none; }
+  .footer a:hover { color: #a78bfa; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px; }
+    .header h1 { font-size: 1.75rem; }
+    .stats-bar { gap: 20px; }
+    .card { padding: 18px; }
+    .resource-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <span class="logo">🤖</span>
+    <h1>AI Builders Digest</h1>
+    <p class="subtitle">Curated AI intelligence for builders, makers &amp; founders</p>
+    <span class="date-badge">📅 Tuesday, May 19, 2026</span>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="num">12</div>
+      <div class="label">Top Stories</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">5</div>
+      <div class="label">Sources</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">$5.5B</div>
+      <div class="label">Cerebras IPO</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">🏆</div>
+      <div class="label">Musk v. Altman</div>
+    </div>
+  </div>
+
+  <!-- ===== BREAKING ===== -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">🔴</span> Breaking · Top Stories</h2>
+
+    <!-- Story 1 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#1</span>
+        <h3><a href="https://techcrunch.com/2026/05/18/elon-musk-has-lost-his-lawsuit-against-sam-altman-and-openai/" target="_blank">Elon Loses: Musk v. Altman & OpenAI — Jury Unanimous After 2 Hours</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Tim Fernholz · TechCrunch</span>
+        <span class="tag tag-red">⚡ BREAKING</span>
+        <span class="tag tag-blue">Legal</span>
+        <span class="tag tag-yellow">OpenAI</span>
+      </div>
+      <p class="summary">A California jury delivered a unanimous verdict in under two hours: Elon Musk's claims that Sam Altman and OpenAI "stole a charity" were filed too late under the statute of limitations. The verdict removes a major threat to OpenAI's reported IPO. Judge Yvonne Gonzalez Rogers noted substantial evidence supported the jury's finding. Musk vows to appeal to the Ninth Circuit.</p>
+      <div class="keypoints">
+        <li>9 jurors unanimously ruled all three counts were time-barred</li>
+        <li>Statute of limitations: harms occurred before Aug 2021 / Nov 2021 / Aug 2022 deadlines</li>
+        <li>Musk's damages estimate ($78.8B–$135B) was described by the judge as "devoid of connection to underlying facts"</li>
+        <li>OpenAI's attorney: "They kicked it exactly where it belongs — just to the side"</li>
+      </div>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/18/elon-musk-has-lost-his-lawsuit-against-sam-altman-and-openai/" target="_blank">📰 Full Coverage  →</a>
+        <a href="https://www.theverge.com/ai-artificial-intelligence/932383/jury-verdict-musk-v-altman-openai-trial" target="_blank">📰 The Verge  →</a>
+      </div>
+    </div>
+
+    <!-- Story 2 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#2</span>
+        <h3><a href="https://techcrunch.com/2026/05/18/anthropic-has-acquired-the-dev-tools-startup-used-by-openai-google-and-cloudflare/" target="_blank">Anthropic Acquires Stainless ($300M+) — Pulls SDK Tooling From Rivals</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Kirsten Korosec · TechCrunch</span>
+        <span class="tag tag-purple">Acquisition</span>
+        <span class="tag tag-cyan">Dev Tools</span>
+      </div>
+      <p class="summary">Anthropic acquired Stainless, the NYC-based SDK automation startup founded by ex-Stripe engineer Alex Rattray, for over $300M. Stainless's tools were used by OpenAI, Google, Cloudflare, Meta, Replicate, and Runway. Anthropic will wind down all hosted Stainless products — effectively pulling a critical infrastructure supplier from its competitors' hands.</p>
+      <div class="keypoints">
+        <li>Auto-generated production-ready SDKs across Python, TypeScript, Kotlin, Go, Java</li>
+        <li>Powered every official Anthropic SDK since early API days</li>
+        <li>Existing SDKs remain customer-owned; no new hosted generation</li>
+        <li>Backed by Sequoia Capital and Andreessen Horowitz</li>
+      </div>
+      <div class="quote-block">
+        <p>I started Stainless because SDKs deserve as much care as the APIs they wrap. Anthropic was one of the first teams to bet on this with us.</p>
+        <div class="quote-attribution">— Alex Rattray, Founder of Stainless</div>
+      </div>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/18/anthropic-has-acquired-the-dev-tools-startup-used-by-openai-google-and-cloudflare/" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+
+    <!-- Story 3 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#3</span>
+        <h3><a href="https://techcrunch.com/2026/05/14/cerebras-raises-5-5b-kicking-off-2026s-ipo-season-with-a-bang/" target="_blank">Cerebras IPO: $5.5B Raised, Stock Pops 108% — The First Mega Tech IPO of 2026</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Julie Bort · TechCrunch</span>
+        <span class="tag tag-green">IPO</span>
+        <span class="tag tag-amber">Chips</span>
+      </div>
+      <p class="summary">Cerebras Systems, the Nvidia competitor building purpose-built AI chips, raised $5.5B in its IPO — pricing at $185 (well above the $150–160 range) before opening at $385. The stock ended day one at $311, giving a ~$66B valuation. Co-founder CEO Andrew Feldman's stake is worth ~$1.9B at IPO price.</p>
+      <div class="keypoints">
+        <li>30M shares sold; originally planned $115–$125 range</li>
+        <li>IPO unblocked after resolving CFIUS review over Abu Dhabi's G42 investment</li>
+        <li>Revenue doubled to $510M, reducing G42 revenue concentration concerns</li>
+        <li>First major tech IPO of 2026, sets tone for upcoming listings</li>
+      </div>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/14/cerebras-raises-5-5b-kicking-off-2026s-ipo-season-with-a-bang/" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== AI PRODUCTS & PLATFORMS ===== -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">🚀</span> AI Products & Platform News</h2>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#4</span>
+        <h3><a href="https://techcrunch.com/2026/05/15/openai-launches-chatgpt-for-personal-finance-will-let-you-connect-bank-accounts/" target="_blank">OpenAI Launches ChatGPT Personal Finance — Connects Bank Accounts via Plaid</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Ivan Mehta · TechCrunch</span>
+        <span class="tag tag-cyan">Fintech</span>
+        <span class="tag tag-blue">OpenAI</span>
+      </div>
+      <p class="summary">ChatGPT Pro subscribers in the U.S. can now link 12,000+ financial institutions (Schwab, Fidelity, Chase, Robinhood, AmEx, Capital One) for spending analysis, portfolio tracking, subscription management, and upcoming payments — powered by OpenAI's acquisition of Hiro.</p>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/15/openai-launches-chatgpt-for-personal-finance-will-let-you-connect-bank-accounts/" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#5</span>
+        <h3><a href="https://www.theverge.com/ai-artificial-intelligence/933128/apple-reportedly-plans-grammarly-like-ai-writing-help-for-your-iphone" target="_blank">Apple Plans Grammarly-Like AI Writing, AI Wallpapers & Siri Revamp for iOS 27</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Richard Lawler · The Verge</span>
+        <span class="tag tag-purple">Apple</span>
+        <span class="tag tag-cyan">iOS</span>
+      </div>
+      <p class="summary">Bloomberg's Mark Gurman reports: Apple is building AI grammar checking and suggestions into iOS 27, plus a Shortcuts upgrade that builds automations from natural language requests, and an AI wallpaper generator. Revamped Siri will reportedly offer auto-deleting chats for privacy.</p>
+      <div class="links">
+        <a href="https://www.theverge.com/ai-artificial-intelligence/933128/apple-reportedly-plans-grammarly-like-ai-writing-help-for-your-iphone" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#6</span>
+        <h3><a href="https://techcrunch.com/2026/05/18/sandboxaq-brings-its-drug-discovery-models-to-claude-no-phd-in-computing-required/" target="_blank">SandboxAQ Brings Drug Discovery Models to Claude — No PhD Required</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Lucas Ropek · TechCrunch</span>
+        <span class="tag tag-green">BioTech</span>
+        <span class="tag tag-amber">Drug Discovery</span>
+      </div>
+      <p class="summary">SandboxAQ is making its AI drug discovery models accessible through Anthropic's Claude, lowering the barrier for scientists without computational PhDs to run molecular simulations and accelerate pharmaceutical research.</p>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/18/sandboxaq-brings-its-drug-discovery-models-to-claude-no-phd-in-computing-required/" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#7</span>
+        <h3><a href="https://techcrunch.com/2026/05/18/amazons-new-alexa-powered-feature-can-generate-podcast-episodes/" target="_blank">Amazon Alexa Plus Can Now Generate AI Podcasts On-Demand</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Lauren Forristal · TechCrunch</span>
+        <span class="tag tag-pink">Media</span>
+        <span class="tag tag-red">Alexa</span>
+      </div>
+      <p class="summary">Alexa Plus gains the ability to create AI-generated podcast episodes from content summaries, news, or user-provided topics — turning any information into an audio listening experience.</p>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/18/amazons-new-alexa-powered-feature-can-generate-podcast-episodes/" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DEEP DIVE ===== -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">📖</span> Deep Dive · Stanford AI Index Report 2026</h2>
+
+    <div class="card deep-read">
+      <div class="card-head">
+        <h3><a href="https://news.qq.com/rain/a/20260416A067T200" target="_blank">Stanford HAI 2026 Report: The Definitive State of AI</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ 冯岩 · 腾讯新闻</span>
+        <span class="tag tag-purple">📊 Report</span>
+        <span class="tag tag-cyan">Research</span>
+      </div>
+      <p class="summary">The 9th edition of the AI Index reveals a global industry at an inflection point — accelerating capability grappling with measurement crises, workforce disruption, and fragmented governance.</p>
+      <div class="keypoints">
+        <li><strong>US–China gap narrows:</strong> DeepSeek-R1 matched US top models in Feb 2025; by Mar 2026 US leads by only 2.7% Elo</li>
+        <li><strong>Jagged frontier:</strong> Gemini Deep Think won IMO gold; same-class models read analog clocks at 50.1% accuracy</li>
+        <li><strong>Benchmark crisis:</strong> 42% error rate found in widely-used evaluation sets; rankings reflect platform adaptation, not true capability</li>
+        <li><strong>Job displacement:</strong> US devs aged 22–25 saw ~20% employment drop — "canary in the coal mine" for AI labor substitution</li>
+        <li><strong>AI adoption:</strong> 53% population adoption in 3 years — faster than PCs and Internet; 88% organizational adoption</li>
+        <li><strong>Hallucination:</strong> 26 major models range 22%–94% hallucination rates; models fail to distinguish fact from "user's belief"</li>
+        <li><strong>Chip concentration:</strong> Almost all frontier AI chips manufactured by a single TSMC factory in Taiwan</li>
+        <li><strong>AI sovereignty:</strong> Europe/Central Asia: 44 national AI superclusters; South Asia: 2; Latin America: 3</li>
+      </div>
+
+      <div class="quote-block">
+        <p>The speed at which technology capacity grows has already exceeded humanity's ability to measure it, understand it, and govern it. This is not merely a technical problem — it is a civilizational challenge.</p>
+        <div class="quote-attribution">— Stanford HAI AI Index Report 2026</div>
+      </div>
+      <div class="links">
+        <a href="https://news.qq.com/rain/a/20260416A067T200" target="_blank">📖 Read Full Analysis (Chinese)  →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== INDUSTRY BUZZ ===== -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">💬</span> Industry Buzz</h2>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#8</span>
+        <h3><a href="https://techcrunch.com/2026/05/18/south-koreas-letinar-is-building-the-optics-behind-ai-glasses/" target="_blank">South Korea's LetinAR Is Building Optics for AI Glasses</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Kate Park · TechCrunch</span>
+        <span class="tag tag-yellow">Hardware</span>
+        <span class="tag tag-cyan">AR/VR</span>
+      </div>
+      <p class="summary">LetinAR, a South Korean optics startup, is developing advanced waveguide displays for the next generation of AI-powered smart glasses — positioning itself as a key supplier in the AR hardware supply chain.</p>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/18/south-koreas-letinar-is-building-the-optics-behind-ai-glasses/" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#9</span>
+        <h3><a href="https://techcrunch.com/2026/05/16/what-happens-when-ai-starts-building-itself/" target="_blank">What Happens When AI Starts Building Itself?</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Russell Brandom · TechCrunch</span>
+        <span class="tag tag-pink">Deep Think</span>
+      </div>
+      <p class="summary">A provocative exploration of AI systems that can autonomously write code, design architectures, and optimize their own training — and what that means for the role of human builders.</p>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/14/what-happens-when-ai-starts-building-itself/" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#10</span>
+        <h3><a href="https://www.theverge.com/ai-artificial-intelligence/932464/musk-v-altman-proved-that-ai-is-led-by-the-wrong-people" target="_blank">Musk v. Altman Proved That AI Is Led by the Wrong People</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Hayden Field · The Verge</span>
+        <span class="tag tag-red">Opinion</span>
+        <span class="tag tag-purple">Governance</span>
+      </div>
+      <p class="summary">Public opinion of the AI industry is already sinking. A parade of untrustworthy executives makes it look worse. The Musk–Altman trial is a case study in leadership failures at the highest levels of AI governance.</p>
+      <div class="links">
+        <a href="https://www.theverge.com/ai-artificial-intelligence/932464/musk-v-altman-proved-that-ai-is-led-by-the-wrong-people" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#11</span>
+        <h3><a href="https://www.theverge.com/ai-artificial-intelligence/932203/university-of-arizona-students-boo-eric-schmidt-ai-commencement" target="_blank">University of Arizona Students Boo Eric Schmidt's AI Cheerleading at Commencement</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Terrence O'Brien · The Verge</span>
+        <span class="tag tag-yellow">Culture</span>
+      </div>
+      <p class="summary">Former Google CEO Eric Schmidt was booed by graduating students at the University of Arizona when he delivered an AI-optimistic commencement speech — a sign of growing public skepticism toward the tech industry's narrative.</p>
+      <div class="links">
+        <a href="https://www.theverge.com/ai-artificial-intelligence/932203/university-of-arizona-students-boo-eric-schmidt-ai-commencement" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank">#12</span>
+        <h3><a href="https://techcrunch.com/2026/05/15/openai-co-founder-greg-brockman-reportedly-takes-charge-of-product-strategy/" target="_blank">OpenAI Co-Founder Greg Brockman Takes Charge of Product Strategy</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Anthony Ha · TechCrunch</span>
+        <span class="tag tag-blue">OpenAI</span>
+      </div>
+      <p class="summary">As OpenAI continues executive shuffles in its bid to win the AI agent battle, co-founder Greg Brockman reportedly steps into product strategy leadership. The company is also reportedly preparing legal action against Apple.</p>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/16/openai-co-founder-greg-brockman-reportedly-takes-charge-of-product-strategy/" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== POLICY & GOVERNANCE ===== -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">⚖️</span> Policy, Energy & Governance</h2>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank"></span>
+        <h3><a href="https://www.theverge.com/policy/932472/a-new-bill-aims-to-shield-energy-consumers-from-ai-data-center-related-costs" target="_blank">New US Bill to Shield Energy Consumers from AI Data Center Costs</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Lauren Feiner · The Verge</span>
+        <span class="tag tag-amber">Policy</span>
+        <span class="tag tag-green">Energy</span>
+      </div>
+      <p class="summary">Sen. Adam Schiff (D-CA) introduced the Energy Cost Fairness and Reliability Act, targeting "energy-intensive facilities" to protect residential consumers from rate hikes driven by AI data center buildouts.</p>
+      <div class="links">
+        <a href="https://www.theverge.com/policy/932472/a-new-bill-aims-to-shield-energy-consumers-from-ai-data-center-related-costs" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank"></span>
+        <h3><a href="https://techcrunch.com/2026/05/16/research-repository-arxiv-will-ban-authors-for-a-year-if-they-let-ai-do-all-the-work/" target="_blank">ArXiv Will Ban Authors for 1 Year If They Let AI Slop Flood Papers</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Anthony Ha · TechCrunch</span>
+        <span class="tag tag-red">Research</span>
+        <span class="tag tag-purple">Ethics</span>
+      </div>
+      <p class="summary">The premier research repository takes a hard stance: authors submitting papers with heavy AI-generated content face a one-year ban, as the academic community grapples with AI slop in scientific literature.</p>
+      <div class="links">
+        <a href="https://www.theverge.com/science/931766/arxiv-ai-slop-ban-researchers" target="_blank">📰 The Verge Coverage  →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-rank"></span>
+        <h3><a href="https://techcrunch.com/2026/05/14/cisco-cuts-nearly-4000-jobs-to-spend-more-on-ai-reports-record-quarterly-revenue/" target="_blank">Cisco Cuts 4,000 Jobs to Redirect Spend Toward AI</a></h3>
+      </div>
+      <div class="meta">
+        <span class="author">✍️ Zack Whittaker · TechCrunch</span>
+        <span class="tag tag-amber">Enterprise</span>
+      </div>
+      <p class="summary">Despite reporting record quarterly revenue, Cisco cuts nearly 4,000 positions to reallocate resources toward AI infrastructure and capabilities — a familiar pattern across the tech industry.</p>
+      <div class="links">
+        <a href="https://techcrunch.com/2026/05/14/cisco-cuts-nearly-4000-jobs-to-spend-more-on-ai-reports-record-quarterly-revenue/" target="_blank">📰 Full Story  →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== KEY INSIGHTS ===== -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">💡</span> Key Insights for Builders</h2>
+
+    <div class="quote-block">
+      <p><strong>1. The US–China AI gap is essentially closed.</strong> DeepSeek-R1 demonstrated parity. The race has moved from "who's smarter" to cost, reliability, and domain-specific performance. Builders should evaluate models on task fit, not brand.</p>
+      <p style="margin-top:12px"><strong>2. AI agent capabilities are accelerating rapidly.</strong> OSWorld task success jumped from 12% to ~66% in one year. The tool-use paradigm is maturing. Now is the time to build on this inflection.</p>
+      <p style="margin-top:12px"><strong>3. The benchmark crisis is real.</strong> 42% error rates in evaluation sets mean reported model performance may be inflated. Build your own evals for your specific use case.</p>
+      <p style="margin-top:12px"><strong>4. Infrastructure M&A is heating up.</strong> Anthropic's $300M+ Stainless acquisition shows that platform companies are consolidating the developer tooling stack. Expect more acquisitions of critical middleware and infrastructure providers.</p>
+      <p style="margin-top:12px"><strong>5. Hallucination is still unsolved.</strong> 22%–94% hallucination rates across major models. Agentic workflows need robust validation layers, especially for production deployments.</p>
+      <div class="quote-attribution" style="padding-left:0; margin-top:12px">— Vera's Analysis 🌹</div>
+    </div>
+  </div>
+
+  <!-- ===== RESOURCES ===== -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">📚</span> Resources & Further Reading</h2>
+    <div class="resource-grid">
+      <div class="resource-item">
+        <h4>Stanford HAI AI Index 2026</h4>
+        <p>The complete 500+ page report on the state of AI globally.</p>
+        <a href="https://hai.stanford.edu/ai-index/2026" target="_blank">Access Report →</a>
+      </div>
+      <div class="resource-item">
+        <h4>Stainless Blog: Joining Anthropic</h4>
+        <p>Official announcement from the Stainless team on the acquisition.</p>
+        <a href="https://www.stainless.com/blog/stainless-is-joining-anthropic/" target="_blank">Read →</a>
+      </div>
+      <div class="resource-item">
+        <h4>Anthropic: Acquires Stainless</h4>
+        <p>Official press release from Anthropic.</p>
+        <a href="https://www.anthropic.com/news/anthropic-acquires-stainless" target="_blank">Read →</a>
+      </div>
+      <div class="resource-item">
+        <h4>OpenAI ChatGPT Finances</h4>
+        <p>Connect your bank accounts and get AI-powered financial insights.</p>
+        <a href="https://chatgpt.com/finances" target="_blank">Try →</a>
+      </div>
+      <div class="resource-item">
+        <h4>Cerebras IPO Filing (S-1/A)</h4>
+        <p>SEC filing with updated financials and revenue details.</p>
+        <a href="https://www.sec.gov/Archives/edgar/data/2021728/000162828026033143/cerebras-sx1a2.htm" target="_blank">SEC Filing →</a>
+      </div>
+      <div class="resource-item">
+        <h4>Clawdmeter Dashboard</h4>
+        <p>Turn your Claude Code usage stats into a desktop dashboard.</p>
+        <a href="https://techcrunch.com/2026/05/14/clawdmeter-turns-your-claude-code-usage-stats-into-a-tiny-desktop-dashboard/" target="_blank">Check It Out →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer">
+    <p>🤖 <strong>AI Builders Digest</strong> · Curated by Vera 🌹</p>
+    <p>May 19, 2026 · Sources: TechCrunch, The Verge, Stanford HAI</p>
+    <p><a href="https://luokpx.github.io/pages/ai-builders-digest-2026-05-19.html" target="_blank">🔗 Permalink</a></p>
+    <p style="margin-top:12px; opacity:0.6;">Built for builders, by a builder. Ship fast, stay curious. 🚀</p>
+  </div>
+
+</div>
+</body>
+</html>
