@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — May 21, 2026</title>
+<style>
+  :root {
+    --bg: #0b0e17;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --accent1: #60a5fa;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #f472b6;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --border: #1e293b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d1b69 40%, #1a2236 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 40%, rgba(96,165,250,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(167,139,250,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .header-content { position: relative; z-index: 1; }
+  .header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .header h1 {
+    font-size: 38px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .header .subtitle {
+    font-size: 16px;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header .subtitle .dot { color: var(--accent1); }
+  .header .subtitle .stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--accent3);
+  }
+
+  /* Sections */
+  .section {
+    margin: 40px 0;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .icon { font-size: 24px; }
+
+  /* Trending Grid */
+  .trending-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent1);
+    box-shadow: 0 8px 32px rgba(96,165,250,0.1);
+  }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+  .card-repo {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent1);
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .card-repo:hover { text-decoration: underline; }
+  .card-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 13px;
+    color: var(--text2);
+    white-space: nowrap;
+    background: var(--surface2);
+    padding: 2px 10px;
+    border-radius: 12px;
+  }
+  .card-desc {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text2);
+    flex-wrap: wrap;
+  }
+  .card-meta .lang {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 2px;
+  }
+  .card-meta .updated { color: var(--text2); }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    background: var(--surface2);
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+  .tag-ai { border-color: rgba(96,165,250,0.3); color: var(--accent1); }
+  .tag-llm { border-color: rgba(167,139,250,0.3); color: var(--accent2); }
+  .tag-py { border-color: rgba(52,211,153,0.3); color: var(--accent3); }
+  .tag-ts { border-color: rgba(96,165,250,0.3); color: var(--accent1); }
+  .tag-hot { border-color: rgba(244,114,182,0.3); color: var(--accent4); }
+
+  /* Blog Posts */
+  .blog-list { display: flex; flex-direction: column; gap: 14px; }
+  .blog-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .blog-item:hover {
+    border-color: var(--accent2);
+    box-shadow: 0 4px 20px rgba(167,139,250,0.08);
+  }
+  .blog-item-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .blog-item-meta {
+    font-size: 13px;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .blog-item-author { color: var(--accent2); }
+
+  /* AI Builders Topic */
+  .builder-card .author-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .builder-card .author-info .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* Quote Block */
+  .quote-block {
+    background: linear-gradient(135deg, rgba(96,165,250,0.08), rgba(167,139,250,0.08));
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .quote-block p {
+    font-size: 15px;
+    font-style: italic;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .quote-block .quote-author {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--accent2);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Resource Links */
+  .resource-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .resource-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 13px;
+    transition: border-color 0.2s;
+  }
+  .resource-link:hover {
+    border-color: var(--accent1);
+    color: var(--accent1);
+  }
+
+  /* Stats Bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+  }
+  .stat-card .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-card .stat-label {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 4px;
+  }
+
+  /* Key Points */
+  .key-points { list-style: none; }
+  .key-points li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text2);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .key-points li:last-child { border-bottom: none; }
+  .key-points li::before {
+    content: '▸';
+    color: var(--accent3);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+    color: var(--text2);
+    font-size: 13px;
+  }
+  .footer a { color: var(--accent1); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .header h1 { font-size: 26px; }
+    .trending-grid { grid-template-columns: 1fr; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="container header-content">
+    <div class="header-badge">🤖 Weekly Digest</div>
+    <h1>AI Builders Digest</h1>
+    <div class="subtitle">
+      <span>May 21, 2026</span>
+      <span class="dot">·</span>
+      <span>GitHub Trending &amp; Community</span>
+      <span class="dot">·</span>
+      <span class="stat">⚡ 5 min read</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-number">37.5K+</div>
+      <div class="stat-label">AI Repositories on GitHub</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">184K</div>
+      <div class="stat-label">AutoGPT ⭐ All-Time High</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">95.3K</div>
+      <div class="stat-label">LLMs-from-scratch ⭐</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">77.1K</div>
+      <div class="stat-label">claude-mem ⭐ (New AI Memory)</div>
+    </div>
+  </div>
+
+  <!-- Quote Block -->
+  <div class="quote-block">
+    <p>"The era of 'AI as text' is over. Execution is the new interface. AI is shifting from prompt-response interactions to programmable execution."</p>
+    <div class="quote-author">— Gwen Davis, GitHub Copilot SDK Team</div>
+  </div>
+
+  <!-- Key Takeaways -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">💡</span> Key Takeaways This Week</h2>
+    <ul class="key-points">
+      <li><strong>Agentic Workflows Go Mainstream</strong> — GitHub published deep insights on token efficiency in agentic PR workflows and how to validate non-deterministic agent behavior</li>
+      <li><strong>AI Agent Memory Explodes</strong> — claude-mem (77.1K⭐) leads the charge for persistent context across AI coding sessions, capturing and compressing agent activity</li>
+      <li><strong>Accessibility Gets AI Agents</strong> — GitHub piloted a general-purpose accessibility agent that automates triage for accessibility feedback</li>
+      <li><strong>Copilot CLI /fleet</strong> — Run multiple agents at once in parallel with dependency-aware orchestration</li>
+      <li><strong>Small Models, Big Impact</strong> — minimind (50.3K⭐) trains a 64M-parameter LLM from scratch in just 2 hours</li>
+      <li><strong>AI Builders Topic Grows</strong> — New projects like SpellRelay and PromptDojo showcase the rising "vibe coding" and AI-assisted learning movement</li>
+    </ul>
+  </div>
+
+  <!-- Trending AI Repos -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">🔥</span> Trending AI Repositories (This Week)</h2>
+    <div class="trending-grid">
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-repo" href="https://github.com/Significant-Gravitas/AutoGPT">Significant-Gravitas/AutoGPT</a>
+          <span class="card-stars">⭐ 184K</span>
+        </div>
+        <div class="card-desc">Accessible AI for everyone — autonomous agents powered by GPT, Claude, and LLMs. The vision of agentic AI for all.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3572A5"></span> Python</span>
+          <span class="updated">Updated May 20</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ai">agentic-ai</span>
+          <span class="tag tag-llm">llm</span>
+          <span class="tag tag-hot">#1 Trending</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-repo" href="https://github.com/f/prompts.chat">f/prompts.chat</a>
+          <span class="card-stars">⭐ 163K</span>
+        </div>
+        <div class="card-desc">Awesome ChatGPT Prompts — share, discover, and collect prompts from the community. Free and open source.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#e34c26"></span> HTML</span>
+          <span class="updated">Updated May 20</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ai">prompt-engineering</span>
+          <span class="tag">chatgpt</span>
+          <span class="tag tag-hot">awesome-list</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-repo" href="https://github.com/rasbt/LLMs-from-scratch">rasbt/LLMs-from-scratch</a>
+          <span class="card-stars">⭐ 95.3K</span>
+        </div>
+        <div class="card-desc">Implement a ChatGPT-like LLM in PyTorch from scratch, step by step. The definitive guide to understanding transformers.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#DA5B0B"></span> Jupyter Notebook</span>
+          <span class="updated">Updated May 19</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-py">pytorch</span>
+          <span class="tag tag-llm">llm</span>
+          <span class="tag">transformers</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-repo" href="https://github.com/hacksider/Deep-Live-Cam">hacksider/Deep-Live-Cam</a>
+          <span class="card-stars">⭐ 93.2K</span>
+        </div>
+        <div class="card-desc">Real time face swap and one-click video deepfake with only a single image. Real-time AI face manipulation.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3572A5"></span> Python</span>
+          <span class="updated">Updated May 20</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ai">deepfake</span>
+          <span class="tag">realtime</span>
+          <span class="tag">faceswap</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-repo" href="https://github.com/thedotmack/claude-mem">thedotmack/claude-mem</a>
+          <span class="card-stars">⭐ 77.1K</span>
+        </div>
+        <div class="card-desc">Persistent Context Across Sessions for Every Agent — captures everything, compresses with AI, injects relevant context into future sessions.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3178c6"></span> TypeScript</span>
+          <span class="updated">Updated May 17</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ts">ai-agents</span>
+          <span class="tag tag-llm">memory-engine</span>
+          <span class="tag tag-hot">rag</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-repo" href="https://github.com/OpenHands/OpenHands">OpenHands/OpenHands</a>
+          <span class="card-stars">⭐ 74.3K</span>
+        </div>
+        <div class="card-desc">AI-Driven Development platform. Open-source coding agent that writes, tests, and deploys code autonomously.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3572A5"></span> Python</span>
+          <span class="updated">Updated May 20</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ai">agent</span>
+          <span class="tag">developer-tools</span>
+          <span class="tag">cli</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-repo" href="https://github.com/FlowiseAI/Flowise">FlowiseAI/Flowise</a>
+          <span class="card-stars">⭐ 53K</span>
+        </div>
+        <div class="card-desc">Build AI Agents, Visually. Low-code / no-code platform for creating multi-agent workflows and RAG applications.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3178c6"></span> TypeScript</span>
+          <span class="updated">Updated May 19</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ts">low-code</span>
+          <span class="tag tag-ai">agentic-workflow</span>
+          <span class="tag">rag</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-repo" href="https://github.com/jingyaogong/minimind">jingyaogong/minimind</a>
+          <span class="card-stars">⭐ 50.3K</span>
+        </div>
+        <div class="card-desc">Train a 64M-parameter LLM from scratch in just 2 hours! 大模型从0训练 — small model, huge impact.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3572A5"></span> Python</span>
+          <span class="updated">Updated May 19</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-py">llm-training</span>
+          <span class="tag tag-hot">from-scratch</span>
+          <span class="tag tag-ai">mini-llm</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AI Builders Community -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">🏗️</span> AI Builders Community Projects</h2>
+    <p style="color: var(--text2); margin-bottom: 16px; font-size: 14px;">New and emerging projects tagged with <strong style="color: var(--accent1);">ai-builders</strong> on GitHub:</p>
+    <div class="trending-grid">
+
+      <div class="card builder-card">
+        <div class="author-info">
+          <div class="avatar">x</div>
+          <span>xernst · <strong>promptdojo</strong></span>
+        </div>
+        <div class="card-desc">Free, open-source Python school for builders in the AI era. AI writes it, but it's wrong — read what AI wrote, catch what it got wrong, direct it deliberately. 26 chapters, 515 runnable steps.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3178c6"></span> TypeScript</span>
+          <span class="updated">Updated May 16</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag tag-ai">vibe-coding</span>
+          <span class="tag">education</span>
+          <span class="tag">cursor</span>
+          <span class="tag">claude</span>
+        </div>
+      </div>
+
+      <div class="card builder-card">
+        <div class="author-info">
+          <div class="avatar">W</div>
+          <span>WillSuo-Github · <strong>specrelay</strong></span>
+        </div>
+        <div class="card-desc">SpecRelay turns AI-built prototypes into launch QA checklists and developer handoff briefs. Bridge between vibe coding and production quality.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3178c6"></span> TypeScript</span>
+          <span class="updated">Updated May 20</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">no-code</span>
+          <span class="tag">launch-checklist</span>
+          <span class="tag tag-ai">developer-handoff</span>
+        </div>
+      </div>
+
+      <div class="card builder-card">
+        <div class="author-info">
+          <div class="avatar">d</div>
+          <span>dstolts · <strong>covenai</strong></span>
+        </div>
+        <div class="card-desc">Open-source community engagement framework with gamification, leaderboards, and medieval-themed tier system. Build with AI. Earn your rank.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3178c6"></span> TypeScript</span>
+          <span class="updated">Updated May 12</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">gamification</span>
+          <span class="tag">open-source</span>
+          <span class="tag">community</span>
+        </div>
+      </div>
+
+      <div class="card builder-card">
+        <div class="author-info">
+          <div class="avatar">J</div>
+          <span>JackGilmore · <strong>DropD8</strong></span>
+        </div>
+        <div class="card-desc">Hackathon project — deployed and ready. AI-powered builder tool for rapid prototyping at hackathons.</div>
+        <div class="card-meta">
+          <span><span class="lang" style="background:#3178c6"></span> TypeScript</span>
+          <span class="updated">Updated Oct 2025</span>
+        </div>
+        <div class="card-tags">
+          <span class="tag">hackathon</span>
+          <span class="tag">deployed</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GitHub Blog Highlights -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">📰</span> From GitHub Blog: AI &amp; Engineering</h2>
+    <div class="blog-list">
+
+      <a class="blog-item" href="https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows/">
+        <div class="blog-item-title">Improving Token Efficiency in GitHub Agentic Workflows</div>
+        <div class="blog-item-meta">
+          <span class="blog-item-author">Landon Cox &amp; Mara Kiefer</span>
+          <span>·</span>
+          <span>May 7</span>
+          <span>·</span>
+          <span>🔥 How to instrument production agentic workflows and find inefficiencies</span>
+        </div>
+      </a>
+
+      <a class="blog-item" href="https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/">
+        <div class="blog-item-title">Validating Agentic Behavior When "Correct" Isn't Deterministic</div>
+        <div class="blog-item-meta">
+          <span class="blog-item-author">Gaurav Mittal &amp; Reshabh Kumar Sharma</span>
+          <span>·</span>
+          <span>May 6</span>
+          <span>·</span>
+          <span>Building the "Trust Layer" for Coding Agents with dominatory analysis</span>
+        </div>
+      </a>
+
+      <a class="blog-item" href="https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/">
+        <div class="blog-item-title">Building a General-Purpose Accessibility Agent</div>
+        <div class="blog-item-meta">
+          <span class="blog-item-author">Eric Bailey</span>
+          <span>·</span>
+          <span>May 15</span>
+          <span>·</span>
+          <span>🤖 Experimental AI agent for accessibility at GitHub</span>
+        </div>
+      </a>
+
+      <a class="blog-item" href="https://github.blog/ai-and-ml/github-copilot/dungeons-desktops-building-a-procedurally-generated-roguelike-with-github-copilot-cli/">
+        <div class="blog-item-title">Dungeons &amp; Desktops: Procedurally Generated Roguelike with Copilot CLI</div>
+        <div class="blog-item-meta">
+          <span class="blog-item-author">Lee Reilly</span>
+          <span>·</span>
+          <span>May 12</span>
+          <span>·</span>
+          <span>🎮 Turn any codebase into a unique roguelike dungeon</span>
+        </div>
+      </a>
+
+      <a class="blog-item" href="https://github.blog/ai-and-ml/github-copilot/run-multiple-agents-at-once-with-fleet-in-copilot-cli/">
+        <div class="blog-item-title">Run Multiple Agents at Once with /fleet in Copilot CLI</div>
+        <div class="blog-item-meta">
+          <span class="blog-item-author">Matt Nigh &amp; Brian LaFlamme</span>
+          <span>·</span>
+          <span>April 1</span>
+          <span>·</span>
+          <span>🚀 Parallel agent dispatch with dependency-aware orchestration</span>
+        </div>
+      </a>
+
+      <a class="blog-item" href="https://github.blog/ai-and-ml/github-copilot/the-era-of-ai-as-text-is-over-execution-is-the-new-interface/">
+        <div class="blog-item-title">The Era of "AI as Text" is Over — Execution is the New Interface</div>
+        <div class="blog-item-meta">
+          <span class="blog-item-author">Gwen Davis</span>
+          <span>·</span>
+          <span>March 10</span>
+          <span>·</span>
+          <span>⚡ How Copilot SDK enables programmable execution</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div class="section">
+    <h2 class="section-title"><span class="icon">🔗</span> Resource Links</h2>
+    <div class="resource-links">
+      <a class="resource-link" href="https://github.com/topics/artificial-intelligence">🔬 GitHub AI Topic (37.5K repos)</a>
+      <a class="resource-link" href="https://github.com/topics/ai-builders">🏗️ AI Builders Topic</a>
+      <a class="resource-link" href="https://github.com/trending?since=weekly">📈 Weekly Trending</a>
+      <a class="resource-link" href="https://github.blog/ai-and-ml/">📝 GitHub AI Blog</a>
+      <a class="resource-link" href="https://github.com/collections">📚 Collections</a>
+      <a class="resource-link" href="https://github.com/features/copilot">🤖 GitHub Copilot</a>
+      <a class="resource-link" href="https://github.com/mcp">🔌 MCP Registry</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>🤖 <strong>AI Builders Digest</strong> — Curated from GitHub Trending, Topics &amp; Blog</p>
+    <p style="margin-top: 4px;">Generated by Vera 🌹 · May 21, 2026</p>
+    <p style="margin-top: 8px;">
+      <a href="https://github.com/luokpX/pages">📦 View on GitHub</a>
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>
