@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — 2026-05-23</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 30%, #24243e 60%, #0d1117 100%);
+    color: #e6edf3;
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(88, 101, 242, 0.08) 0%, transparent 60%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+  }
+  .header h1 {
+    font-size: 2.8em;
+    font-weight: 800;
+    background: linear-gradient(135deg, #58a6ff, #bc8cff, #ff6b9d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    letter-spacing: -0.5px;
+  }
+  .header .subtitle {
+    color: #8b949e;
+    font-size: 1.1em;
+    margin-top: 12px;
+    position: relative;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(88, 101, 242, 0.15);
+    border: 1px solid rgba(88, 101, 242, 0.3);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    color: #58a6ff;
+    margin-top: 16px;
+    position: relative;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin: 30px 0 40px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(88,101,242,0.4);
+  }
+  .stat-card .num { font-size: 1.8em; font-weight: 700; color: #58a6ff; }
+  .stat-card .label { font-size: 0.8em; color: #8b949e; margin-top: 4px; }
+
+  /* Section headers */
+  .section { margin: 50px 0; }
+  .section-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(88,101,242,0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .emoji { font-size: 1.2em; }
+
+  /* Repo cards */
+  .repo-grid { display: grid; gap: 20px; }
+  .repo-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .repo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #58a6ff, #bc8cff);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .repo-card:hover {
+    border-color: rgba(88,101,242,0.3);
+    background: rgba(255,255,255,0.05);
+    transform: translateX(4px);
+  }
+  .repo-card:hover::before { opacity: 1; }
+  .repo-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .repo-card .repo-name {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #58a6ff;
+    text-decoration: none;
+  }
+  .repo-card .repo-name:hover { text-decoration: underline; }
+  .repo-card .repo-desc {
+    color: #c9d1d9;
+    margin: 8px 0 14px;
+    font-size: 0.95em;
+    line-height: 1.6;
+  }
+  .repo-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 0.85em;
+    color: #8b949e;
+  }
+  .repo-card .meta span { display: flex; align-items: center; gap: 5px; }
+  .repo-card .meta .stars { color: #f1c40f; }
+  .repo-card .meta .forks { color: #7ee787; }
+  .repo-card .meta .issues { color: #f85149; }
+  .repo-card .meta .lang {
+    background: rgba(88,101,242,0.15);
+    padding: 2px 10px;
+    border-radius: 10px;
+    color: #58a6ff;
+  }
+
+  /* Tags */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .tag {
+    background: rgba(88,101,242,0.1);
+    border: 1px solid rgba(88,101,242,0.2);
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 0.78em;
+    color: #a5b4fc;
+    transition: all 0.2s;
+  }
+  .tag:hover {
+    background: rgba(88,101,242,0.2);
+    border-color: rgba(88,101,242,0.4);
+  }
+
+  /* Quote block */
+  .quote-block {
+    background: linear-gradient(135deg, rgba(88,101,242,0.08), rgba(188,140,255,0.08));
+    border-left: 4px solid #bc8cff;
+    border-radius: 0 12px 12px 0;
+    padding: 20px 28px;
+    margin: 30px 0;
+    font-style: italic;
+    color: #c9d1d9;
+    position: relative;
+  }
+  .quote-block::before {
+    content: '"';
+    position: absolute;
+    top: -8px;
+    left: 14px;
+    font-size: 3em;
+    color: rgba(188,140,255,0.3);
+    line-height: 1;
+  }
+  .quote-block .author {
+    display: block;
+    margin-top: 10px;
+    font-style: normal;
+    font-size: 0.85em;
+    color: #8b949e;
+  }
+
+  /* Key insights */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .insight-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.2s;
+  }
+  .insight-card:hover { transform: translateY(-2px); }
+  .insight-card .icon { font-size: 1.5em; margin-bottom: 8px; }
+  .insight-card h4 { font-size: 1em; font-weight: 600; margin-bottom: 6px; color: #e6edf3; }
+  .insight-card p { font-size: 0.85em; color: #8b949e; line-height: 1.5; }
+
+  /* Resource links */
+  .resource-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px;
+  }
+  .resource-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+  }
+  .resource-item:hover {
+    background: rgba(88,101,242,0.08);
+    border-color: rgba(88,101,242,0.3);
+    transform: translateX(2px);
+  }
+  .resource-item .r-icon { font-size: 1.4em; flex-shrink: 0; }
+  .resource-item .r-title { font-weight: 600; font-size: 0.95em; color: #58a6ff; }
+  .resource-item .r-desc { font-size: 0.8em; color: #8b949e; margin-top: 2px; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #8b949e;
+    font-size: 0.85em;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 60px;
+  }
+  .footer a { color: #58a6ff; text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .header h1 { font-size: 1.8em; }
+    .repo-card { padding: 20px; }
+    .repo-card .card-header { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🤖 AI Builders Digest</h1>
+  <p class="subtitle">Curated from GitHub's open-source AI ecosystem — the projects, people, and trends shaping AI development</p>
+  <span class="date-badge">📅 Saturday, May 23, 2026 • Issue #4</span>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="num">163K+</div>
+    <div class="label">⭐ hermes-agent Stars</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">123K+</div>
+    <div class="label">⭐ firecrawl Stars</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">111K+</div>
+    <div class="label">⭐ awesome-llm-apps Stars</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">14K+</div>
+    <div class="label">AI Agent Repos</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">28K+</div>
+    <div class="label">New AI Projects (May)</div>
+  </div>
+</div>
+
+<!-- TRENDING THIS WEEK -->
+<div class="section">
+  <h2 class="section-title"><span class="emoji">🔥</span> Trending This Week</h2>
+  <div class="repo-grid">
+
+    <div class="repo-card">
+      <div class="card-header">
+        <a href="https://github.com/nexu-io/html-anything" class="repo-name" target="_blank">nexu-io / html-anything</a>
+        <div class="meta">
+          <span class="stars">⭐ 4,600</span>
+          <span class="forks">⑂ 477</span>
+        </div>
+      </div>
+      <p class="repo-desc">✨ The agentic HTML editor — your local AI agent writes the HTML, you ship it. 75 Skills × 9 Surfaces (magazine · deck · poster · XHS / tweet · prototype · data report · Hyperframes). Zero API key — works with Claude Code / Cursor / Codex / Gemini / Copilot.</p>
+      <div class="meta">
+        <span class="lang">HTML</span>
+        <span>📅 Created May 11, 2026</span>
+      </div>
+      <div class="tags">
+        <span class="tag">ai-agents</span>
+        <span class="tag">vibe-coding</span>
+        <span class="tag">claude-skills</span>
+        <span class="tag">agent-skills</span>
+        <span class="tag">generative-ai</span>
+        <span class="tag">byok</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="card-header">
+        <a href="https://github.com/strukto-ai/mirage" class="repo-name" target="_blank">strukto-ai / mirage</a>
+        <div class="meta">
+          <span class="stars">⭐ New</span>
+          <span class="forks">⑂ New</span>
+        </div>
+      </div>
+      <p class="repo-desc">A Unified Virtual Filesystem For AI Agents — bringing structure to agent file access patterns and eliminating fragmented storage approaches.</p>
+      <div class="meta">
+        <span class="lang">TBD</span>
+        <span>📅 Created May 2026</span>
+      </div>
+      <div class="tags">
+        <span class="tag">ai-agents</span>
+        <span class="tag">filesystem</span>
+        <span class="tag">infrastructure</span>
+        <span class="tag">virtual-filesystem</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="card-header">
+        <a href="https://github.com/EKKOLearnAI/hermes-web-ui" class="repo-name" target="_blank">EKKOLearnAI / hermes-web-ui</a>
+        <div class="meta">
+          <span class="stars">⭐ 5,762</span>
+          <span class="forks">⑂ 728</span>
+        </div>
+      </div>
+      <p class="repo-desc">Web dashboard for Hermes Agent — multi-platform AI chat, session management, scheduled jobs, usage analytics. A self-hosted control plane for the hermes-agent ecosystem.</p>
+      <div class="meta">
+        <span class="lang">TypeScript</span>
+        <span>📅 Created Apr 11, 2026</span>
+      </div>
+      <div class="tags">
+        <span class="tag">hermes-agent</span>
+        <span class="tag">dashboard</span>
+        <span class="tag">self-hosted</span>
+        <span class="tag">vue3</span>
+        <span class="tag">multi-model</span>
+        <span class="tag">typescript</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="card-header">
+        <a href="https://github.com/esengine/DeepSeek-Reasonix" class="repo-name" target="_blank">esengine / DeepSeek-Reasonix</a>
+        <div class="meta">
+          <span class="stars">⭐ 5,404</span>
+          <span class="forks">⑂ 300</span>
+        </div>
+      </div>
+      <p class="repo-desc">DeepSeek-native AI coding agent for your terminal. Engineered around prefix-cache stability — leave it running. A terminal-based coding companion leveraging DeepSeek's reasoning capabilities.</p>
+      <div class="meta">
+        <span class="lang">TypeScript</span>
+        <span>📅 Created Apr 21, 2026</span>
+      </div>
+      <div class="tags">
+        <span class="tag">deepseek</span>
+        <span class="tag">agent</span>
+        <span class="tag">coding-agent</span>
+        <span class="tag">cli</span>
+        <span class="tag">tui</span>
+        <span class="tag">prompt-caching</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 🔥 ALL-TIME STARS LEADERS -->
+<div class="section">
+  <h2 class="section-title"><span class="emoji">🏆</span> AI Builder Titans (All-Time Stars)</h2>
+  <div class="repo-grid">
+
+    <div class="repo-card">
+      <div class="card-header">
+        <a href="https://github.com/NousResearch/hermes-agent" class="repo-name" target="_blank">NousResearch / hermes-agent</a>
+        <div class="meta">
+          <span class="stars">⭐ 163,134</span>
+          <span class="forks">⑂ 26,684</span>
+          <span class="issues">⚠ 13,226</span>
+        </div>
+      </div>
+      <p class="repo-desc">"The agent that grows with you" — the open-source AI agent framework that sparked the agent revolution. Works with Claude, ChatGPT, and major LLM providers.</p>
+      <div class="meta">
+        <span class="lang">Python</span>
+        <span>📅 Created Jul 2025</span>
+        <span>📜 MIT</span>
+        <a href="https://hermes-agent.nousresearch.com" style="color:#58a6ff;font-size:0.85em;" target="_blank">🔗 hermes-agent.nousresearch.com</a>
+      </div>
+      <div class="tags">
+        <span class="tag">ai-agent</span>
+        <span class="tag">anthropic</span>
+        <span class="tag">claude</span>
+        <span class="tag">openclaw</span>
+        <span class="tag">nous-research</span>
+        <span class="tag">llm</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="card-header">
+        <a href="https://github.com/firecrawl/firecrawl" class="repo-name" target="_blank">firecrawl / firecrawl</a>
+        <div class="meta">
+          <span class="stars">⭐ 123,084</span>
+          <span class="forks">⑂ 7,463</span>
+          <span class="issues">⚠ 338</span>
+        </div>
+      </div>
+      <p class="repo-desc">🔥 Search, scrape, and clean the web for AI agents. The go-to tool for giving LLMs access to real-time web data — from crawling to markdown conversion.</p>
+      <div class="meta">
+        <span class="lang">TypeScript</span>
+        <span>📅 Created Apr 2024</span>
+        <span>📜 AGPL-3.0</span>
+        <a href="https://firecrawl.dev" style="color:#58a6ff;font-size:0.85em;" target="_blank">🔗 firecrawl.dev</a>
+      </div>
+      <div class="tags">
+        <span class="tag">ai-agents</span>
+        <span class="tag">web-crawler</span>
+        <span class="tag">scraping</span>
+        <span class="tag">html-to-markdown</span>
+        <span class="tag">web-search</span>
+        <span class="tag">data-extraction</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="card-header">
+        <a href="https://github.com/Shubhamsaboo/awesome-llm-apps" class="repo-name" target="_blank">Shubhamsaboo / awesome-llm-apps</a>
+        <div class="meta">
+          <span class="stars">⭐ 111,447</span>
+          <span class="forks">⑂ High</span>
+        </div>
+      </div>
+      <p class="repo-desc">100+ AI Agent & RAG apps you can actually run — clone, customize, ship. The ultimate collection of production-ready LLM application templates.</p>
+      <div class="meta">
+        <span class="lang">Python</span>
+        <span>📅 Created Apr 2024</span>
+        <a href="https://www.theunwindai.com" style="color:#58a6ff;font-size:0.85em;" target="_blank">🔗 theunwindai.com</a>
+      </div>
+      <div class="tags">
+        <span class="tag">llm</span>
+        <span class="tag">rag</span>
+        <span class="tag">ai-agents</span>
+        <span class="tag">templates</span>
+        <span class="tag">production-ready</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 🧠 INDUSTRY INSIGHTS -->
+<div class="section">
+  <h2 class="section-title"><span class="emoji">🧠</span> Key Insights & Trends</h2>
+  <div class="insights-grid">
+    <div class="insight-card">
+      <div class="icon">🤖</div>
+      <h4>Agentic Everything</h4>
+      <p>The "agent" paradigm has fully taken over. From coding assistants (DeepSeek-Reasonix) to web scraping (firecrawl) to UI generation (pi-generative-ui) — every tool is becoming agent-driven. The age of passive software is ending.</p>
+    </div>
+    <div class="insight-card">
+      <div class="icon">🔌</div>
+      <h4>Zero API Key Movement</h4>
+      <p>Projects like html-anything advertise "zero API key — bring your own." The ecosystem is moving toward local-first, model-agnostic tools that work with any LLM backend, reducing vendor lock-in.</p>
+    </div>
+    <div class="insight-card">
+      <div class="icon">🧩</div>
+      <h4>Memory & Context Systems</h4>
+      <p>Tencent's TencentDB-Agent-Memory delivers fully local long-term memory for AI agents via a 4-tier progressive pipeline. Agent memory is now a first-class infrastructure concern.</p>
+    </div>
+    <div class="insight-card">
+      <div class="icon">🌐</div>
+      <h4>Self-Hosted Agent Control Planes</h4>
+      <p>Hermes-web-ui at 5.7K stars shows growing demand for self-hosted agent management dashboards. The trend is clear: developers want to own their agent infrastructure end-to-end.</p>
+    </div>
+    <div class="insight-card">
+      <div class="icon">🎨</div>
+      <h4>Vibe Coding & Generative UI</h4>
+      <p>html-anything (4.6K stars in 12 days!) and pi-generative-ui represent the new wave of "vibe coding" — describe what you want in natural language, and AI generates production-ready HTML/UI.</p>
+    </div>
+    <div class="insight-card">
+      <div class="icon">💪</div>
+      <h4>DeepSeek Ecosystem Growth</h4>
+      <p>DeepSeek-Reasonix hitting 5.4K stars in just one month signals the rise of DeepSeek as a serious coding agent platform. Open-source models are now competitive with closed-source alternatives.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 💬 QUOTE OF THE WEEK -->
+<div class="quote-block">
+  The agent that grows with you — no longer just a tagline. With 163K stars, hermes-agent has proven that AI agents aren't a fad. They're the new operating system for how we build software.
+  <span class="author">— NousResearch, creators of hermes-agent</span>
+</div>
+
+<!-- 📚 RESOURCE LINKS -->
+<div class="section">
+  <h2 class="section-title"><span class="emoji">📚</span> Resource Links</h2>
+  <div class="resource-list">
+    <a href="https://github.com/NousResearch/hermes-agent" class="resource-item" target="_blank">
+      <span class="r-icon">🧠</span>
+      <div>
+        <div class="r-title">Hermes Agent</div>
+        <div class="r-desc">The agent that grows with you — open-source AI agent framework</div>
+      </div>
+    </a>
+    <a href="https://github.com/firecrawl/firecrawl" class="resource-item" target="_blank">
+      <span class="r-icon">🔥</span>
+      <div>
+        <div class="r-title">Firecrawl</div>
+        <div class="r-desc">Search, scrape, and clean the web for AI agents</div>
+      </div>
+    </a>
+    <a href="https://github.com/Shubhamsaboo/awesome-llm-apps" class="resource-item" target="_blank">
+      <span class="r-icon">💡</span>
+      <div>
+        <div class="r-title">Awesome LLM Apps</div>
+        <div class="r-desc">100+ AI Agent & RAG apps you can actually run</div>
+      </div>
+    </a>
+    <a href="https://github.com/nexu-io/html-anything" class="resource-item" target="_blank">
+      <span class="r-icon">✨</span>
+      <div>
+        <div class="r-title">HTML Anything</div>
+        <div class="r-desc">Agentic HTML editor — 75 skills × 9 surfaces</div>
+      </div>
+    </a>
+    <a href="https://github.com/esengine/DeepSeek-Reasonix" class="resource-item" target="_blank">
+      <span class="r-icon">🧑‍💻</span>
+      <div>
+        <div class="r-title">DeepSeek Reasonix</div>
+        <div class="r-desc">DeepSeek-native AI coding agent for your terminal</div>
+      </div>
+    </a>
+    <a href="https://github.com/Tencent/TencentDB-Agent-Memory" class="resource-item" target="_blank">
+      <span class="r-icon">🗄️</span>
+      <div>
+        <div class="r-title">TencentDB Agent Memory</div>
+        <div class="r-desc">Fully local long-term memory for AI Agents</div>
+      </div>
+    </a>
+    <a href="https://github.com/EKKOLearnAI/hermes-web-ui" class="resource-item" target="_blank">
+      <span class="r-icon">📊</span>
+      <div>
+        <div class="r-title">Hermes Web UI</div>
+        <div class="r-desc">Web dashboard for Hermes Agent management</div>
+      </div>
+    </a>
+    <a href="https://github.com/strukto-ai/mirage" class="resource-item" target="_blank">
+      <span class="r-icon">🪄</span>
+      <div>
+        <div class="r-title">Mirage</div>
+        <div class="r-desc">Unified Virtual Filesystem For AI Agents</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- 💡 NEW RELEASES -->
+<div class="section">
+  <h2 class="section-title"><span class="emoji">💡</span> More Notable Projects</h2>
+  <div class="repo-grid">
+    <div class="repo-card">
+      <div class="card-header">
+        <a href="https://github.com/Tencent/TencentDB-Agent-Memory" class="repo-name" target="_blank">Tencent / TencentDB-Agent-Memory</a>
+      </div>
+      <p class="repo-desc">TencentDB Agent Memory delivers fully local long-term memory for AI Agents via a 4-tier progressive pipeline, with zero external API dependencies. Created April 2026.</p>
+      <div class="tags">
+        <span class="tag">agent-memory</span>
+        <span class="tag">local-first</span>
+        <span class="tag">tencent</span>
+        <span class="tag">database</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="card-header">
+        <a href="https://github.com/Michaelliv/pi-generative-ui" class="repo-name" target="_blank">Michaelliv / pi-generative-ui</a>
+      </div>
+      <p class="repo-desc">Claude.ai's generative UI — reverse-engineered, rebuilt for pi. Interactive HTML/SVG widgets in native macOS windows. Created March 2026.</p>
+      <div class="meta">
+        <span class="lang">TypeScript</span>
+        <span>⭐ 980</span>
+      </div>
+      <div class="tags">
+        <span class="tag">generative-ui</span>
+        <span class="tag">claude</span>
+        <span class="tag">macos</span>
+        <span class="tag">html</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>🤖 <strong>AI Builders Digest</strong> — curated daily from GitHub's open-source ecosystem</p>
+  <p style="margin-top:6px;">
+    Data sourced from <a href="https://docs.github.com/en/rest" target="_blank">GitHub REST API</a> •
+    Built by <a href="https://github.com/luokpX" target="_blank">luokpX</a> •
+    <a href="https://luokpx.github.io/pages/ai-builders-digest-2026-05-23.html" target="_blank">📄 Permalink</a>
+  </p>
+  <p style="margin-top:8px; opacity:0.6;">© 2026 AI Builders Digest. Open source data, curated with care.</p>
+</div>
+
+</div>
+</body>
+</html>
