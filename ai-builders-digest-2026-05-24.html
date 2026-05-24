@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — 2026-05-24</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 30%, #24243e 60%, #0d1117 100%);
+    color: #e6edf3;
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(88, 101, 242, 0.08) 0%, transparent 60%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+  }
+  .header h1 {
+    font-size: 2.8em;
+    font-weight: 800;
+    background: linear-gradient(135deg, #58a6ff, #bc8cff, #ff6b9d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    letter-spacing: -0.5px;
+  }
+  .header .subtitle {
+    color: #8b949e;
+    font-size: 1.1em;
+    margin-top: 12px;
+    position: relative;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(88, 101, 242, 0.15);
+    border: 1px solid rgba(88, 101, 242, 0.3);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    color: #58a6ff;
+    margin-top: 16px;
+    position: relative;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin: 30px 0 40px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(88,101,242,0.4);
+  }
+  .stat-card .num { font-size: 1.8em; font-weight: 700; color: #58a6ff; }
+  .stat-card .label { font-size: 0.8em; color: #8b949e; margin-top: 4px; }
+
+  /* Section headers */
+  .section { margin: 50px 0; }
+  .section-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(88,101,242,0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .emoji { font-size: 1.2em; }
+
+  /* Repo cards */
+  .repo-grid { display: grid; gap: 20px; }
+  .repo-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .repo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #58a6ff, #bc8cff);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .repo-card:hover {
+    border-color: rgba(88,101,242,0.3);
+    background: rgba(255,255,255,0.05);
+    transform: translateX(4px);
+  }
+  .repo-card:hover::before { opacity: 1; }
+  .repo-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .repo-card .repo-name {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #58a6ff;
+    text-decoration: none;
+  }
+  .repo-card .repo-name:hover { text-decoration: underline; }
+  .repo-card .repo-desc {
+    color: #c9d1d9;
+    margin-top: 10px;
+    font-size: 0.95em;
+  }
+  .repo-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 14px;
+    font-size: 0.85em;
+    color: #8b949e;
+  }
+  .repo-card .meta span { display: flex; align-items: center; gap: 5px; }
+  .repo-card .meta .star { color: #f0c040; }
+  .repo-card .meta .fork { color: #79c0ff; }
+  .repo-card .meta .lang { color: #7ee787; }
+  .repo-card .topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .repo-card .topic-tag {
+    background: rgba(88,101,242,0.12);
+    border: 1px solid rgba(88,101,242,0.2);
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 0.78em;
+    color: #58a6ff;
+  }
+  .repo-card .key-points {
+    margin-top: 14px;
+    padding: 14px 18px;
+    background: rgba(88,101,242,0.06);
+    border-left: 3px solid #58a6ff;
+    border-radius: 0 8px 8px 0;
+  }
+  .repo-card .key-points .label {
+    font-size: 0.78em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #58a6ff;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .repo-card .key-points ul {
+    list-style: none;
+    padding: 0;
+    font-size: 0.9em;
+    color: #c9d1d9;
+  }
+  .repo-card .key-points ul li::before {
+    content: '▸ ';
+    color: #58a6ff;
+  }
+
+  /* Quote block */
+  .quote-block {
+    margin: 40px 0;
+    padding: 30px 35px;
+    background: linear-gradient(135deg, rgba(88,101,242,0.08), rgba(188,140,255,0.08));
+    border: 1px solid rgba(88,101,242,0.15);
+    border-radius: 16px;
+    position: relative;
+  }
+  .quote-block::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    font-size: 4em;
+    color: rgba(88,101,242,0.2);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .quote-block q {
+    font-size: 1.15em;
+    font-style: italic;
+    color: #e6edf3;
+    line-height: 1.8;
+    quotes: none;
+  }
+  .quote-block .quote-author {
+    margin-top: 12px;
+    font-size: 0.85em;
+    color: #8b949e;
+    text-align: right;
+  }
+
+  /* Resource links */
+  .resource-list {
+    display: grid;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .resource-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    transition: all 0.2s;
+    text-decoration: none;
+    color: #c9d1d9;
+  }
+  .resource-item:hover {
+    background: rgba(88,101,242,0.08);
+    border-color: rgba(88,101,242,0.3);
+    transform: translateX(4px);
+  }
+  .resource-item .icon { font-size: 1.2em; }
+  .resource-item .title { font-weight: 600; color: #58a6ff; }
+  .resource-item .desc { font-size: 0.85em; color: #8b949e; }
+
+  /* Tags */
+  .tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .tag {
+    background: rgba(88,101,242,0.1);
+    border: 1px solid rgba(88,101,242,0.15);
+    border-radius: 14px;
+    padding: 6px 14px;
+    font-size: 0.85em;
+    color: #bc8cff;
+    transition: all 0.2s;
+  }
+  .tag:hover {
+    background: rgba(88,101,242,0.2);
+    transform: scale(1.05);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #484f58;
+    font-size: 0.85em;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin-top: 60px;
+  }
+  .footer a { color: #58a6ff; text-decoration: none; }
+
+  @media (max-width: 640px) {
+    .header h1 { font-size: 2em; }
+    .repo-card .card-header { flex-direction: column; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🤖 AI Builders Digest</h1>
+    <p class="subtitle">The best open-source AI projects, tools, and community insights — curated for builders</p>
+    <div class="date-badge">📅 Sunday, May 24, 2026</div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="num">40K+</div>
+      <div class="label">📦 Repos Tracked</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">🔥 5</div>
+      <div class="label">🏆 Hot Projects</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">8</div>
+      <div class="label">🌍 Categories</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">155K+</div>
+      <div class="label">⭐ Top Stars</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">12</div>
+      <div class="label">📋 Featured Repos</div>
+    </div>
+  </div>
+
+  <!-- Quote Block -->
+  <div class="quote-block">
+    <q>From vibe coding to agentic engineering — we're witnessing the Cambrian explosion of AI-native development. The best tool isn't the one with the most features; it's the one that disappears into your workflow and makes you forget you're using AI at all.</q>
+    <div class="quote-author">— Community insight, May 2026</div>
+  </div>
+
+  <!-- Section 1: Hot New Projects -->
+  <div class="section">
+    <div class="section-title">
+      <span class="emoji">🔥</span> Hot New Projects This Week
+    </div>
+    <div class="repo-grid">
+
+      <!-- minnimind-o -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/jingyaogong/minimind-o">jingyaogong/minimind-o</a>
+          <div class="meta">
+            <span class="star">⭐ 1,515</span>
+            <span class="fork">⑂ 180</span>
+            <span class="lang">🔵 Python</span>
+          </div>
+        </div>
+        <p class="repo-desc">🎙️ A 0.1B Omni model trained from scratch — capable of listening, speaking, and seeing! Full multimodal training pipeline from zero.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>End-to-end omni-modal model training from scratch (vision + audio + text)</li>
+            <li>Ultra-lightweight 0.1B parameter architecture — runs on consumer GPUs</li>
+            <li>Open-source training pipeline & dataset for reproducible research</li>
+            <li>Published May 2026 — already 1.5K stars in under a month</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#omni</span>
+          <span class="topic-tag">#multimodal</span>
+          <span class="topic-tag">#llm</span>
+          <span class="topic-tag">#open-source</span>
+        </div>
+      </div>
+
+      <!-- awesome-ai-extensions -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/kklt92/awesome-ai-extensions">kklt92/awesome-ai-extensions</a>
+          <div class="meta">
+            <span class="star">⭐ 521</span>
+            <span class="fork">⑂ 0</span>
+            <span class="lang">📄 Markdown</span>
+          </div>
+        </div>
+        <p class="repo-desc">A curated list of AI-powered browser extensions, plugins, and add-ons — the ultimate toolkit for AI-enhanced browsing.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>Comprehensive directory of AI browser extensions across Chrome, Firefox, Edge</li>
+            <li>Covers productivity, coding, writing, research, and creative AI tools</li>
+            <li>Newly published April 2026 — fast-growing community resource</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#browser-extension</span>
+          <span class="topic-tag">#ai-tools</span>
+          <span class="topic-tag">#awesome-list</span>
+          <span class="topic-tag">#productivity</span>
+        </div>
+      </div>
+
+      <!-- ParoQuant -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/z-lab/paroquant">z-lab/paroquant</a>
+          <div class="meta">
+            <span class="star">⭐ 290</span>
+            <span class="fork">⑂ 26</span>
+            <span class="lang">🔵 Python</span>
+          </div>
+        </div>
+        <p class="repo-desc">[ICLR 2026] ParoQuant: Pairwise Rotation Quantization for Efficient Reasoning LLM Inference</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>Accepted at ICLR 2026 — top-tier ML conference publication</li>
+            <li>Novel pairwise rotation quantization technique for LLM inference speedup</li>
+            <li>Targets efficient reasoning in large language models with minimal accuracy loss</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#quantization</span>
+          <span class="topic-tag">#llm-inference</span>
+          <span class="topic-tag">#ICLR2026</span>
+          <span class="topic-tag">#research</span>
+        </div>
+      </div>
+
+      <!-- Quansloth -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/PacifAIst/Quansloth">PacifAIst/Quansloth</a>
+          <div class="meta">
+            <span class="star">⭐ New</span>
+            <span class="lang">🔵 Python</span>
+          </div>
+        </div>
+        <p class="repo-desc">Google TurboQuant (ICLR 2026) implementation — elite KV cache compression for local LLM inference. Fully private, air-gapped AI server for consumer hardware.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>Implements Google's TurboQuant KV cache compression from ICLR 2026</li>
+            <li>Fully private, air-gapped AI server for massive context on consumer GPUs</li>
+            <li>Enables long-context LLM inference on locally-owned hardware</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#kv-cache</span>
+          <span class="topic-tag">#compression</span>
+          <span class="topic-tag">#local-llm</span>
+          <span class="topic-tag">#privacy</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 2: Agentic Engineering & Vibe Coding -->
+  <div class="section">
+    <div class="section-title">
+      <span class="emoji">⚡</span> Agentic Engineering &amp; Vibe Coding
+    </div>
+    <div class="repo-grid">
+
+      <!-- claude-code-best-practice -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/shanraisshan/claude-code-best-practice">shanraisshan/claude-code-best-practice</a>
+          <div class="meta">
+            <span class="star">⭐ 54,565</span>
+            <span class="fork">⑂ 5,472</span>
+            <span class="lang">🟠 HTML</span>
+          </div>
+        </div>
+        <p class="repo-desc">From vibe coding to agentic engineering — practice makes Claude perfect. The definitive guide to mastering Claude Code.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>Comprehensive best-practices guide for Claude Code agents & workflows</li>
+            <li>Covers agentic AI, context engineering, MCP, and agentic workflow patterns</li>
+            <li>54.5K stars — one of the fastest-growing AI developer resources</li>
+            <li>Bridges the gap from beginner vibe coding to professional agentic engineering</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#agentic-engineering</span>
+          <span class="topic-tag">#claude-code</span>
+          <span class="topic-tag">#best-practices</span>
+          <span class="topic-tag">#vibe-coding</span>
+          <span class="topic-tag">#context-engineering</span>
+        </div>
+      </div>
+
+      <!-- vibe-kanban -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/BloopAI/vibe-kanban">BloopAI/vibe-kanban</a>
+          <div class="meta">
+            <span class="star">⭐ Trending</span>
+            <span class="lang">📄 Markdown/Config</span>
+          </div>
+        </div>
+        <p class="repo-desc">Get 10X more out of Claude Code, Codex or any coding agent with structured workflow management.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>Kanban-style workflow to maximize AI coding agent productivity</li>
+            <li>Works with Claude Code, Codex, and other coding agents</li>
+            <li>Structured task management for AI-assisted development pipelines</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#workflow</span>
+          <span class="topic-tag">#productivity</span>
+          <span class="topic-tag">#coding-agent</span>
+          <span class="topic-tag">#kanban</span>
+        </div>
+      </div>
+
+      <!-- easy-vibe -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/datawhalechina/easy-vibe">datawhalechina/easy-vibe</a>
+          <div class="meta">
+            <span class="star">⭐ 14,228</span>
+            <span class="fork">⑂ 1,355</span>
+            <span class="lang">🟡 JavaScript</span>
+          </div>
+        </div>
+        <p class="repo-desc">💻 vibe coding 2026 — Your first modern Coding course for beginners to master step by step.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>Beginner-friendly vibe coding course covering AI-assisted development</li>
+            <li>Integrates DeepSeek, Gemini, GPT, and modern LLM workflows</li>
+            <li>MCP, agent, low-code/no-code patterns taught step by step</li>
+            <li>14K+ stars from the Chinese AI education community</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#vibe-coding</span>
+          <span class="topic-tag">#course</span>
+          <span class="topic-tag">#beginner</span>
+          <span class="topic-tag">#deepseek</span>
+          <span class="topic-tag">#mcp</span>
+          <span class="topic-tag">#nextjs</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quote Block -->
+  <div class="quote-block">
+    <q>The line between "using AI tools" and "being an AI engineer" has blurred. In 2026, the most valuable skill isn't prompting — it's knowing how to architect systems where AI is a native component, not an add-on.</q>
+    <div class="quote-author">— From the agentic engineering movement</div>
+  </div>
+
+  <!-- Section 3: AI Infrastructure & Platforms -->
+  <div class="section">
+    <div class="section-title">
+      <span class="emoji">🏗️</span> AI Infrastructure &amp; Platforms
+    </div>
+    <div class="repo-grid">
+
+      <!-- LobeHub -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/lobehub/lobehub">lobehub/lobehub</a>
+          <div class="meta">
+            <span class="star">⭐ 77,602</span>
+            <span class="fork">⑂ 15,272</span>
+            <span class="lang">🔵 TypeScript</span>
+          </div>
+        </div>
+        <p class="repo-desc">🤯 LobeHub is your Chief Agent Operator — organizing your agents into 7×24 operations by hiring, scheduling, and reporting on your entire AI team.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>Agent orchestration platform — "Chief Agent Operator" paradigm</li>
+            <li>Multi-model support: OpenAI, Claude, DeepSeek, Gemini, and more</li>
+            <li>Knowledge base + MCP integration for enterprise agent workflows</li>
+            <li>77.6K stars — one of the most popular AI agent platforms</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#agent-orchestration</span>
+          <span class="topic-tag">#cao</span>
+          <span class="topic-tag">#mcp</span>
+          <span class="topic-tag">#multi-model</span>
+          <span class="topic-tag">#openai</span>
+          <span class="topic-tag">#deepseek</span>
+        </div>
+      </div>
+
+      <!-- Dify -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/langgenius/dify">langgenius/dify</a>
+          <div class="meta">
+            <span class="star">⭐ 70K+</span>
+            <span class="lang">🔵 Python</span>
+          </div>
+        </div>
+        <p class="repo-desc">Production-ready platform for agentic workflow development. Build, deploy, and manage AI agents at scale.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>Enterprise-grade agentic workflow development and deployment platform</li>
+            <li>Visual workflow builder with RAG, tool-use, and multi-agent support</li>
+            <li>Self-hostable with Docker — full data sovereignty</li>
+            <li>Widely adopted across enterprises for production AI applications</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#agentic-workflow</span>
+          <span class="topic-tag">#production</span>
+          <span class="topic-tag">#rag</span>
+          <span class="topic-tag">#docker</span>
+          <span class="topic-tag">#self-hosted</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 4: Developer Learning & Community Gems -->
+  <div class="section">
+    <div class="section-title">
+      <span class="emoji">📚</span> Developer Learning &amp; Community Favorites
+    </div>
+    <div class="repo-grid">
+
+      <!-- JavaGuide -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/Snailclimb/JavaGuide">Snailclimb/JavaGuide</a>
+          <div class="meta">
+            <span class="star">⭐ 155,835</span>
+            <span class="fork">⑂ 46,136</span>
+            <span class="lang">🟡 JavaScript</span>
+          </div>
+        </div>
+        <p class="repo-desc">Java 面试 &amp; 后端通用面试指南 — covering computer fundamentals, databases, distributed systems, high concurrency, system design &amp; AI application development.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>#1 Chinese developer interview guide with 155K+ stars</li>
+            <li>Now updated for 2026 with AI/Agent/MCP/SpringAI sections</li>
+            <li>Covers Java, MySQL, Redis, distributed systems, and system design</li>
+            <li>The bridge between traditional backend engineering and AI-native development</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#java</span>
+          <span class="topic-tag">#interview</span>
+          <span class="topic-tag">#system-design</span>
+          <span class="topic-tag">#springai</span>
+          <span class="topic-tag">#mcp</span>
+          <span class="topic-tag">#deepseek</span>
+        </div>
+      </div>
+
+      <!-- Codefather -->
+      <div class="repo-card">
+        <div class="card-header">
+          <a class="repo-name" href="https://github.com/liyupi/codefather">liyupi/codefather</a>
+          <div class="meta">
+            <span class="star">⭐ 7,445</span>
+            <span class="fork">⑂ 1,278</span>
+            <span class="lang">🔵 TypeScript</span>
+          </div>
+        </div>
+        <p class="repo-desc">程序员鱼皮的编程宝典 — the most comprehensive 2026 programming learning roadmap! Covers Java, Frontend, Python, C++, Algorithms, AI Application Development, AI Agents, RAG, MCP, Prompt Engineering.</p>
+        <div class="key-points">
+          <div class="label">📌 Key Points</div>
+          <ul>
+            <li>All-in-one programming learning roadmap updated for 2026</li>
+            <li>Includes AI agent development, RAG, and MCP practical tutorials</li>
+            <li>Zero-to-hero path for career changers and CS students</li>
+            <li>Popular in the Chinese developer community with 7.4K+ stars</li>
+          </ul>
+        </div>
+        <div class="topics">
+          <span class="topic-tag">#learning-roadmap</span>
+          <span class="topic-tag">#ai-agents</span>
+          <span class="topic-tag">#rag</span>
+          <span class="topic-tag">#mcp</span>
+          <span class="topic-tag">#prompt-engineering</span>
+          <span class="topic-tag">#fullstack</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quote Block -->
+  <div class="quote-block">
+    <q>The AI industry in 2026 is no longer about who has the biggest model — it's about who can build the most effective workflows around models. Infrastructure beats architecture. Economics beats benchmarks.</q>
+    <div class="quote-author">— AI Builders community insight</div>
+  </div>
+
+  <!-- Section 5: Resource Links -->
+  <div class="section">
+    <div class="section-title">
+      <span class="emoji">🔗</span> Top Resource Links
+    </div>
+    <div class="resource-list">
+      <a class="resource-item" href="https://github.com/shanraisshan/claude-code-best-practice">
+        <span class="icon">📘</span>
+        <div><span class="title">Claude Code Best Practices</span><br><span class="desc">The definitive guide to agentic engineering — from vibe coding to production</span></div>
+      </a>
+      <a class="resource-item" href="https://github.com/datawhalechina/easy-vibe">
+        <span class="icon">🎓</span>
+        <div><span class="title">Easy Vibe — Modern Coding Course 2026</span><br><span class="desc">Step-by-step beginner course in AI-assisted development with LLMs and MCP</span></div>
+      </a>
+      <a class="resource-item" href="https://github.com/jingyaogong/minimind-o">
+        <span class="icon">🧠</span>
+        <div><span class="title">MiniMind-O: Train Your Own Omni Model</span><br><span class="desc">0.1B multimodal model training from scratch — vision, speech, and text</span></div>
+      </a>
+      <a class="resource-item" href="https://github.com/lobehub/lobehub">
+        <span class="icon">🤖</span>
+        <div><span class="title">LobeHub — Chief Agent Operator</span><br><span class="desc">Orchestrate your entire AI agent team with multi-model support</span></div>
+      </a>
+      <a class="resource-item" href="https://github.com/langgenius/dify">
+        <span class="icon">⚙️</span>
+        <div><span class="title">Dify — Agentic Workflow Platform</span><br><span class="desc">Production-ready platform for building and deploying AI agents</span></div>
+      </a>
+      <a class="resource-item" href="https://github.com/kklt92/awesome-ai-extensions">
+        <span class="icon">🧩</span>
+        <div><span class="title">Awesome AI Extensions</span><br><span class="desc">Curated list of AI-powered browser extensions and plugins</span></div>
+      </a>
+      <a class="resource-item" href="https://github.com/Snailclimb/JavaGuide">
+        <span class="icon">📖</span>
+        <div><span class="title">JavaGuide — Interview & System Design</span><br><span class="desc">155K-star guide with AI/Agent/MCP sections added for 2026</span></div>
+      </a>
+      <a class="resource-item" href="https://github.com/BloopAI/vibe-kanban">
+        <span class="icon">📋</span>
+        <div><span class="title">Vibe Kanban — 10X Your AI Coding Agent</span><br><span class="desc">Structured workflow for Claude Code, Codex, and any AI coding agent</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Section 6: Tags Cloud -->
+  <div class="section">
+    <div class="section-title">
+      <span class="emoji">🏷️</span> Trending Topics This Week
+    </div>
+    <div class="tags-cloud">
+      <span class="tag">#agentic-engineering</span>
+      <span class="tag">#vibe-coding</span>
+      <span class="tag">#MCP</span>
+      <span class="tag">#omni-model</span>
+      <span class="tag">#kv-cache</span>
+      <span class="tag">#llm-inference</span>
+      <span class="tag">#claude-code</span>
+      <span class="tag">#deepseek</span>
+      <span class="tag">#openai</span>
+      <span class="tag">#multi-agent</span>
+      <span class="tag">#rag</span>
+      <span class="tag">#quantization</span>
+      <span class="tag">#agent-orchestration</span>
+      <span class="tag">#context-engineering</span>
+      <span class="tag">#low-code</span>
+      <span class="tag">#self-hosted</span>
+      <span class="tag">#prompt-engineering</span>
+      <span class="tag">#air-gapped</span>
+      <span class="tag">#ICLR2026</span>
+      <span class="tag">#browser-extension</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>🤖 <strong>AI Builders Digest</strong> — Curated from the GitHub AI builder community</p>
+    <p>Week of May 18–24, 2026 · Data sourced from GitHub API</p>
+    <p>Built with ❤️ by an AI assistant · <a href="https://github.com/luokpX/pages">GitHub Repo</a></p>
+  </div>
+
+</div>
+</body>
+</html>
