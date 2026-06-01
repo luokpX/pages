@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — June 1, 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e293b;
+    --text: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-1: #6366f1;
+    --accent-2: #8b5cf6;
+    --accent-3: #a855f7;
+    --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    --green: #10b981;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .hero {
+    position: relative;
+    padding: 80px 24px 60px;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0e17 0%, #1a1040 40%, #0f172a 70%, #0a0e17 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 40% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 70%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(236, 72, 153, 0.04) 0%, transparent 40%);
+    animation: aurora 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes aurora {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(20px, -30px); }
+    50% { transform: translate(-20px, 10px); }
+    75% { transform: translate(10px, 20px); }
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-1);
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+  .hero-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .hero-date .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .stats-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px;
+    padding: 28px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { text-align: center; }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon { font-size: 28px; }
+
+  .story-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .story-card:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .story-title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .story-title a {
+    color: var(--text);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .story-title a:hover { color: var(--accent-1); }
+  .story-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+  }
+  .story-source.verge { background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.25); color: var(--cyan); }
+  .story-source.simon { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.25); color: var(--green); }
+  .story-source.anthropic { background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.25); color: var(--accent-3); }
+  .story-source.fortune { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.25); color: var(--orange); }
+  .story-source.openai { background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.25); color: var(--accent-1); }
+  .story-source.msft { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.25); color: var(--blue); }
+
+  .story-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .story-desc {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .key-points { margin: 12px 0 16px; }
+  .key-points li {
+    list-style: none;
+    padding: 4px 0 4px 20px;
+    position: relative;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .key-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent-2);
+    font-weight: 700;
+  }
+
+  .story-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .tag.funding { background: rgba(245, 158, 11, 0.1); color: var(--orange); }
+  .tag.model { background: rgba(168, 85, 247, 0.1); color: var(--accent-3); }
+  .tag.product { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+  .tag.agent { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .tag.regulation { background: rgba(239, 68, 68, 0.1); color: var(--red); }
+  .tag.microsoft { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+  .tag.openai { background: rgba(99, 102, 241, 0.1); color: var(--accent-1); }
+  .tag.anthropic { background: rgba(168, 85, 247, 0.1); color: var(--accent-3); }
+  .tag.health { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .tag.security { background: rgba(239, 68, 68, 0.1); color: var(--red); }
+  .tag.design { background: rgba(236, 72, 153, 0.1); color: #f472b6; }
+  .tag.robot { background: rgba(245, 158, 11, 0.1); color: var(--orange); }
+  .tag.photo { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+
+  .story-link {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--accent-1);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .story-link:hover { text-decoration: underline; }
+
+  .quote-block {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(168, 85, 247, 0.04));
+    border-left: 3px solid var(--accent-2);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .quote-block p {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .quote-block .attribution {
+    margin-top: 8px;
+    font-size: 13px;
+    font-style: normal;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .top-pick-badge {
+    position: absolute;
+    top: -1px;
+    right: 28px;
+    padding: 4px 14px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+    border-radius: 0 0 8px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+  }
+
+  .tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 32px 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .tags-cloud .tag-item {
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+  }
+  .tags-cloud .tag-item:hover {
+    border-color: var(--accent-1);
+    color: var(--accent-1);
+    background: rgba(99, 102, 241, 0.08);
+  }
+
+  .analysis-box {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), rgba(6, 182, 212, 0.04));
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 28px 0;
+  }
+  .analysis-box h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+  .analysis-box p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .resources-section {
+    margin: 32px 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .resources-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .resource-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+    gap: 12px;
+  }
+  .resource-link:last-child { border-bottom: none; }
+  .resource-link:hover { color: var(--accent-1); }
+  .resource-link .title { font-weight: 500; }
+  .resource-link .arrow { color: var(--text-muted); font-size: 14px; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .footer a {
+    color: var(--accent-1);
+    text-decoration: none;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 40px; }
+    .stats-bar { gap: 20px; padding: 20px 16px; }
+    .stat-number { font-size: 22px; }
+    .container { padding: 24px 16px 60px; }
+    .story-card { padding: 20px; }
+    .story-header { flex-direction: column; }
+    .top-pick-badge { right: 16px; font-size: 10px; padding: 3px 10px; }
+  }
+
+  .blinking-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #10b981;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🤖 AI Builders Digest</div>
+    <h1>Anthropic Hits $965B, Claude Opus 4.8 Drops, Microsoft Builds a Super App</h1>
+    <p>Curated from the AI building community — the biggest stories, model releases, funding rounds, and product launches shaping the AI landscape</p>
+    <div class="hero-date">
+      <span class="dot"></span>
+      2026-06-01 · Weekly Edition · Vol. 3
+    </div>
+  </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">$965B</div>
+    <div class="stat-label">Anthropic Valuation</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">$65B</div>
+    <div class="stat-label">Series H Raised</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">$900B</div>
+    <div class="stat-label">OpenAI Valuation</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">4x</div>
+    <div class="stat-label">Hallucination Reduction</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 🔥 TOP STORY -->
+  <div class="section-title"><span class="icon">🔥</span> Story of the Week</div>
+
+  <div class="story-card" style="border-color: rgba(168, 85, 247, 0.3);">
+    <div class="top-pick-badge">★ TOP STORY</div>
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.anthropic.com/news/series-h" target="_blank">
+          Anthropic Raises $65B Series H at $965B Valuation
+        </a>
+      </div>
+      <span class="story-source anthropic">Anthropic</span>
+    </div>
+    <div class="story-date">May 28, 2026</div>
+    <p class="story-desc">
+      Anthropic has raised $65 billion in Series H funding led by Altimeter Capital, Dragoneer, Greenoaks, and Sequoia Capital, valuing the company at $965 billion post-money — surpassing OpenAI's last valuation of $730 billion. Run-rate revenue crossed $47 billion earlier this month.
+    </p>
+    <ul class="key-points">
+      <li>$15B in hyperscaler commitments including $5B from Amazon, new partnerships with Google/Broadcom (5GW TPU) and SpaceX (Colossus GPU access)</li>
+      <li>Strategic partners include Micron, Samsung, and SK hynix for memory and chip supply chain</li>
+      <li>Claude available on all three major clouds: AWS, GCP, and Azure</li>
+      <li>Funds to advance safety/interpretability research, expand compute, and scale products</li>
+    </ul>
+    <div class="quote-block">
+      <p>"Claude is increasingly indispensable to our growing global community of customers, and we work tirelessly to make tools like Claude Code and Cowork more helpful, more powerful, and more adaptable to their needs."</p>
+      <div class="attribution">— Krishna Rao, CFO of Anthropic</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag funding">💰 Funding</span>
+      <span class="tag anthropic">Anthropic</span>
+      <span class="tag agent">AI Agents</span>
+      <a href="https://www.anthropic.com/news/series-h" class="story-link" target="_blank">Read full announcement →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🏗️ Model Releases -->
+  <div class="section-title"><span class="icon">🏗️</span> Model Releases</div>
+
+  <!-- Claude Opus 4.8 -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://simonwillison.net/2026/May/28/claude-opus-4-8/" target="_blank">
+          Claude Opus 4.8: "A Modest but Tangible Improvement"
+        </a>
+      </div>
+      <span class="story-source simon">Simon Willison</span>
+    </div>
+    <div class="story-date">May 28, 2026</div>
+    <p class="story-desc">
+      Anthropic shipped Claude Opus 4.8 with a refreshingly honest description — calling it a modest incremental improvement. The standout feature: <strong>honesty</strong>. Opus 4.8 is ~4x less likely than its predecessor to let flaws in code pass unremarked, and had the lowest incorrect rate across every benchmark.
+    </p>
+    <ul class="key-points">
+      <li>4x reduction in hallucination/incorrect-rate compared to Opus 4.7</li>
+      <li>Mid-conversation system messages — append updated instructions mid-conversation without restating full system prompt</li>
+      <li>Lower prompt cache minimum: 1,024 tokens (down from 4,096 on 4.7)</li>
+      <li>Same pricing: $5/M input, $25/M output. Fast mode at 2x (down from prior 6x premium)</li>
+      <li>1M token context window, 128K max output, knowledge cutoff January 2026</li>
+    </ul>
+    <div class="quote-block">
+      <p>"One of the most prominent improvements in Opus 4.8 is its honesty. We train all our models to be honest — for instance, to avoid making claims that they can't support. But a general problem with AI models is that they sometimes jump to conclusions, confidently claiming to have made progress in their work despite the evidence being thin."</p>
+      <div class="attribution">— Anthropic, Claude Opus 4.8 Announcement</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag model">🤖 Model Release</span>
+      <span class="tag anthropic">Anthropic</span>
+      <span class="tag agent">Coding Agents</span>
+      <a href="https://simonwillison.net/2026/May/28/claude-opus-4-8/" class="story-link" target="_blank">Read analysis →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 💰 Funding & Economics -->
+  <div class="section-title"><span class="icon">💰</span> AI Economics & Product-Market Fit</div>
+
+  <!-- Simon Willison PMF piece -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://simonwillison.net/2026/May/27/product-market-fit/" target="_blank">
+          I Think Anthropic and OpenAI Have Found Product-Market Fit
+        </a>
+      </div>
+      <span class="story-source simon">Simon Willison</span>
+    </div>
+    <div class="story-date">May 27, 2026</div>
+    <p class="story-desc">
+      Simon Willison argues that April 2026 was an inflection point for AI labs. Both Anthropic and OpenAI switched their enterprise pricing to API rates rather than flat monthly fees, signaling real enterprise demand. Simon's own usage: $2,180 worth of API tokens for just $200/month in subscription costs.
+    </p>
+    <ul class="key-points">
+      <li>Simon's personal 30-day API burn: $1,199 (Claude Code) + $980 (Codex) = $2,180 total</li>
+      <li>Anthropic switched Enterprise to $20/seat + API pricing (change occurred Nov 2025, surfaced Apr 2026)</li>
+      <li>OpenAI made similar changes Apr 2, 2026 for new plans; Apr 23 for all existing Enterprise</li>
+      <li>Coding agents are burning vastly more tokens — but driving real revenue from high-value professionals</li>
+      <li>Anthropic strongly rumored to have first profitable quarter ahead</li>
+    </ul>
+    <div class="quote-block">
+      <p>"Coding agents really did change everything. These are tools which burn vastly more tokens, but are also quickly becoming daily drivers for the work carried out by extremely well-compensated professionals."</p>
+      <div class="attribution">— Simon Willison</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag funding">💰 AI Economics</span>
+      <span class="tag anthropic">Anthropic</span>
+      <span class="tag openai">OpenAI</span>
+      <span class="tag agent">Coding Agents</span>
+      <a href="https://simonwillison.net/2026/May/27/product-market-fit/" class="story-link" target="_blank">Read full analysis →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🚀 Product Launches -->
+  <div class="section-title"><span class="icon">🚀</span> Product Launches & Updates</div>
+
+  <!-- Microsoft Super App -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://fortune.com/2026/05/29/microsoft-working-on-super-app/" target="_blank">
+          Microsoft Is Building a Copilot Super App
+        </a>
+      </div>
+      <span class="story-source fortune">Fortune</span>
+    </div>
+    <div class="story-date">May 29, 2026</div>
+    <p class="story-desc">
+      Microsoft is working on a "super app" that combines GitHub Copilot, Copilot chat, Copilot Cowork, and a new agentic workflow capability called "Autopilot" into one destination. The project, code-named "Delivering one Copilot," is spearheaded by newly appointed head of Copilot, Jacob Andreou.
+    </p>
+    <ul class="key-points">
+      <li>Launch planned by end of summer; may be referenced at Microsoft Build next week but not showcase-ready</li>
+      <li>Toggle function between personal and enterprise 365 Copilots</li>
+      <li>Microsoft follows OpenAI's similar super app ambitions combining ChatGPT, Codex, and browser</li>
+      <li>Only 4.5% of 450M Microsoft 365 customers currently pay for Copilot features</li>
+      <li>GitHub Copilot has 4.7M paid subscribers but faces competition from Cursor and Claude Code</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag microsoft">Microsoft</span>
+      <span class="tag product">🚀 Product</span>
+      <span class="tag agent">AI Agents</span>
+      <a href="https://fortune.com/2026/05/29/microsoft-working-on-super-app/" class="story-link" target="_blank">Read on Fortune →</a>
+    </div>
+  </div>
+
+  <!-- OpenAI Codex Windows -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.theverge.com/ai-artificial-intelligence/940095/openais-codex-can-now-control-your-windows-computer-too" target="_blank">
+          OpenAI's Codex Can Now Control Your Windows Computer
+        </a>
+      </div>
+      <span class="story-source verge">The Verge</span>
+    </div>
+    <div class="story-date">May 29, 2026</div>
+    <p class="story-desc">
+      After launching on Mac, Codex's computer-use feature is coming to Windows. The app can "see" your screen and perform tasks on your device. Users can also manage and review Codex's jobs while away from the computer using the ChatGPT app.
+    </p>
+    <div class="story-meta">
+      <span class="tag openai">OpenAI</span>
+      <span class="tag agent">🤖 Computer Use</span>
+      <span class="tag product">🚀 Product</span>
+      <a href="https://www.theverge.com/ai-artificial-intelligence/940095/openais-codex-can-now-control-your-windows-computer-too" class="story-link" target="_blank">Read on The Verge →</a>
+    </div>
+  </div>
+
+  <!-- Microsoft Copilot Health -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.theverge.com/ai-artificial-intelligence/939986/microsoft-launches-preview-of-copilot-health-ai-that-can-analyze-your-medical-records" target="_blank">
+          Microsoft Launches Copilot Health Preview
+        </a>
+      </div>
+      <span class="story-source verge">The Verge</span>
+    </div>
+    <div class="story-date">May 29, 2026</div>
+    <p class="story-desc">
+      Copilot Health is now open to Microsoft 365 subscribers. Users can find doctors, get insights from connected medical records, wearables, and apps like Apple Health. Similar to health AI models from OpenAI and Anthropic.
+    </p>
+    <div class="story-meta">
+      <span class="tag microsoft">Microsoft</span>
+      <span class="tag health">🏥 Health</span>
+      <span class="tag product">🚀 Preview</span>
+      <a href="https://www.theverge.com/ai-artificial-intelligence/939986/microsoft-launches-preview-of-copilot-health-ai-that-can-analyze-your-medical-records" class="story-link" target="_blank">Read on The Verge →</a>
+    </div>
+  </div>
+
+  <!-- Figma Make -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.theverge.com/tech/938803/figma-make-can-edit-your-production-codebase-now" target="_blank">
+          Figma Make Can Now Edit Your Production Codebase
+        </a>
+      </div>
+      <span class="story-source verge">The Verge</span>
+    </div>
+    <div class="story-date">May 28, 2026</div>
+    <p class="story-desc">
+      Teams can use Figma Make as a visual surface for building and editing real software by connecting with a production or sandbox repo via the Figma desktop app. A new editing panel enables precise design adjustments for layouts, colors, font sizes, and effects.
+    </p>
+    <div class="story-meta">
+      <span class="tag design">🎨 Design</span>
+      <span class="tag product">🚀 Product</span>
+      <span class="tag agent">AI Agent</span>
+      <a href="https://www.theverge.com/tech/938803/figma-make-can-edit-your-production-codebase-now" class="story-link" target="_blank">Read on The Verge →</a>
+    </div>
+  </div>
+
+  <!-- Google Gemini Drive Sharing -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.theverge.com/tech/939852/google-is-adding-a-feature-for-sharing-your-gemini-chats-through-drive" target="_blank">
+          Google Adds Gemini Chat Sharing via Drive
+        </a>
+      </div>
+      <span class="story-source verge">The Verge</span>
+    </div>
+    <div class="story-date">May 29, 2026</div>
+    <p class="story-desc">
+      Rolling out starting June 3rd, users can share a snapshot of Gemini conversations using Google Drive's sharing interface. Recipients can continue the conversation, but their changes won't affect the owner's original thread.
+    </p>
+    <div class="story-meta">
+      <span class="tag product">🚀 Feature</span>
+      <span class="tag tag-item" style="border:none;background:rgba(59,130,246,0.08);padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;color:var(--blue);">Google</span>
+      <a href="https://www.theverge.com/tech/939852/google-is-adding-a-feature-for-sharing-your-gemini-chats-through-drive" class="story-link" target="_blank">Read on The Verge →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 📋 Policy & Industry -->
+  <div class="section-title"><span class="icon">📋</span> Policy & Industry</div>
+
+  <!-- Illinois AI Safety -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.theverge.com/policy/939410/illinois-is-close-to-enacting-an-ai-safety-law-with-broader-mandates-than-other-states" target="_blank">
+          Illinois Close to Enacting Broad AI Safety Law
+        </a>
+      </div>
+      <span class="story-source verge">The Verge</span>
+    </div>
+    <div class="story-date">May 28, 2026</div>
+    <p class="story-desc">
+      Illinois is set to pass an AI safety bill requiring independent audits and whistleblower protections at AI companies. These features go beyond recently passed laws in New York and California.
+    </p>
+    <div class="story-meta">
+      <span class="tag regulation">⚖️ Regulation</span>
+      <span class="tag security">🛡️ Safety</span>
+      <a href="https://www.theverge.com/policy/939410/illinois-is-close-to-enacting-an-ai-safety-law-with-broader-mandates-than-other-states" class="story-link" target="_blank">Read on The Verge →</a>
+    </div>
+  </div>
+
+  <!-- CNN sues Perplexity -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.theverge.com/ai-artificial-intelligence/938893/cnn-perplexity-ai-copyright-lawsuit" target="_blank">
+          CNN Sues Perplexity Over "Verbatim" Copycat Articles
+        </a>
+      </div>
+      <span class="story-source verge">The Verge</span>
+    </div>
+    <div class="story-date">May 28, 2026</div>
+    <p class="story-desc">
+      CNN has filed a copyright lawsuit against Perplexity AI, alleging the AI search engine reproduces "verbatim" copycat articles without authorization.
+    </p>
+    <div class="story-meta">
+      <span class="tag regulation">⚖️ Lawsuit</span>
+      <span class="tag security">📝 Copyright</span>
+      <a href="https://www.theverge.com/ai-artificial-intelligence/938893/cnn-perplexity-ai-copyright-lawsuit" class="story-link" target="_blank">Read on The Verge →</a>
+    </div>
+  </div>
+
+  <!-- Amazon AI Toxenmaxxing -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.theverge.com/tech/939454/dont-use-ai-just-for-the-sake-of-using-ai" target="_blank">
+          Amazon Tells Employees: Don't Use AI Just for the Sake of Using AI
+        </a>
+      </div>
+      <span class="story-source verge">The Verge</span>
+    </div>
+    <div class="story-date">May 28, 2026</div>
+    <p class="story-desc">
+      Amazon exec Dave Treadwell told employees after the company shuttered an internal leaderboard tracking AI usage. The tool led some workers to assign AI agents to carry out needless tasks in an attempt to climb the rankings — a phenomenon dubbed "toxenmaxxing" — reportedly increasing costs.
+    </p>
+    <div class="quote-block">
+      <p>"Don't use AI just for the sake of using AI."</p>
+      <div class="attribution">— Dave Treadwell, Amazon exec</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag security">⚠️ AI Governance</span>
+      <span class="tag regulation">🏢 Corporate</span>
+      <a href="https://www.theverge.com/tech/939454/dont-use-ai-just-for-the-sake-of-using-ai" class="story-link" target="_blank">Read on The Verge →</a>
+    </div>
+  </div>
+
+  <!-- OpenAI Sunset Canvas -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.theverge.com/ai-artificial-intelligence/940028/openai-is-sunsetting-chatgpts-canvas-interface" target="_blank">
+          OpenAI Is Sunsetting ChatGPT's Canvas Interface
+        </a>
+      </div>
+      <span class="story-source verge">The Verge</span>
+    </div>
+    <div class="story-date">May 29, 2026</div>
+    <p class="story-desc">
+      Canvas — the side-by-side code/text editing interface with ChatGPT — will no longer be available with GPT-5.5 Instant or GPT-5.5 Thinking. Subscribers can still access it for a limited time through legacy models. OpenAI is also trimming response lengths and cutting down on "bullet-heavy" text for GPT-5.5 Instant.
+    </p>
+    <div class="story-meta">
+      <span class="tag openai">OpenAI</span>
+      <span class="tag product">🔄 Sunset</span>
+      <span class="tag design">🎨 UI</span>
+      <a href="https://www.theverge.com/ai-artificial-intelligence/940028/openai-is-sunsetting-chatgpts-canvas-interface" class="story-link" target="_blank">Read on The Verge →</a>
+    </div>
+  </div>
+
+  <!-- Robot training data -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.theverge.com/ai-artificial-intelligence/940007/ai-companies-will-pay-for-robot-training-data" target="_blank">
+          Tech Companies Desperately Want to Film You Doing Chores
+        </a>
+      </a>
+      </div>
+      <span class="story-source verge">The Verge</span>
+    </div>
+    <div class="story-date">May 29, 2026</div>
+    <p class="story-desc">
+        AI startups are pushing to capture real-world human activity data to train next-generation household robots. One startup, Shift, is even offering free home cleaning in exchange for video footage to train its robots.
+    </p>
+    <div class="story-meta">
+      <span class="tag robot">🤖 Robotics</span>
+      <span class="tag tag-item" style="border:none;background:rgba(245,158,11,0.08);padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;color:var(--orange);">Training Data</span>
+      <a href="https://www.theverge.com/ai-artificial-intelligence/940007/ai-companies-will-pay-for-robot-training-data" class="story-link" target="_blank">Read on The Verge →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🔬 Analysis -->
+  <div class="analysis-box">
+    <h3>🔬 Vibe Signal Analysis</h3>
+    <p>
+      <strong>The big story this week:</strong> AI labs have found their real business model — not in consumer subscriptions, but in <strong>enterprise agent usage</strong>. Anthropic's $65B raise at a $965B valuation (beating OpenAI's $730B) and Microsoft's scramble to build a Copilot super app both point to the same truth: coding agents and autonomous AI workers are the killer app.
+    </p>
+    <p style="margin-top: 12px;">
+      <strong>Key insight from Simon Willison:</strong> The pricing shift to API-burn-based enterprise plans means heavy users are paying market rates — and they're paying willingly. When a single developer can burn $2,000/month in tokens, the revenue math works differently than $20/month subscriptions.
+    </p>
+    <p style="margin-top: 12px;">
+      <strong>What to watch:</strong> Microsoft Build is next week (June 8-10 in San Francisco). Expect new proprietary AI models from Mustafa Suleyman, and potentially the first glimpses of the Copilot super app. OpenAI's computer-use for Windows, Claude Opus 4.8's mid-conversation system prompts, and Figma Make's codebase editing all signal the same trend: AI is moving from chat to <em>action</em>.
+    </p>
+  </div>
+
+  <!-- 🏷️ Tags -->
+  <div class="section-title"><span class="icon">🏷️</span> This Week's Topics</div>
+  <div class="tags-cloud">
+    <span class="tag-item">🤖 Claude Opus 4.8</span>
+    <span class="tag-item">💰 $65B Series H</span>
+    <span class="tag-item">🏢 Microsoft Super App</span>
+    <span class="tag-item">🖥️ Codex Windows</span>
+    <span class="tag-item">🎨 Figma Make</span>
+    <span class="tag-item">💊 Copilot Health</span>
+    <span class="tag-item">⚖️ Illinois AI Safety Law</span>
+    <span class="tag-item">📰 CNN vs Perplexity</span>
+    <span class="tag-item">🤖 Robot Training Data</span>
+    <span class="tag-item">📝 Canvas Sunset</span>
+    <span class="tag-item">🏥 Gemma 3</span>
+    <span class="tag-item">🔄 AI Agents</span>
+    <span class="tag-item">💵 Enterprise Pricing</span>
+    <span class="tag-item">🌐 Computer Use</span>
+    <span class="tag-item">🛡️ AI Safety</span>
+  </div>
+
+  <!-- 🌐 Resources -->
+  <div class="section-title"><span class="icon">🌐</span> Essential Reads</div>
+  <div class="resources-section">
+    <h3>📚 This Week's Must-Reads</h3>
+    <a href="https://www.anthropic.com/news/series-h" class="resource-link" target="_blank">
+      <span class="title">Anthropic raises $65B in Series H funding at $965B post-money valuation</span>
+      <span class="arrow">↗</span>
+    </a>
+    <a href="https://www.anthropic.com/news/claude-opus-4-8" class="resource-link" target="_blank">
+      <span class="title">Introducing Claude Opus 4.8 — Anthropic's latest model with 4x hallucination reduction</span>
+      <span class="arrow">↗</span>
+    </a>
+    <a href="https://simonwillison.net/2026/May/28/claude-opus-4-8/" class="resource-link" target="_blank">
+      <span class="title">Simon Willison: Claude Opus 4.8 analysis and pelican benchmarks</span>
+      <span class="arrow">↗</span>
+    </a>
+    <a href="https://simonwillison.net/2026/May/27/product-market-fit/" class="resource-link" target="_blank">
+      <span class="title">Simon Willison: I think Anthropic and OpenAI have found product-market fit</span>
+      <span class="arrow">↗</span>
+    </a>
+    <a href="https://fortune.com/2026/05/29/microsoft-working-on-super-app/" class="resource-link" target="_blank">
+      <span class="title">Fortune: Microsoft is building a super app that combines coding, chat, and Copilot AI tools</span>
+      <span class="arrow">↗</span>
+    </a>
+    <a href="https://simonwillison.net/2026/May/7/xai-anthropic/" class="resource-link" target="_blank">
+      <span class="title">Simon Willison: Notes on the xAI/Anthropic data center deal</span>
+      <span class="arrow">↗</span>
+    </a>
+    <a href="https://www.theverge.com/ai-artificial-intelligence/939216/anthropic-raised-a-funding-round-valuing-it-at-nearly-1-trillion" class="resource-link" target="_blank">
+      <span class="title">The Verge: Anthropic raised a funding round valuing it at nearly $1 trillion</span>
+      <span class="arrow">↗</span>
+    </a>
+    <a href="https://www.anthropic.com/news/google-broadcom-partnership-compute" class="resource-link" target="_blank">
+      <span class="title">Anthropic partners with Google and Broadcom for 5GW TPU capacity</span>
+      <span class="arrow">↗</span>
+    </a>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>🤖 <strong>AI Builders Digest</strong> — Curated weekly from the AI building community</p>
+  <p style="margin-top: 8px;">
+    Sources: The Verge AI · Simon Willison's Weblog · Anthropic · Fortune · OpenAI
+  </p>
+  <p style="margin-top: 8px;">
+    Generated on 2026-06-01 · <a href="https://luokpx.github.io/pages/ai-builders-digest-2026-06-01.html">View on GitHub Pages</a>
+  </p>
+</footer>
+
+</body>
+</html>
