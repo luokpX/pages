@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Builders Digest — June 6, 2026</title>
+  <style>
+    :root {
+      --bg: #0a0a12;
+      --surface: rgba(255,255,255,0.04);
+      --surface-hover: rgba(255,255,255,0.08);
+      --accent-1: #6c5ce7;
+      --accent-2: #00cec9;
+      --accent-3: #fd79a8;
+      --accent-4: #fdcb6e;
+      --text: #e8e8f0;
+      --text-dim: #8888a0;
+      --text-muted: #5a5a72;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 80px 24px 60px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(108,92,231,0.25) 0%, rgba(0,206,201,0.15) 50%, rgba(253,121,168,0.10) 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.4rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #a29bfe, #00cec9, #fd79a8);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .hero-date {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      max-width: 960px;
+      margin: -20px auto 40px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, rgba(108,92,231,0.12), rgba(0,206,201,0.08));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      text-align: center;
+      backdrop-filter: blur(12px);
+    }
+    .stat-card .num {
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-card .label {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 48px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .section-header .icon {
+      font-size: 1.4rem;
+    }
+    .section-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .section-header .count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--surface);
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    /* Project Card */
+    .project-card {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+    }
+    .project-card:hover {
+      background: var(--surface-hover);
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-2px);
+    }
+    .project-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .project-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .project-meta {
+      flex: 1;
+      min-width: 0;
+    }
+    .project-meta h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .project-meta h3 a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .project-meta h3 a:hover {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .project-author {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .project-author a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+    .project-author a:hover {
+      color: var(--accent-4);
+    }
+    .project-stats {
+      display: flex;
+      gap: 16px;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .project-stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .project-desc {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    /* Tags */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 500;
+      background: rgba(108,92,231,0.15);
+      color: #a29bfe;
+      border: 1px solid rgba(108,92,231,0.2);
+    }
+    .tag.python { background: rgba(69,133,220,0.15); color: #69a9e8; border-color: rgba(69,133,220,0.2); }
+    .tag.typescript { background: rgba(49,120,198,0.15); color: #5b9ce8; border-color: rgba(49,120,198,0.2); }
+    .tag.rust { background: rgba(239,87,61,0.15); color: #ef573d; border-color: rgba(239,87,61,0.2); }
+    .tag.go { background: rgba(0,198,201,0.15); color: #00cec9; border-color: rgba(0,198,201,0.2); }
+    .tag.swift { background: rgba(253,121,168,0.15); color: #fd79a8; border-color: rgba(253,121,168,0.2); }
+    .tag.javascript { background: rgba(253,203,110,0.15); color: #fdcb6e; border-color: rgba(253,203,110,0.2); }
+    .tag.hot { background: rgba(253,121,168,0.2); color: #fd79a8; border-color: rgba(253,121,168,0.3); }
+
+    /* Quote Block */
+    .quote-block {
+      background: linear-gradient(135deg, rgba(108,92,231,0.08), rgba(0,206,201,0.06));
+      border-left: 3px solid var(--accent-1);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+    .quote-block p {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .quote-block .attribution {
+      margin-top: 8px;
+      font-size: 12px;
+      font-style: normal;
+      color: var(--text-muted);
+    }
+
+    /* Key Points */
+    .key-points {
+      background: rgba(0,206,201,0.05);
+      border: 1px solid rgba(0,206,201,0.12);
+      border-radius: var(--radius-sm);
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+    .key-points h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-2);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .key-points ul {
+      list-style: none;
+    }
+    .key-points li {
+      position: relative;
+      padding-left: 20px;
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    .key-points li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent-2);
+    }
+
+    /* Resource Links */
+    .resource-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .resource-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text);
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .resource-link:hover {
+      background: rgba(108,92,231,0.12);
+      border-color: rgba(108,92,231,0.3);
+    }
+
+    /* Divider */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      margin: 36px 0;
+    }
+
+    /* Newsletter Shout */
+    .shout-card {
+      background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(253,121,168,0.08));
+      border: 1px solid rgba(108,92,231,0.15);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .shout-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    .shout-card p {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text-muted);
+      font-size: 13px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero { padding: 56px 16px 40px; }
+      .project-header { flex-direction: column; }
+      .project-stats { margin-top: 8px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🔥 Weekly Edition</div>
+    <h1>AI Builders Digest</h1>
+    <p>The pulse of the AI builder ecosystem — trending repos, emerging tools, and the builders shaping the future of AI engineering.</p>
+    <div class="hero-date">📅 Saturday, June 6, 2026 · Issue #23</div>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="num">1,491+</div>
+    <div class="label">AI-tagged repos</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">377K ⭐</div>
+    <div class="label">Top AI repo stars</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">11</div>
+    <div class="label">New builders this week</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">🔥 Hot</div>
+    <div class="label">Vibe coding era</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Section 1: AI Builders Spotlight -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🌟</span>
+      <h2>AI Builders Spotlight</h2>
+      <span class="count">4 projects</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">P</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/xernst/promptdojo" target="_blank">xernst / promptdojo</a></h3>
+          <div class="project-author">by <a href="https://github.com/xernst" target="_blank">xernst</a></div>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 1</span>
+          <span>🍴 0</span>
+          <span>📘 TS</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Free, open-source school for builders in the AI era. Start before code, build useful helpers, then grow into AI/ML engineering. <strong>48 chapters, 1,471 runnable steps</strong>, runs entirely in your browser.
+      </div>
+      <div class="tags">
+        <span class="tag typescript">TypeScript</span>
+        <span class="tag">open-source</span>
+        <span class="tag">education</span>
+        <span class="tag">vibe-coding</span>
+        <span class="tag">cursor</span>
+        <span class="tag">claude</span>
+        <span class="tag hot">hot</span>
+      </div>
+      <div class="quote-block">
+        <p>"Start before code, build useful helpers, then grow into AI/ML engineering. 1,471 runnable steps, runs in your browser."</p>
+        <div class="attribution">— PromptDojo, the AI builder's school</div>
+      </div>
+      <div class="key-points">
+        <h4>🎯 Key Takeaways</h4>
+        <ul>
+          <li>Designed for complete beginners to AI engineering — zero to builder</li>
+          <li>48 chapters of progressive curriculum from prompts to ML</li>
+          <li>Browser-based execution via Pyodide — no setup required</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #00cec9, #81ecec);">C</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/dstolts/covenai" target="_blank">dstolts / covenai</a></h3>
+          <div class="project-author">by <a href="https://github.com/dstolts" target="_blank">dstolts</a></div>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 0</span>
+          <span>🍴 0</span>
+          <span>📘 TS</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Open-source community engagement framework with gamification, leaderboards, and medieval-themed tier system. Build with AI. Earn your rank.
+      </div>
+      <div class="tags">
+        <span class="tag typescript">TypeScript</span>
+        <span class="tag">open-source</span>
+        <span class="tag">community</span>
+        <span class="tag">gamification</span>
+        <span class="tag">leaderboard</span>
+      </div>
+      <div class="resource-links">
+        <a href="https://github.com/dstolts/covenai" target="_blank" class="resource-link">🔗 View on GitHub</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #fdcb6e, #f39c12);">S</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/WillSuo-Github/specrelay" target="_blank">WillSuo-Github / specrelay</a></h3>
+          <div class="project-author">by <a href="https://github.com/WillSuo-Github" target="_blank">WillSuo-Github</a></div>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 0</span>
+          <span>🍴 0</span>
+          <span>📘 TS</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        SpecRelay turns AI-built prototypes into launch QA checklists and developer handoff briefs. Bridge the gap between vibe coding and production.
+      </div>
+      <div class="tags">
+        <span class="tag typescript">TypeScript</span>
+        <span class="tag">developer-handoff</span>
+        <span class="tag">launch-checklist</span>
+        <span class="tag">no-code</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #e17055, #d63031);">D</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/JackGilmore/DropD8" target="_blank">JackGilmore / DropD8</a></h3>
+          <div class="project-author">by <a href="https://github.com/JackGilmore" target="_blank">JackGilmore</a></div>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 0</span>
+          <span>🍴 0</span>
+          <span>📘 TS</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Hackathon project built with AI — deployed and live.
+      </div>
+      <div class="tags">
+        <span class="tag typescript">TypeScript</span>
+        <span class="tag">hackathon</span>
+        <span class="tag">deployed</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 2: Top AI Repos on GitHub -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🏆</span>
+      <h2>Top AI Repos on GitHub</h2>
+      <span class="count">By stars</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #6c5ce7, #4834d4);">O</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/openclaw/openclaw" target="_blank">openclaw / openclaw</a></h3>
+          <div class="project-author">by <a href="https://github.com/openclaw" target="_blank">openclaw</a></div>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 377K</span>
+          <span>🍴 —</span>
+          <span>📘 TS</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Your own personal AI assistant. Any OS. Any Platform. The lobster way. 🦞
+      </div>
+      <div class="tags">
+        <span class="tag typescript">TypeScript</span>
+        <span class="tag hot">#1 AI</span>
+        <span class="tag">open-source</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #00cec9, #00b894);">A</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/Significant-Gravitas/AutoGPT" target="_blank">Significant-Gravitas / AutoGPT</a></h3>
+          <div class="project-author">by <a href="https://github.com/Significant-Gravitas" target="_blank">Significant-Gravitas</a></div>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 184K</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        AutoGPT is the vision of accessible AI for everyone, to use and to build on. Providing tools to build autonomous AI agents.
+      </div>
+      <div class="tags">
+        <span class="tag python">Python</span>
+        <span class="tag">ai-agents</span>
+        <span class="tag">autonomous</span>
+      </div>
+      <div class="quote-block">
+        <p>"The vision of accessible AI for everyone, to use and to build on."</p>
+        <div class="attribution">— AutoGPT</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #fd79a8, #e84393);">H</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/NousResearch/hermes-agent" target="_blank">NousResearch / hermes-agent</a></h3>
+          <div class="project-author">by <a href="https://github.com/NousResearch" target="_blank">NousResearch</a></div>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 183K</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        The agent that grows with you. A next-gen AI agent framework.
+      </div>
+      <div class="tags">
+        <span class="tag python">Python</span>
+        <span class="tag hot">trending</span>
+        <span class="tag">agent-framework</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7);">D</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/langgenius/dify" target="_blank">langgenius / dify</a></h3>
+          <div class="project-author">by <a href="https://github.com/langgenius" target="_blank">langgenius</a></div>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 144K</span>
+          <span>📘 TS</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Production-ready platform for agentic workflow development.
+      </div>
+      <div class="tags">
+        <span class="tag typescript">TypeScript</span>
+        <span class="tag">agentic-workflow</span>
+        <span class="tag">production</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #00b894, #00cec9);">O</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/open-webui/open-webui" target="_blank">open-webui / open-webui</a></h3>
+          <div class="project-author">by <a href="https://github.com/open-webui" target="_blank">open-webui</a></div>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 140K</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        User-friendly AI Interface (Supports Ollama, OpenAI API, ...)
+      </div>
+      <div class="tags">
+        <span class="tag python">Python</span>
+        <span class="tag">ai-interface</span>
+        <span class="tag">open-source</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 3: Hot New AI Projects -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🔥</span>
+      <h2>Hot New AI Projects (This Week)</h2>
+      <span class="count">Created in last 7 days</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #e17055, #fdcb6e);">O</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/pewdiepie-archdaemon/odysseus" target="_blank">pewdiepie-archdaemon / odysseus</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 55.6K</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Self-hosted AI workspace.
+      </div>
+      <div class="tags">
+        <span class="tag python">Python</span>
+        <span class="tag hot">new</span>
+        <span class="tag">self-hosted</span>
+        <span class="tag">ai-workspace</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #fd79a8, #e84393);">J</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/jd-opensource/JoyAI-Echo" target="_blank">jd-opensource / JoyAI-Echo</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 560</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        JoyAI-Echo: Pushing the Frontier of Long Audio-Visual Generation. JD.com's open-source AI media generation.
+      </div>
+      <div class="tags">
+        <span class="tag python">Python</span>
+        <span class="tag">audio-visual</span>
+        <span class="tag">ai-generation</span>
+        <span class="tag">jd</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #00cec9, #81ecec);">S</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/tastyeffectco/sandboxes" target="_blank">tastyeffectco / sandboxes</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 438</span>
+          <span>🔵 Go</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Self-hosted dev sandboxes with preview URLs. One command. No Kubernetes, perfect for coding agents and SaaS factories.
+      </div>
+      <div class="tags">
+        <span class="tag go">Go</span>
+        <span class="tag">dev-sandboxes</span>
+        <span class="tag">coding-agents</span>
+        <span class="tag hot">hot</span>
+      </div>
+      <div class="key-points">
+        <h4>💡 Why It Matters</h4>
+        <ul>
+          <li>One-command dev sandbox deployment — no Kubernetes required</li>
+          <li>Preview URLs for every sandbox, perfect for agent-driven development</li>
+          <li>Designed for the SaaS factory workflow</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">K</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/johnbean393/KeyType" target="_blank">johnbean393 / KeyType</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 266</span>
+          <span>🟦 Swift</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        An open-source Cotypist with macOS system-wide AI autocomplete.
+      </div>
+      <div class="tags">
+        <span class="tag swift">Swift</span>
+        <span class="tag">macOS</span>
+        <span class="tag">ai-autocomplete</span>
+        <span class="tag">writing</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #e17055, #d63031);">V</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/duncatzat/vigils" target="_blank">duncatzat / vigils</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 243</span>
+          <span>🦀 Rust</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        A local control plane for AI agents — see what they do, approve what matters, keep secrets out. Rust + Tauri + Chrome MV3.
+      </div>
+      <div class="tags">
+        <span class="tag rust">Rust</span>
+        <span class="tag">ai-agents</span>
+        <span class="tag">control-plane</span>
+        <span class="tag">security</span>
+        <span class="tag hot">hot</span>
+      </div>
+      <div class="quote-block">
+        <p>"See what they do, approve what matters, keep secrets out." — The local control plane for AI agents</p>
+        <div class="attribution">— Vigils</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #fdcb6e, #f39c12);">I</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/zonghaoyuan/infiplot" target="_blank">zonghaoyuan / infiplot</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 205</span>
+          <span>📘 TS</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        InfiPlot — the world's first interactive plot game where AI generates all text and images in real-time.
+      </div>
+      <div class="tags">
+        <span class="tag typescript">TypeScript</span>
+        <span class="tag">ai-game</span>
+        <span class="tag">real-time-generation</span>
+        <span class="tag">interactive</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 4: Vibe Coding & Builder Tooling -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🎨</span>
+      <h2>Vibe Coding & Builder Tooling</h2>
+      <span class="count">Top trending</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #6c5ce7, #4834d4);">A</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/VoltAgent/awesome-design-md" target="_blank">VoltAgent / awesome-design-md</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 87.8K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        A collection of DESIGN.md files analyzed from popular brand design systems. Drop one into your project and let coding agents generate a matching UI.
+      </div>
+      <div class="tags">
+        <span class="tag hot">#1 vibe coding</span>
+        <span class="tag">design-systems</span>
+        <span class="tag">DESIGN.md</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #00cec9, #00b894);">O</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/nexu-io/open-design" target="_blank">nexu-io / open-design</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 59.4K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Local-first, open-source Claude Design alternative. Native desktop app. 259+ Skills · 142+ Design Systems · Web/desktop/mobile prototyping.
+      </div>
+      <div class="tags">
+        <span class="tag">claude-design</span>
+        <span class="tag">local-first</span>
+        <span class="tag">design-tool</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7);">U</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/upstash/context7" target="_blank">upstash / context7</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 56.8K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Context7 Platform — up-to-date code documentation for LLMs and AI code editors.
+      </div>
+      <div class="tags">
+        <span class="tag hot">hot</span>
+        <span class="tag">documentation</span>
+        <span class="tag">llm-context</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #fdcb6e, #f39c12);">C</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/shanraisshan/claude-code-best-practice" target="_blank">shanraisshan / claude-code-best-practice</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 56.5K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        From vibe coding to agentic engineering — practice makes Claude perfect.
+      </div>
+      <div class="tags">
+        <span class="tag">claude-code</span>
+        <span class="tag">best-practice</span>
+        <span class="tag">agentic-engineering</span>
+      </div>
+      <div class="quote-block">
+        <p>"From vibe coding to agentic engineering — practice makes Claude perfect."</p>
+        <div class="attribution">— Claude Code Best Practices</div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #fd79a8, #e84393);">U</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/Lum1104/Understand-Anything" target="_blank">Lum1104 / Understand-Anything</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 52.9K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Graphs that teach > graphs that impress. Turn any code into an interactive knowledge graph you can explore, search, and ask questions about.
+      </div>
+      <div class="tags">
+        <span class="tag">knowledge-graph</span>
+        <span class="tag">code-analysis</span>
+        <span class="tag">interactive</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 5: MCP Ecosystem -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🔌</span>
+      <h2>MCP Ecosystem</h2>
+      <span class="count">Model Context Protocol</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #e17055, #d63031);">A</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/punkpeye/awesome-mcp-servers" target="_blank">punkpeye / awesome-mcp-servers</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 88.6K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        A collection of MCP servers — the essential registry for Model Context Protocol implementations.
+      </div>
+      <div class="tags">
+        <span class="tag hot">essential</span>
+        <span class="tag">mcp</span>
+        <span class="tag">servers</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #00cec9, #81ecec);">C</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/ComposioHQ/composio" target="_blank">ComposioHQ / composio</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 28.7K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        1000+ toolkits, tool search, context management, authentication, and sandboxed workbench for building AI agents.
+      </div>
+      <div class="tags">
+        <span class="tag">mcp</span>
+        <span class="tag">toolkits</span>
+        <span class="tag">agent-framework</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">S</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/oraios/serena" target="_blank">oraios / serena</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 25.0K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        A powerful MCP toolkit for coding, providing semantic retrieval and editing capabilities — the IDE for your agent.
+      </div>
+      <div class="tags">
+        <span class="tag">mcp</span>
+        <span class="tag">coding-toolkit</span>
+        <span class="tag">semantic-retrieval</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 6: Agent Frameworks -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🤖</span>
+      <h2>Agent Frameworks & Platforms</h2>
+      <span class="count">10K+ stars</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #6c5ce7, #4834d4);">L</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/langchain-ai/langchain" target="_blank">langchain-ai / langchain</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 138.6K</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        The agent engineering platform.
+      </div>
+      <div class="tags">
+        <span class="tag python">Python</span>
+        <span class="tag">agent-framework</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #00cec9, #00b894);">G</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/google-gemini/gemini-cli" target="_blank">google-gemini / gemini-cli</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 105K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        An open-source AI agent that brings the power of Gemini directly into your terminal.
+      </div>
+      <div class="tags">
+        <span class="tag">gemini</span>
+        <span class="tag">cli</span>
+        <span class="tag">google</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #e17055, #d63031);">B</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/browser-use/browser-use" target="_blank">browser-use / browser-use</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 97.4K</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        Make websites accessible for AI agents. Automate tasks online with ease.
+      </div>
+      <div class="tags">
+        <span class="tag hot">trending</span>
+        <span class="tag">browser-automation</span>
+        <span class="tag">ai-agents</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-avatar" style="background: linear-gradient(135deg, #fdcb6e, #f39c12);">C</div>
+        <div class="project-meta">
+          <h3><a href="https://github.com/coleam00/Archon" target="_blank">coleam00 / Archon</a></h3>
+        </div>
+        <div class="project-stats">
+          <span>⭐ 22.2K</span>
+          <span>📘 TS</span>
+        </div>
+      </div>
+      <div class="project-desc">
+        The first open-source harness builder for AI coding. Make AI coding deterministic and repeatable.
+      </div>
+      <div class="tags">
+        <span class="tag typescript">TypeScript</span>
+        <span class="tag">harness-builder</span>
+        <span class="tag">ai-coding</span>
+      </div>
+      <div class="quote-block">
+        <p>"Make AI coding deterministic and repeatable." — The first open-source harness builder</p>
+        <div class="attribution">— Archon</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 7: Developer Infrastructure -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">⚙️</span>
+      <h2>AI Developer Infrastructure</h2>
+      <span class="count">Tools for builders</span>
+    </div>
+
+    <div class="resource-links">
+      <a href="https://github.com/firecrawl/firecrawl" target="_blank" class="resource-link">🔥 FireCrawl — 129K⭐ Web scraping at scale</a>
+      <a href="https://github.com/daytonaio/daytona" target="_blank" class="resource-link">🏗️ Daytona — 72.5K⭐ AI sandbox infrastructure</a>
+      <a href="https://github.com/agno-agi/agno" target="_blank" class="resource-link">🧠 Agno — 40.5K⭐ Agent platform</a>
+      <a href="https://github.com/TabbyML/tabby" target="_blank" class="resource-link">🐱 Tabby — 33.6K⭐ Self-hosted AI coding</a>
+      <a href="https://github.com/continuedev/continue" target="_blank" class="resource-link">⏩ Continue — 33.6K⭐ AI checks in CI</a>
+      <a href="https://github.com/yamadashy/repomix" target="_blank" class="resource-link">📦 Repomix — 26.0K⭐ Pack repo for AI</a>
+      <a href="https://github.com/onlook-dev/onlook" target="_blank" class="resource-link">🎨 Onlook — 25.9K⭐ AI-first design tool</a>
+      <a href="https://github.com/infiniflow/ragflow" target="_blank" class="resource-link">📚 RAGFlow — 82.0K⭐ RAG engine</a>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 8: Builder Insights -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">💡</span>
+      <h2>Builder Insights This Week</h2>
+    </div>
+
+    <div class="key-points">
+      <h4>📊 Key Trends</h4>
+      <ul>
+        <li><strong>Vibe coding → Agentic Engineering:</strong> The era of "just vibe coding" is maturing into disciplined, repeatable agentic engineering practices</li>
+        <li><strong>MCP is the new standard:</strong> Model Context Protocol has exploded — 88K⭐ for awesome-mcp-servers alone. Every tool is getting an MCP interface</li>
+        <li><strong>Self-hosting renaissance:</strong> Projects like Odysseus (55.6K⭐) and Daytona (72.5K⭐) show builders want to own their AI infrastructure</li>
+        <li><strong>Design as code (DESIGN.md):</strong> The DESIGN.md pattern is taking over — drop a design spec and let AI generate the UI</li>
+        <li><strong>Agent control & safety:</strong> Vigils (Rust + Tauri) represents a growing demand for local agent observability and approval workflows</li>
+        <li><strong>Chinese AI ecosystem growth:</strong> JD JoyAI-Echo, InfiPlot, QMAI — Chinese tech companies are increasingly open-sourcing AI media and writing tools</li>
+      </ul>
+    </div>
+
+    <div class="quote-block">
+      <p>"From vibe coding to agentic engineering — practice makes Claude perfect."</p>
+      <div class="attribution">— The defining quote of the AI builder movement, June 2026</div>
+    </div>
+
+    <div class="key-points">
+      <h4>🛠️ Top Tools to Watch</h4>
+      <ul>
+        <li><strong>Sandboxes</strong> — Self-hosted dev sandboxes with preview URLs for coding agents. One command, no K8s</li>
+        <li><strong>Context7</strong> — Up-to-date code documentation for LLMs. Game-changer for AI code editors</li>
+        <li><strong>Open Design</strong> — Local-first Claude Design alternative with 259+ skills and 142+ design systems</li>
+        <li><strong>PromptDojo</strong> — 48 chapters, 1,471 steps. The crash course every AI builder needs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Newsletter CTA -->
+  <div class="shout-card">
+    <h3>🚀 Keep Building</h3>
+    <p>This digest is generated from GitHub's <strong>AI Builders</strong> community — follow the topic on GitHub to stay in the loop.</p>
+    <p style="margin-top:12px;">
+      <a href="https://github.com/topics/ai-builders" target="_blank" style="display:inline-block;padding:8px 24px;border-radius:100px;background:linear-gradient(135deg,#6c5ce7,#fd79a8);color:#fff;text-decoration:none;font-weight:600;font-size:14px;">Follow AI Builders →</a>
+    </p>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>AI Builders Digest · Generated on June 6, 2026 · Data from GitHub API</p>
+  <p style="margin-top:4px;">Built with ❤️ for the AI builder community</p>
+</div>
+
+</body>
+</html>
