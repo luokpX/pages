@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Builders Digest Archive</title>
+  <meta name="description" content="AI Builders Digest — Weekly curated AI builder projects from GitHub">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0b0f; --surface: #12141a; --border: #2a2d3a;
+      --text: #e4e6f0; --text-muted: #8b8fa3;
+      --accent: #6c5ce7; --accent2: #00cec9; --accent3: #fd79a8;
+      --gradient-1: linear-gradient(135deg, #6c5ce7 0%, #00cec9 100%);
+      --gradient-2: linear-gradient(135deg, #fd79a8 0%, #6c5ce7 100%);
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.7;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 80% 20%, rgba(108,92,231,0.15) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+    .header { padding: 60px 0 40px; text-align: center; }
+    .badge {
+      display: inline-block;
+      background: var(--gradient-1); color: #fff; font-size: 12px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px;
+      border-radius: 100px; margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 42px; font-weight: 900;
+      background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header p { color: var(--text-muted); margin-top: 8px; font-size: 16px; }
+    .digest-list { list-style: none; padding: 0; }
+    .digest-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px 24px; margin-bottom: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: all 0.2s;
+    }
+    .digest-item:hover { border-color: var(--accent); transform: translateX(4px); }
+    .digest-item .date { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+    .digest-item .date strong { color: #fff; font-weight: 700; }
+    .digest-item .day { font-size: 12px; color: var(--accent2); margin-top: 2px; }
+    .digest-item a {
+      display: inline-block;
+      background: var(--gradient-1); color: #fff; text-decoration: none;
+      padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .digest-item a:hover { opacity: 0.85; }
+    .latest { border-color: var(--accent); }
+    .latest .badge-sm {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      color: var(--accent2); text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .sticky-cta {
+      position: sticky; top: 16px; z-index: 10;
+      background: var(--surface); border: 1px solid var(--accent);
+      border-radius: 16px; padding: 20px 24px; margin-bottom: 32px;
+      text-align: center;
+    }
+    .sticky-cta h2 { font-size: 20px; margin-bottom: 4px; }
+    .sticky-cta p { color: var(--text-muted); font-size: 14px; }
+    .sticky-cta .btn {
+      display: inline-block; margin-top: 12px;
+      background: var(--gradient-1); color: #fff; text-decoration: none;
+      padding: 10px 28px; border-radius: 10px; font-weight: 700; font-size: 15px;
+    }
+    .footer { text-align: center; padding: 48px 0 64px; color: var(--text-muted); font-size: 13px; }
+    @media (max-width: 640px) {
+      .header h1 { font-size: 28px; }
+      .digest-item { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="badge">✦ Archive</div>
+    <h1>AI Builders Digest</h1>
+    <p>Weekly curation from the GitHub AI builder ecosystem</p>
+  </header>
+
+  <div class="sticky-cta">
+    <h2>📖 Latest Edition</h2>
+    <p>June 8, 2026 — AI agent ecosystem, MCP Registry, memory engines, and more</p>
+    <a href="ai-builders-digest-2026-06-08.html" class="btn">Read Now →</a>
+  </div>
+
+  <ul class="digest-list">
+    <li class="digest-item latest">
+      <div>
+        <div class="badge-sm">✦ Latest</div>
+        <div class="date"><strong>June 8, 2026</strong></div>
+        <div class="day">Monday · Week 23</div>
+      </div>
+      <a href="ai-builders-digest-2026-06-08.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>June 7, 2026</strong></div>
+        <div class="day">Sunday</div>
+      </div>
+      <a href="ai-builders-digest-2026-06-07.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>June 6, 2026</strong></div>
+        <div class="day">Saturday</div>
+      </div>
+      <a href="ai-builders-digest-2026-06-06.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>June 5, 2026</strong></div>
+        <div class="day">Friday</div>
+      </div>
+      <a href="ai-builders-digest-2026-06-05.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>June 4, 2026</strong></div>
+        <div class="day">Thursday</div>
+      </div>
+      <a href="ai-builders-digest-2026-06-04.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>June 3, 2026</strong></div>
+        <div class="day">Wednesday</div>
+      </div>
+      <a href="ai-builders-digest-2026-06-03.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>June 1, 2026</strong></div>
+        <div class="day">Monday</div>
+      </div>
+      <a href="ai-builders-digest-2026-06-01.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 31, 2026</strong></div>
+        <div class="day">Sunday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-31.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 30, 2026</strong></div>
+        <div class="day">Saturday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-30.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 28, 2026</strong></div>
+        <div class="day">Thursday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-28.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 27, 2026</strong></div>
+        <div class="day">Wednesday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-27.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 26, 2026</strong></div>
+        <div class="day">Tuesday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-26.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 25, 2026</strong></div>
+        <div class="day">Monday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-25.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 24, 2026</strong></div>
+        <div class="day">Sunday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-24.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 23, 2026</strong></div>
+        <div class="day">Saturday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-23.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 22, 2026</strong></div>
+        <div class="day">Friday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-22.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 21, 2026</strong></div>
+        <div class="day">Thursday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-21.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 20, 2026</strong></div>
+        <div class="day">Wednesday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-20.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 19, 2026</strong></div>
+        <div class="day">Tuesday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-19.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 18, 2026</strong></div>
+        <div class="day">Monday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-18.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 17, 2026</strong></div>
+        <div class="day">Sunday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-17.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 16, 2026</strong></div>
+        <div class="day">Saturday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-16.html">Read →</a>
+    </li>
+    <li class="digest-item">
+      <div>
+        <div class="date"><strong>May 15, 2026</strong></div>
+        <div class="day">Friday</div>
+      </div>
+      <a href="ai-builders-digest-2026-05-15.html">Read →</a>
+    </li>
+  </ul>
+
+  <footer class="footer">
+    <p>AI Builders Digest · Weekly curation from the GitHub AI ecosystem</p>
+    <p style="opacity:0.6; font-size:12px; margin-top:8px;">Curated by Vera 🌹</p>
+  </footer>
+</div>
+</body>
+</html>
