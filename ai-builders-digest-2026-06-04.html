@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — June 4, 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e293b;
+    --text: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-1: #6366f1;
+    --accent-2: #8b5cf6;
+    --accent-3: #a855f7;
+    --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    --green: #10b981;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+    --pink: #ec4899;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .hero {
+    position: relative;
+    padding: 80px 24px 60px;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0e17 0%, #1a1040 40%, #0f172a 70%, #0a0e17 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 40% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 70%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(236, 72, 153, 0.04) 0%, transparent 40%);
+    animation: aurora 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes aurora {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(20px, -30px); }
+    50% { transform: translate(-20px, 10px); }
+    75% { transform: translate(10px, 20px); }
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-1);
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+  .hero-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .hero-date .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .stats-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px;
+    padding: 28px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { text-align: center; }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon { font-size: 28px; }
+
+  .story-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .story-card:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .story-title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .story-title a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .story-title a:hover { color: var(--accent-1); }
+  
+  .story-role {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .story-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    white-space: nowrap;
+  }
+  .story-source.x { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.25); color: var(--green); }
+  .story-source.podcast { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.25); color: var(--orange); }
+
+  .story-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  .story-desc {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 12px 0;
+  }
+
+  .key-points { margin: 12px 0 16px; }
+  .key-points li {
+    list-style: none;
+    padding: 4px 0 4px 20px;
+    position: relative;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .key-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent-2);
+    font-weight: 700;
+  }
+
+  .story-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-top: 16px;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .tag.agent { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .tag.model { background: rgba(168, 85, 247, 0.1); color: var(--accent-3); }
+  .tag.product { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+  .tag.openai { background: rgba(99, 102, 241, 0.1); color: var(--accent-1); }
+  .tag.anthropic { background: rgba(168, 85, 247, 0.1); color: var(--accent-3); }
+  .tag.enterprise { background: rgba(245, 158, 11, 0.1); color: var(--orange); }
+  .tag.idea { background: rgba(236, 72, 153, 0.1); color: var(--pink); }
+  .tag.opensource { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .tag.google { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+  .tag.replit { background: rgba(236, 72, 153, 0.1); color: var(--pink); }
+  .tag.vercel { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .tag.box { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+
+  .story-link {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--accent-1);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .story-link:hover { text-decoration: underline; }
+
+  .quote-block {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(168, 85, 247, 0.04));
+    border-left: 3px solid var(--accent-2);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .quote-block p {
+    font-size: 15px;
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .quote-block .attribution {
+    margin-top: 8px;
+    font-size: 13px;
+    font-style: normal;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .hot-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-left: 8px;
+  }
+
+  .trending-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--red);
+    margin-left: 8px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  .tweet-links {
+    margin: 8px 0;
+  }
+  .tweet-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--accent-1);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 2px 0;
+  }
+  .tweet-link:hover { text-decoration: underline; }
+  .tweet-link::before {
+    content: '↗';
+    font-size: 12px;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .footer a {
+    color: var(--accent-1);
+    text-decoration: none;
+  }
+  .footer a:hover { text-decoration: underline; }
+  .footer .powered-by {
+    margin-top: 8px;
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  .story-interaction-stats {
+    display: flex;
+    gap: 16px;
+    margin: 8px 0 4px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .story-interaction-stats span {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 40px; }
+    .stats-bar { gap: 20px; padding: 20px 16px; }
+    .stat-number { font-size: 22px; }
+    .container { padding: 24px 16px 60px; }
+    .story-card { padding: 20px; }
+    .story-header { flex-direction: column; }
+    .story-source { align-self: flex-start; }
+    .story-link { margin-left: 0; }
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.3);
+    color: white;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🤖 AI Builders Digest</div>
+    <h1>Claude Code Workflows Explode, ChatGPT Branding Debate, SaaS Under Siege</h1>
+    <p>Curated from the AI building community — agent frameworks, enterprise model routing, customer research AI, and the YES-CODE revolution</p>
+    <div class="hero-date">
+      <span class="dot"></span>
+      2026-06-04 · Daily Edition
+    </div>
+  </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">5,593</div>
+    <div class="stat-label">Claude Code Workflow Update</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">1,416</div>
+    <div class="stat-label">Codex Enterprise Features</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">1,111</div>
+    <div class="stat-label">ChatGPT Branding Hot Take</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">501</div>
+    <div class="stat-label">Replit × Microsoft Partnership</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 🔥 TOP STORY -->
+  <div class="section-title"><span class="icon">🔥</span> Top Story</div>
+
+  <div class="story-card" style="border-color: rgba(168, 85, 247, 0.3);">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://x.com/trq212/status/2061907538741006796" target="_blank">
+          Claude Code Workflows — The Biggest Upgrade Since Skills <span class="trending-badge">🔥 5,593 Likes</span>
+        </a>
+      </div>
+      <span class="story-source x">X · Anthropic</span>
+    </div>
+    <div class="story-role">Thariq — Claude Code @ Anthropic (prev YC W20)</div>
+    <div class="story-date">June 2, 2026</div>
+    <p class="story-desc">
+      Anthropic's Thariq dropped a massive update: Claude Code Workflows. Calling it "the biggest upgrade to Claude Code's capabilities since skills and subagents," the feature enables both technical and non-technical task orchestration. Deep-dived into best practices, examples, and real-world usage patterns with Sid from Anthropic.
+    </p>
+    <ul class="key-points">
+      <li>Workflows significantly expand what Claude Code can handle — especially non-technical tasks that previously required manual intervention</li>
+      <li>Deep integration with subagents creates a multi-layered orchestration system within a single Claude Code session</li>
+      <li>The community response was explosive — 5,593 likes and 624 retweets, making it one of the most shared AI dev tool announcements this week</li>
+    </ul>
+    <div class="quote-block">
+      <p>"Workflows are the biggest upgrade to Claude Code's capabilities since skills and subagents."</p>
+      <div class="attribution">— Thariq, Claude Code @ Anthropic</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag anthropic">Anthropic</span>
+      <span class="tag agent">🔧 Workflows</span>
+      <span class="tag product">🚀 Product Launch</span>
+      <a href="https://x.com/trq212/status/2061907538741006796" class="story-link" target="_blank">View on X →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🐦 X / TWITTER -->
+  <div class="section-title"><span class="icon">🐦</span> Builders on X</div>
+
+  <!-- Joshua Woodward — Google Gemini Thinking Levels -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://x.com/joshwoodward/status/2062025667852812583" target="_blank">
+          Gemini Thinking Levels Go Cross-Platform
+        </a>
+      </div>
+      <span class="story-source x">X · Google</span>
+    </div>
+    <div class="story-role">Josh Woodward — VP, Google / Google Labs / Gemini App / Google AI Studio</div>
+    <div class="story-date">June 3, 2026</div>
+    <p class="story-desc">
+      Google shipped a quality-of-life fix: Thinking Levels are now available on Gemini across Web, iOS, and Android. The "papercut fix" as Woodward calls it means users can now control reasoning depth regardless of platform — no more desktop-only thinking features.
+    </p>
+    <div class="story-meta">
+      <span class="tag google">Google</span>
+      <span class="tag product">🎯 UX</span>
+      <a href="https://x.com/joshwoodward/status/2062025667852812583" class="story-link" target="_blank">View on X →</a>
+    </div>
+  </div>
+
+  <!-- Thibault Sottiaux — ChatGPT Branding + Codex -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://x.com/thsottiaux/status/2062057881424506950" target="_blank">
+          "ChatGPT Is Here to Stay" — OpenAI on Brand, Codex Enterprise Ship
+        </a>
+        <span class="hot-badge">🔥 1,111 Likes</span>
+      </div>
+      <span class="story-source x">X · OpenAI</span>
+    </div>
+    <div class="story-role">Thibault Sottiaux — Codex & ChatGPT @ OpenAI</div>
+    <div class="story-date">June 2-3, 2026</div>
+    <p class="story-desc">
+      OpenAI's Thibault Sottiaux made a definitive statement on the ChatGPT brand: "Whether you understand the name or not, it's here to stay. It's the past, the present, the future. Synonym with AI, soon synonym with agents. Much to build." The post garnered 1,111 likes, reflecting wide resonance.
+    </p>
+    <p class="story-desc">
+      Separately, Sottiaux announced a wave of new Codex enterprise features: business plan users can now host and share websites, "vastly improved" plugins and skills for broad roles, and visual annotation feedback in docs, slides, sheets, and more — bringing agentic collaboration into the document layer.
+    </p>
+    <ul class="key-points">
+      <li>ChatGPT is positioned as a lasting brand synonymous with AI and agents, not a transitional product name</li>
+      <li>Codex gets major enterprise upgrades: hosted websites, improved plugins/skills, visual document annotations</li>
+      <li>Visual annotations enable users to give feedback to their AI agent directly within Google Docs, Slides, and Sheets</li>
+    </ul>
+    <div class="quote-block">
+      <p>"ChatGPT — Whether you understand the name or not. It's here to stay. It's the past, the present, the future. Synonym with AI, soon synonym with agents."</p>
+      <div class="attribution">— Thibault Sottiaux, Codex & ChatGPT @ OpenAI</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag openai">OpenAI</span>
+      <span class="tag product">🚀 Codex</span>
+      <span class="tag idea">💡 Branding</span>
+      <a href="https://x.com/thsottiaux/status/2061876999564791952" class="story-link" target="_blank">Codex Features →</a>
+    </div>
+  </div>
+
+  <!-- Peter Yang — SaaS Is Under Pressure -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://x.com/petergyang/status/2061846283263103274" target="_blank">
+          Peter Yang: "Simple SaaS Is Getting Squeezed by AI Agents"
+        </a>
+      </div>
+      <span class="story-source x">X · Roblox</span>
+    </div>
+    <div class="story-role">Peter Yang — Product @ Roblox, AI tutorials</div>
+    <div class="story-date">June 2-3, 2026</div>
+    <p class="story-desc">
+      Peter Yang kicked off a fascinating debate: narrow-use SaaS is getting crushed between AI skills (which solve the same problem more flexibly) and AI-native coding agents like Codex and Claude Code that have personal context and memory about the user. His thesis: if you're charging $20/month for a simple SaaS, users will compare it to their Claude/ChatGPT subscription — and you'll lose. The real value is shifting toward services (humans in the loop) and deeply integrated platforms.
+    </p>
+    <p class="story-desc">
+      Also praised Devin and Windsurf for staying disciplined through the ups and downs — many AI-native builders now love Devin.
+    </p>
+    <ul class="key-points">
+      <li>AI skills can solve narrow SaaS problems more flexibly than standalone products</li>
+      <li>AI coding agents with personal context outperform generic SaaS UIs for personalized tasks</li>
+      <li>Users will compare $20 SaaS to their ChatGPT sub — it's a losing comparison for point solutions</li>
+      <li>Devin and Windsurf gaining real traction after navigating early skepticism</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag idea">💡 SaaS Thesis</span>
+      <span class="tag agent">AI Agents</span>
+      <a href="https://x.com/petergyang/status/2061846283263103274" class="story-link" target="_blank">View Thread →</a>
+    </div>
+  </div>
+
+  <!-- Amjad Masad — Replit × Microsoft + ViBench -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://x.com/amasad/status/2061893093696434578" target="_blank">
+          Replit Partners with Microsoft for Enterprise App Building
+        </a>
+        <span class="hot-badge">🔥 501 Likes</span>
+      </div>
+      <span class="story-source x">X · Replit</span>
+    </div>
+    <div class="story-role">Amjad Masad — CEO @ Replit</div>
+    <div class="story-date">June 2-3, 2026</div>
+    <p class="story-desc">
+      Replit CEO Amjad Masad announced a partnership with Microsoft to enable enterprise users to build and deploy secure Fabric data apps on Replit — powered by Microsoft's new Rayfin SDK. A major signal that AI-native development platforms are penetrating enterprise through cloud partnerships.
+    </p>
+    <p class="story-desc">
+      Masad also highlighted ViBench as a better benchmark than traditional SWE-bench for measuring app-building capability — an important distinction as the industry shifts from "fix bugs" to "build apps" as the primary eval.
+    </p>
+    <div class="story-meta">
+      <span class="tag replit">Replit</span>
+      <span class="tag enterprise">🏢 Enterprise</span>
+      <span class="tag opensource">📊 Benchmarks</span>
+      <a href="https://x.com/amasad/status/2061893093696434578" class="story-link" target="_blank">View on X →</a>
+    </div>
+  </div>
+
+  <!-- Guillermo Rauch — YES-CODE -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://x.com/rauchg/status/2061934154732974376" target="_blank">
+          Guillermo Rauch: "YES-CODE" — Code Is Now Cheap, Easy, and Abundant
+        </a>
+        <span class="hot-badge">🔥 765 Likes</span>
+      </div>
+      <span class="story-source x">X · Vercel</span>
+    </div>
+    <div class="story-role">Guillermo Rauch — CEO @ Vercel</div>
+    <div class="story-date">June 2, 2026</div>
+    <p class="story-desc">
+      Vercel CEO Guillermo Rauch declared the death of "no-code" and the rise of "YES-CODE." His argument: coding agents have permanently changed the cost equation — code is now cheap, easy, and abundant. No-code was built under an assumption that code was expensive and scarce; that assumption is dead.
+    </p>
+    <ul class="key-points">
+      <li>No-code took shortcuts with hard ceilings on performance and sophistication</li>
+      <li>Vercel's mission: "the easiest cloud for agents that you never graduate from"</li>
+      <li>Conductor, an "ADE" (Agent Development Environment), born for coding agents with remote dev as default</li>
+      <li>Rauch on AI education: "human language is the new API to the world" — English alone can now produce tangible things through agents</li>
+    </ul>
+    <div class="quote-block">
+      <p>"An entire category of software, 'no-code,' was built under the presumption that code is expensive, difficult, and scarce. Coding agents have forever changed the equation."</p>
+      <div class="attribution">— Guillermo Rauch, CEO @ Vercel</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag vercel">Vercel</span>
+      <span class="tag idea">💡 YES-CODE</span>
+      <span class="tag agent">🤖 Coding Agents</span>
+      <a href="https://x.com/rauchg/status/2061862134469062850" class="story-link" target="_blank">AI Education Thread →</a>
+    </div>
+  </div>
+
+  <!-- Aaron Levie — Model Routing -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://x.com/levie/status/2061974298760495132" target="_blank">
+          Box CEO Aaron Levie: Model Routing Is the Inevitable Conclusion
+        </a>
+        <span class="hot-badge">🔥 299 Likes</span>
+      </div>
+      <span class="story-source x">X · Box</span>
+    </div>
+    <div class="story-role">Aaron Levie — CEO @ Box</div>
+    <div class="story-date">June 3, 2026</div>
+    <p class="story-desc">
+      Box CEO Aaron Levie laid out a clear argument: as token budgets become a growing part of operating expenses, model routing is inevitable. The products that can intelligently route workflows to the right model tier will aggregate the most demand. His key insight: enterprises can't solve routing at scale themselves — it must be productized. For now, most use-cases still need frontier performance, but the peel-off to cheaper models is coming.
+    </p>
+    <ul class="key-points">
+      <li>Model routing will be the biggest differentiator in the applied AI layer</li>
+      <li>Strong domain evals enable cost/performance optimization per task</li>
+      <li>Enterprise-scale routing is too complex for individual companies to DIY — must be platform-native</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag box">Box</span>
+      <span class="tag enterprise">🏢 Enterprise</span>
+      <span class="tag model">🤖 Model Routing</span>
+      <a href="https://x.com/levie/status/2061974298760495132" class="story-link" target="_blank">View on X →</a>
+    </div>
+  </div>
+
+  <!-- Swyx — Codex AGI + Reasoning -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://x.com/swyx/status/2062062585391014245" target="_blank">
+          Swyx: Codex Is AGI — Also, Best Reasoning Efficiency Reward Function
+        </a>
+      </div>
+      <span class="story-source x">X · Cognition / Temporal / DX Tips</span>
+    </div>
+    <div class="story-role">Swyx — Cognition, Temporal, DX Tips, Latent Space pod</div>
+    <div class="story-date">June 3, 2026</div>
+    <p class="story-desc">
+      Swyx dropped a provocative take: "Codex is AGI" — after one-shotting a complex task with no notes needed. Also shared what he called "probably the best reward function for reasoning efficiency" he's seen, linking to a technical deep-dive. For an AI builder who's connected to multiple major orgs (Cognition, Temporal, Latent Space), his opinion carries weight.
+    </p>
+    <div class="story-meta">
+      <span class="tag openai">OpenAI</span>
+      <span class="tag idea">💡 AGI Take</span>
+      <span class="tag opensource">⚡ Reasoning</span>
+      <a href="https://x.com/swyx/status/2062060142489973010" class="story-link" target="_blank">Reasoning Reward →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🎙️ PODCASTS -->
+  <div class="section-title"><span class="icon">🎙️</span> Podcast Pick</div>
+
+  <div class="story-card" style="border-color: rgba(245, 158, 11, 0.2);">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.youtube.com/watch?v=Rumft-rsEu4" target="_blank">
+          Training Data: Listen Labs — AI That Understands Your Customers
+        </a>
+      </div>
+      <span class="story-source podcast">🎧 Training Data</span>
+    </div>
+    <div class="story-role">Alfred Wahlforss — Founder & CEO, Listen Labs</div>
+    <div class="story-date">June 2, 2026</div>
+
+    <div class="story-desc">
+      <strong>The Takeaway:</strong> As AI makes building things easier, knowing <em>what</em> to build becomes the hard part — and Listen Labs is building the customer intelligence layer for that decision.
+    </div>
+
+    <p class="story-desc">
+      Listen Labs is an AI-first customer research platform that can run thousands of voice interviews simultaneously. Founded by Alfred Wahlforss, the company now serves 20% of the Fortune 500 — including Microsoft, Anthropic, Sweetgreen, and NBC — and has conducted over a million AI-facilitated interviews.
+    </p>
+
+    <p class="story-desc">
+      The core insight: most product decisions are made <em>without</em> customer input because traditional research is too slow and expensive. Listen's AI agents conduct Zoom-style video interviews at scale, detecting emotional responses through facial expressions and vocal tone — bridging the gap between what people <em>say</em> and what they actually <em>feel</em>.
+    </p>
+
+    <ul class="key-points">
+      <li>Their AI interview agent achieves 85% on internal quality evals (was 20% with GPT-4) — showing vertical AI's advantage in proprietary evaluation</li>
+      <li>People are more honest talking to AI: "It's a very therapeutic experience because it's a nonjudgmental entity"</li>
+      <li>Building "human API" for agents — coding agents that can call Listen to understand user preferences before building</li>
+      <li>Audience network effects: 30M participants across 200+ countries, profiling expertise across domains from oncology to sneakers</li>
+      <li>Coming next: generative simulation — predict customer responses without running actual interviews, with 95% accuracy for known personas</li>
+    </ul>
+
+    <div class="quote-block">
+      <p>"Put it another way: as we get closer to AGI, it will be easier to build things, but the hard part will be knowing what to build. And that's what we're building at Listen."</p>
+      <div class="attribution">— Alfred Wahlforss, Founder & CEO, Listen Labs</div>
+    </div>
+
+    <div class="story-meta">
+      <span class="tag agent">📊 Market Research</span>
+      <span class="tag enterprise">🏢 Enterprise</span>
+      <span class="tag product">🧠 Customer Intelligence</span>
+      <a href="https://www.youtube.com/watch?v=Rumft-rsEu4" class="story-link" target="_blank">Watch on YouTube →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 📋 Weekly Themes -->
+  <div class="section-title"><span class="icon">📋</span> Themes This Week</div>
+
+  <div class="story-card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.04), rgba(168, 85, 247, 0.03)); border-color: rgba(99, 102, 241, 0.2);">
+    <div class="story-header">
+      <div class="story-title" style="font-size: 18px;">Agentic Infrastructure Matures</div>
+    </div>
+    <p class="story-desc">
+      The week's dominant theme: the tools for building with AI agents are rapidly maturing. Claude Code Workflows enable non-technical orchestration. Codex ships hosted websites and visual annotations. Replit partners with Microsoft for enterprise. Vercel coins "YES-CODE." The infrastructure layer for agent-driven development is no longer experimental — it's production-ready.
+    </p>
+  </div>
+
+  <div class="story-card" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.04), rgba(236, 72, 153, 0.03)); border-color: rgba(245, 158, 11, 0.2); margin-top: 0;">
+    <div class="story-header">
+      <div class="story-title" style="font-size: 18px;">The SaaS vs. Agent Question</div>
+    </div>
+    <p class="story-desc">
+      Peter Yang's SaaS thesis, Rauch's YES-CODE manifesto, and Levie's model routing analysis all point to the same future: standalone software products need to justify their existence against AI-native alternatives. The old SaaS model (build UI → charge monthly) is being challenged by AI agents that can understand user context, write code on the fly, and deliver personalized outcomes.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🔗 Resource Links -->
+  <div class="section-title"><span class="icon">🔗</span> Resources & Links</div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Claude Code Workflows Guide</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Best practices, examples, and non-technical use cases</div>
+      <a href="https://docs.anthropic.com/en/docs/claude-code/workflows" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">Read on Anthropic Blog →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Model Routing Thesis</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Aaron Levie on cost-performance optimization</div>
+      <a href="https://x.com/levie/status/2061974298760495132" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">Thread on X →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">ViBench Benchmark</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">App-building evaluation for AI agents</div>
+      <a href="https://x.com/amasad/status/2061878314311266552" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">Amjad Masad on X →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Replit × Microsoft Rayfin SDK</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Enterprise Fabric data apps on Replit</div>
+      <a href="https://x.com/amasad/status/2061893093696434578" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">Announcement →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Listen Labs — AI Research Platform</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">AI-first customer interviews at scale</div>
+      <a href="https://www.youtube.com/watch?v=Rumft-rsEu4" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">Watch Episode →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">ChatGPT Branding Discussion</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">"Synonym with AI, soon synonym with agents"</div>
+      <a href="https://x.com/thsottiaux/status/2062057881424506950" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">See on X →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 📊 Data Summary -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 24px;">
+    <div class="story-card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 32px; font-weight: 900; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">9</div>
+      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">Active Builders</div>
+    </div>
+    <div class="story-card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">26</div>
+      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">Tweets Curated</div>
+    </div>
+    <div class="story-card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">1</div>
+      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">Podcast Episode</div>
+    </div>
+    <div class="story-card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #ec4899, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">6</div>
+      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">Resource Links</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>AI Builders Digest — June 4, 2026</p>
+  <p style="margin-top: 4px;">Curated from the AI building community. Following builders, not influencers.</p>
+  <p class="powered-by">
+    Generated by <a href="https://github.com/zarazhangrui/follow-builders" target="_blank">Follow Builders</a> skill · 
+    <a href="https://github.com/luokpX/pages" target="_blank">View source</a>
+  </p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — June 5, 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e293b;
+    --text: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-1: #6366f1;
+    --accent-2: #8b5cf6;
+    --accent-3: #a855f7;
+    --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    --green: #10b981;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+    --pink: #ec4899;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .hero {
+    position: relative;
+    padding: 80px 24px 60px;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0e17 0%, #1a1040 40%, #0f172a 70%, #0a0e17 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 40% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 70%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(236, 72, 153, 0.04) 0%, transparent 40%);
+    animation: aurora 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes aurora {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(20px, -30px); }
+    50% { transform: translate(-20px, 10px); }
+    75% { transform: translate(10px, 20px); }
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-1);
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+  .hero-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .hero-date .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .stats-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px;
+    padding: 28px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { text-align: center; }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon { font-size: 28px; }
+
+  .story-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .story-card:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .story-title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .story-title a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .story-title a:hover { color: var(--accent-1); }
+
+  .story-role {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .story-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    white-space: nowrap;
+  }
+  .story-source.github { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); color: #e2e8f0; }
+
+  .story-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  .story-desc {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 12px 0;
+  }
+
+  .key-points { margin: 12px 0 16px; }
+  .key-points li {
+    list-style: none;
+    padding: 4px 0 4px 20px;
+    position: relative;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .key-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent-2);
+    font-weight: 700;
+  }
+
+  .story-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-top: 16px;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .tag.agent { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .tag.model { background: rgba(168, 85, 247, 0.1); color: var(--accent-3); }
+  .tag.product { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+  .tag.opensource { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .tag.framework { background: rgba(245, 158, 11, 0.1); color: var(--orange); }
+  .tag.python { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+  .tag.rust { background: rgba(239, 68, 68, 0.1); color: var(--red); }
+  .tag.hot { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
+  .tag.tooling { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+  .tag.research { background: rgba(236, 72, 153, 0.1); color: var(--pink); }
+
+  .story-link {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--accent-1);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .story-link:hover { text-decoration: underline; }
+
+  .quote-block {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(168, 85, 247, 0.04));
+    border-left: 3px solid var(--accent-2);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .quote-block p {
+    font-size: 15px;
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .quote-block .attribution {
+    margin-top: 8px;
+    font-size: 13px;
+    font-style: normal;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .star-graph {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--orange);
+    font-weight: 600;
+  }
+  .star-fill {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: var(--orange);
+    border-radius: 2px;
+    opacity: 0.6;
+  }
+  .star-empty {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: var(--border);
+    border-radius: 2px;
+  }
+
+  .hot-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-left: 8px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  .repo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .repo-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    transition: all 0.3s ease;
+  }
+  .repo-card:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.05);
+    transform: translateY(-2px);
+  }
+  .repo-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .repo-name a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .repo-name a:hover { color: var(--accent-1); }
+  .repo-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .repo-stats {
+    display: flex;
+    gap: 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .repo-stats span {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .repo-stats .stars { color: var(--orange); font-weight: 600; }
+  .repo-lang {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 3px;
+  }
+  .repo-lang.python { background: #3572A5; }
+  .repo-lang.typescript { background: #3178c6; }
+  .repo-lang.rust { background: #dea584; }
+  .repo-lang.go { background: #00ADD8; }
+  .repo-lang.javascript { background: #f1e05a; }
+  .repo-lang.html { background: #e34c26; }
+  .repo-lang.vue { background: #41b883; }
+  .repo-lang.cpp { background: #f34b7d; }
+
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .footer a {
+    color: var(--accent-1);
+    text-decoration: none;
+  }
+  .footer a:hover { text-decoration: underline; }
+  .footer .powered-by {
+    margin-top: 8px;
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 40px; }
+    .stats-bar { gap: 20px; padding: 20px 16px; }
+    .stat-number { font-size: 22px; }
+    .container { padding: 24px 16px 60px; }
+    .story-card { padding: 20px; }
+    .story-header { flex-direction: column; }
+    .story-source { align-self: flex-start; }
+    .story-link { margin-left: 0; }
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.3);
+    color: white;
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🤖 AI Builders Digest</div>
+    <h1>Hermes Agent Soars, Browser Harness Breaks Out, Small LLM Agents Rival Giants</h1>
+    <p>Curated from GitHub's AI builder ecosystem — new repos, breakout stars, agent frameworks, and the latest open-source AI tooling</p>
+    <div class="hero-date">
+      <span class="dot"></span>
+      2026-06-05 · GitHub Edition
+    </div>
+  </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">180K</div>
+    <div class="stat-label">⭐ Hermes Agent Stars</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">14K</div>
+    <div class="stat-label">⭐ Browser Harness</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">22K</div>
+    <div class="stat-label">⭐ Archon (1mo old)</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">2.9K</div>
+    <div class="stat-label">⭐ OpenSquilla (1wk)</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 🔥 TOP STORY -->
+  <div class="section-title"><span class="icon">🔥</span> Top Story</div>
+
+  <div class="story-card" style="border-color: rgba(168, 85, 247, 0.3);">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/NousResearch/hermes-agent" target="_blank">
+          Hermes Agent Hits 180K Stars — "The Agent That Grows With You" <span class="hot-badge">🔥 #1 AI Repo</span>
+        </a>
+      </div>
+      <span class="story-source github">GitHub · Nous Research</span>
+    </div>
+    <div class="story-role">Nous Research — Open-source AI research org with multi-agent ecosystem</div>
+    <div class="story-date">Updated: June 5, 2026</div>
+    <p class="story-desc">
+      Hermes Agent from Nous Research has exploded to 180,951 stars, becoming one of the fastest-growing AI agent repos ever. The project, described as "the agent that grows with you," represents a paradigm shift in agentic AI — personal, adaptive, and designed for continuous learning. With 31K forks and 17.8K open issues reflecting massive community engagement, Hermes is now the most starred AGI-adjacent project on GitHub.
+    </p>
+    <p class="story-desc">
+      The ecosystem includes Claude Code integration, Codex support, OpenClaw compatibility, and MoltBot — making it the most multi-platform agent framework available. Its MIT license and modular architecture make it the go-to foundation for AI builders building their own agents.
+    </p>
+    <ul class="key-points">
+      <li>180K+ stars with 31K forks — community adoption at unprecedented scale for an agent framework</li>
+      <li>Multi-LLM support: Claude, GPT, OpenClaw, Codex, with MCP ecosystem compatibility</li>
+      <li>Active development with daily pushes — 300K+ commit history in just 10 months</li>
+      <li>Professional-grade: GitHub Pages docs, MIT licensed, active org backing from Nous Research</li>
+    </ul>
+    <div class="quote-block">
+      <p>"The agent that grows with you" — Hermes Agent isn't just a tool, it's a personal AI companion that learns and adapts to your workflow.</p>
+      <div class="attribution">— Nous Research, Hermes Agent</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag agent">🤖 Agent Framework</span>
+      <span class="tag opensource">📖 MIT</span>
+      <span class="tag python">Python</span>
+      <a href="https://github.com/NousResearch/hermes-agent" class="story-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🌟 BREAKOUT STARS -->
+  <div class="section-title"><span class="icon">🌟</span> Breakout Stars (New & Exploding)</div>
+
+  <div class="repo-grid">
+    <div class="repo-card">
+      <div class="repo-name">
+        <a href="https://github.com/browser-use/browser-harness" target="_blank">browser-use/browser-harness</a>
+        <span class="hot-badge" style="font-size:10px;">🔥 NEW</span>
+      </div>
+      <div class="repo-desc">Self-healing harness that enables LLMs to complete any task in the browser. 14,348★ in weeks.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 14,348</span>
+        <span>🍴 1.2K</span>
+        <span><span class="repo-lang python"></span>Python</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name">
+        <a href="https://github.com/coleam00/Archon" target="_blank">coleam00/Archon</a>
+        <span class="hot-badge" style="font-size:10px;">🔥 NEW</span>
+      </div>
+      <div class="repo-desc">First open-source harness builder for AI coding. Make AI coding deterministic and repeatable. 22,178★.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 22,178</span>
+        <span>🍴 2.8K</span>
+        <span><span class="repo-lang python"></span>Python</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name">
+        <a href="https://github.com/opensquilla/opensquilla" target="_blank">opensquilla/opensquilla</a>
+        <span class="hot-badge" style="font-size:10px;">⚡ VIRAL</span>
+      </div>
+      <div class="repo-desc">Token-Efficient AI Agent — same budget, higher intelligence density. 2,906★ in just weeks since May 2026.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 2,906</span>
+        <span>🍴 380</span>
+        <span><span class="repo-lang python"></span>Python</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name">
+        <a href="https://github.com/OpenBMB/PilotDeck" target="_blank">OpenBMB/PilotDeck</a>
+        <span class="hot-badge" style="font-size:10px;">🚀 NEW</span>
+      </div>
+      <div class="repo-desc">Task-oriented AI Agent productivity platform from OpenBMB (Tsinghua). 2,959★ since late May 2026.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 2,959</span>
+        <span>🍴 420</span>
+        <span><span class="repo-lang typescript"></span>TypeScript</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name">
+        <a href="https://github.com/datawhalechina/Agent-Learning-Hub" target="_blank">datawhalechina/Agent-Learning-Hub</a>
+        <span class="hot-badge" style="font-size:10px;">📚 HOT</span>
+      </div>
+      <div class="repo-desc">AI Agent学习路线与资料库收集. 2,710★ — the go-to Chinese language learning resource for AI agent builders.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 2,710</span>
+        <span>🍴 500</span>
+        <span><span class="repo-lang html"></span>HTML</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name">
+        <a href="https://github.com/oritera/Cairn" target="_blank">oritera/Cairn</a>
+        <span class="hot-badge" style="font-size:10px;">🧠 NEW</span>
+      </div>
+      <div class="repo-desc">AI general-purpose state-space search engine, validated on autonomous penetration testing. 1,451★.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 1,451</span>
+        <span>🍴 150</span>
+        <span><span class="repo-lang python"></span>Python</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🤖 FRAMEWORKS & TOOLS -->
+  <div class="section-title"><span class="icon">🤖</span> Agent Frameworks & Tools</div>
+
+  <div class="repo-grid">
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/gi-dellav/zerostack" target="_blank">gi-dellav/zerostack</a></div>
+      <div class="repo-desc">Minimal coding agent written in Rust, optimized for memory footprint and performance. 1,099★.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 1,099</span>
+        <span><span class="repo-lang rust"></span>Rust</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/Doorman11991/smallcode" target="_blank">Doorman11991/smallcode</a></div>
+      <div class="repo-desc">AI coding agent optimized for small LLMs. 87% benchmark with 4B-active model. Game changer for edge agents. 1,768★.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 1,768</span>
+        <span><span class="repo-lang javascript"></span>JavaScript</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/alibaba/open-code-review" target="_blank">alibaba/open-code-review</a></div>
+      <div class="repo-desc">Battle-tested at Alibaba's scale. Hybrid architecture: deterministic pipelines + LLM Agent. 1,280★.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 1,280</span>
+        <span><span class="repo-lang go"></span>Go</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/Ar9av/obsidian-wiki" target="_blank">Ar9av/obsidian-wiki</a></div>
+      <div class="repo-desc">Framework for AI agents to build a digital brain via Obsidian wiki (Karpathy's LLM Wiki pattern). 1,715★.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 1,715</span>
+        <span><span class="repo-lang python"></span>Python</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/Kaelio/ktx" target="_blank">Kaelio/ktx</a></div>
+      <div class="repo-desc">Executable context layer for data and analytics agents. Claude Code, Codex, any agent can query data. 871★.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 871</span>
+        <span><span class="repo-lang typescript"></span>TypeScript</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/UditAkhourii/adhd" target="_blank">UditAkhourii/adhd</a></div>
+      <div class="repo-desc">Tree-of-thought with pruning for coding agents. Built on Claude & Codex Agent SDK. Parallel exploration. 748★.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 748</span>
+        <span><span class="repo-lang typescript"></span>TypeScript</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/akitaonrails/ai-memory" target="_blank">akitaonrails/ai-memory</a></div>
+      <div class="repo-desc">Long-term memory for agent coding CLIs. Facilitates handoff between different agent vendors. 527★ in Rust.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 527</span>
+        <span><span class="repo-lang rust"></span>Rust</span>
+      </div>
+    </div>
+
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/code-yeongyu/lazycodex" target="_blank">code-yeongyu/lazycodex</a></div>
+      <div class="repo-desc">Agent harness for complex codebases: project memory, planning, execution, verified completion. 469★.</div>
+      <div class="repo-stats">
+        <span class="stars">⭐ 469</span>
+        <span><span class="repo-lang typescript"></span>TypeScript</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🔧 AGENT INFRA & HARNESSES -->
+  <div class="section-title"><span class="icon">🔧</span> Agent Infra & Harnesses</div>
+
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/browser-use/browser-harness" target="_blank">
+          Browser Harness — Self-Healing Browser Agent Goes Viral (14K★)
+        </a>
+      </div>
+      <span class="story-source github">GitHub · browser-use</span>
+    </div>
+    <div class="story-role">browser-use — AI browser automation team</div>
+    <div class="story-date">May-June 2026</div>
+    <p class="story-desc">
+      browser-use/browser-harness exploded onto the scene with 14,348 stars in weeks. The project enables LLMs to "complete any task" with a self-healing harness — meaning when elements change on a page, the AI adapts automatically. It's the most practical solution to the browser automation brittleness problem that has plagued AI agents since Selenium.
+    </p>
+    <p class="story-desc">
+      The team also shipped browser-use/bux (370★) — a 24/7 Claude Code agent for Playwright-style automation with Telegram integration. Between these two repos, browser-use has rapidly become the dominant browser agent infrastructure provider in open source.
+    </p>
+    <ul class="key-points">
+      <li>Self-healing means the agent recovers from page changes without human intervention</li>
+      <li>14K stars in weeks — the fastest adoption of any browser automation tool in 2026</li>
+      <li>Works with any LLM backend — Claude, GPT-4, local models</li>
+      <li>bux companion tool provides 24/7 cloud-hosted browser agent</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag tooling">🛠️ Browser Agent</span>
+      <span class="tag agent">🤖 Automation</span>
+      <span class="tag python">Python</span>
+      <a href="https://github.com/browser-use/browser-harness" class="story-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/Helvesec/rmux" target="_blank">
+          rmux — Universal Rust Multiplexer for CLI/TUI Agents (1,533★)
+        </a>
+      </div>
+      <span class="story-source github">GitHub · Helvesec</span>
+    </div>
+    <div class="story-role">Helvesec — Open-source tooling infrastructure</div>
+    <div class="story-date">May-June 2026</div>
+    <p class="story-desc">
+      rmux is a universal Rust multiplexer with a typed SDK — letting you drive any CLI or TUI app from code. It's a native Rust solution that works on Linux, macOS, and Windows. What makes it interesting for AI builders: it gives coding agents the ability to interact with terminal UIs programmatically, filling a gap in the agent-tool stack.
+    </p>
+    <ul class="key-points">
+      <li>Typed SDK enables type-safe agent-to-terminal interactions</li>
+      <li>Native cross-platform: Linux, macOS, Windows</li>
+      <li>1,533★ in under a month — huge demand for agentic CLI infrastructure</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag tooling">🛠️ CLI Agent</span>
+      <span class="tag rust">🦀 Rust</span>
+      <a href="https://github.com/Helvesec/rmux" class="story-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/XingYu-Zhong/DeepSeek-GUI" target="_blank">
+          DeepSeek GUI — Agent Workspace for DeepSeek Models (824★)
+        </a>
+      </div>
+      <span class="story-source github">GitHub · XingYu-Zhong</span>
+    </div>
+    <div class="story-role">Independent developer</div>
+    <div class="story-date">May-June 2026</div>
+    <p class="story-desc">
+      An AI agent workspace purpose-built for DeepSeek models, featuring "Code and Claw modes built into your application." As DeepSeek's models compete with frontier labs, the tooling ecosystem is catching up — this GUI provides the development experience that DeepSeek users have been asking for.
+    </p>
+    <div class="story-meta">
+      <span class="tag tooling">🛠️ DeepSeek</span>
+      <span class="tag typescript">TypeScript</span>
+      <a href="https://github.com/XingYu-Zhong/DeepSeek-GUI" class="story-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 📊 LEAN & EFFICIENT AI -->
+  <div class="section-title"><span class="icon">📊</span> Lean & Efficient AI</div>
+
+  <div class="repo-grid">
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/opensquilla/opensquilla" target="_blank">opensquilla/opensquilla</a></div>
+      <div class="repo-desc">Token-Efficient AI Agent — higher intelligence density with same budget. 2,906★. The hottest efficiency project.</div>
+      <div class="repo-stats"><span class="stars">⭐ 2,906</span><span class="repo-lang python"></span>Python</div>
+    </div>
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/Doorman11991/smallcode" target="_blank">Doorman11991/smallcode</a></div>
+      <div class="repo-desc">87% benchmark with 4B-active model — proving small LLMs can rival big ones for coding. 1,768★.</div>
+      <div class="repo-stats"><span class="stars">⭐ 1,768</span><span class="repo-lang javascript"></span>JavaScript</div>
+    </div>
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/gi-dellav/zerostack" target="_blank">gi-dellav/zerostack</a></div>
+      <div class="repo-desc">Minimal coding agent in Rust. Memory-efficient by design. 1,099★ — proving Rust agents matter.</div>
+      <div class="repo-stats"><span class="stars">⭐ 1,099</span><span class="repo-lang rust"></span>Rust</div>
+    </div>
+    <div class="repo-card">
+      <div class="repo-name"><a href="https://github.com/akitaonrails/ai-memory" target="_blank">akitaonrails/ai-memory</a></div>
+      <div class="repo-desc">Long-term memory for agent coding CLIs in Rust. Enables handoff between agent vendors. 527★.</div>
+      <div class="repo-stats"><span class="stars">⭐ 527</span><span class="repo-lang rust"></span>Rust</div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <p>"OpenSquilla achieves higher intelligence density with the same token budget. The era of brute-force LLM scaling is over — efficiency is the new frontier."</p>
+    <div class="attribution">— OpenSquilla project, Token-Efficient AI Agent movement</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🧪 RESEARCH & SPECIALIZED -->
+  <div class="section-title"><span class="icon">🧪</span> Research & Specialized Agents</div>
+
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/Purewhiter/mobilegym" target="_blank">
+          MobileGym — Verifiable Mobile GUI Agent Simulation in the Browser (500★)
+        </a>
+      </div>
+      <span class="story-source github">GitHub · Purewhiter</span>
+    </div>
+    <div class="story-role">Research project</div>
+    <div class="story-date">May-June 2026</div>
+    <p class="story-desc">
+      MobileGym is a verifiable, highly parallel simulation platform for mobile GUI agent research — and it runs entirely in the browser. It's an Android emulator in your browser that enables AI agents to be trained and evaluated on mobile tasks at scale. A potential game-changer for mobile AI agent research.
+    </p>
+    <div class="story-meta">
+      <span class="tag research">🔬 Research</span>
+      <span class="tag tooling">🛠️ Simulation</span>
+      <span class="tag typescript">TypeScript</span>
+      <a href="https://github.com/Purewhiter/mobilegym" class="story-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/OpenOSINT/OpenOSINT" target="_blank">
+          OpenOSINT — AI-Powered OSINT Agent with MCP Server (501★)
+        </a>
+      </div>
+      <span class="story-source github">GitHub · OpenOSINT</span>
+    </div>
+    <div class="story-role">OpenOSINT — Open-source intelligence research</div>
+    <div class="story-date">May 2026</div>
+    <p class="story-desc">
+      OpenOSINT is an AI-powered open-source intelligence agent with interactive REPL, MCP server, and CLI. With 16 tools, it works with Claude, GPT-4, or local models. It's one of the first dedicated OSINT agents that combines the MCP protocol with agentic workflow — making intelligence gathering accessible to AI builders.
+    </p>
+    <div class="story-meta">
+      <span class="tag tooling">🛠️ OSINT</span>
+      <span class="tag opensource">📖 Open Source</span>
+      <span class="tag python">Python</span>
+      <a href="https://github.com/OpenOSINT/OpenOSINT" class="story-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/withkynam/vibecode-pro-max-kit" target="_blank">
+          vibecode-pro-max-kit — Spec-Driven Coding Harness for Builders (778★)
+        </a>
+      </div>
+      <span class="story-source github">GitHub · withkynam</span>
+    </div>
+    <div class="story-role">withkynam — Independent AI tooling builder</div>
+    <div class="story-date">May-June 2026</div>
+    <p class="story-desc">
+      "Your AI forgets. This remembers." vibecode-pro-max-kit is a spec-driven coding harness for "vibecoders, product owners, CEOs and real builders." It provides self-documenting specifications that persist across AI coding sessions — solving the memory problem that plagues agent-driven development.
+    </p>
+    <div class="story-meta">
+      <span class="tag tooling">🛠️ Spec Harness</span>
+      <span class="tag hot">🔥 Vibe Coding</span>
+      <span class="tag javascript">JavaScript</span>
+      <a href="https://github.com/withkynam/vibecode-pro-max-kit" class="story-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 📋 Weekly Themes -->
+  <div class="section-title"><span class="icon">📋</span> Themes This Week</div>
+
+  <div class="story-card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.04), rgba(168, 85, 247, 0.03)); border-color: rgba(99, 102, 241, 0.2);">
+    <div class="story-header">
+      <div class="story-title" style="font-size: 18px;">Agent Efficiency Revolution</div>
+    </div>
+    <p class="story-desc">
+      The dominant theme this week: efficiency. OpenSquilla (token efficiency), smallcode (4B model hitting 87% benchmarks), zerostack (Rust minimalism), and ai-memory (long-term memory in Rust) all signal a shift away from "throw more compute" toward "be smarter with less." The era of Lean AI has arrived.
+    </p>
+  </div>
+
+  <div class="story-card" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.04), rgba(236, 72, 153, 0.03)); border-color: rgba(245, 158, 11, 0.2); margin-top: 0;">
+    <div class="story-header">
+      <div class="story-title" style="font-size: 18px;">Browser Agents Go Mainstream</div>
+    </div>
+    <p class="story-desc">
+      browser-use's browser-harness (14K★) and bux (370★) plus MobileGym (500★) represent the maturation of browser agents. Self-healing capabilities, 24/7 automation, and mobile simulation all in open source. The infrastructure for agentic web interaction is now production-grade.
+    </p>
+  </div>
+
+  <div class="story-card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), rgba(6, 182, 212, 0.03)); border-color: rgba(16, 185, 129, 0.2); margin-top: 0;">
+    <div class="story-header">
+      <div class="story-title" style="font-size: 18px;">Rust Is the New Python for Agent Infra</div>
+    </div>
+    <p class="story-desc">
+      Three major Rust agent projects went viral: zerostack (1,099★), rmux (1,533★), and ai-memory (527★). Builders are choosing Rust for agent infrastructure where memory footprint, performance, and reliability matter. The trend of "Rust for agent infra, Python for agent logic" is solidifying.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🔗 Resource Links -->
+  <div class="section-title"><span class="icon">🔗</span> Resources & Learning</div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Agent Learning Hub (中文)</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">最全 AI Agent 学习路线与资料库</div>
+      <a href="https://github.com/datawhalechina/Agent-Learning-Hub" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">View on GitHub →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Yao Open Prompts (中文)</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">覆盖工作/学习/内容/营销/生活的 AI 提示词库</div>
+      <a href="https://github.com/yaojingang/yao-open-prompts" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">View on GitHub →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Obsidian Wiki for AI Memory</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Karpathy's LLM Wiki pattern — build your agent's digital brain</div>
+      <a href="https://github.com/Ar9av/obsidian-wiki" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">View on GitHub →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Awesome Architecture (双语)</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">26篇双语教程，25个架构模板，6个端到端案例</div>
+      <a href="https://github.com/study8677/awesome-architecture" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">View on GitHub →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Docker AI Agent Builder</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">AI Agent Builder and Runtime by Docker Engineering</div>
+      <a href="https://github.com/docker/docker-agent" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">View on GitHub →</a>
+    </div>
+
+    <div class="story-card" style="padding: 20px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Archon — Deterministic AI Coding</div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Make AI coding deterministic and repeatable</div>
+      <a href="https://github.com/coleam00/Archon" style="color: var(--accent-1); font-size: 13px; text-decoration: none; font-weight: 500;" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 📊 Data Summary -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 24px;">
+    <div class="story-card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 32px; font-weight: 900; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">28</div>
+      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">Projects Curated</div>
+    </div>
+    <div class="story-card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">6</div>
+      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">Breakout Stars</div>
+    </div>
+    <div class="story-card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">8</div>
+      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">Agent Frameworks</div>
+    </div>
+    <div class="story-card" style="text-align: center; padding: 20px;">
+      <div style="font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #ec4899, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">3</div>
+      <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">Key Themes</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>AI Builders Digest — June 5, 2026</p>
+  <p style="margin-top: 4px;">Curated from GitHub's AI builder ecosystem — new repos, trends, and open-source agent tooling.</p>
+  <p class="powered-by">
+    Generated by <a href="https://github.com/zarazhangrui/follow-builders" target="_blank">Follow Builders</a> · 
+    <a href="https://github.com/luokpX/pages" target="_blank">View source</a> · 
+    Data via <a href="https://docs.github.com/en/rest" target="_blank">GitHub API</a>
+  </p>
+</div>
+
+</body>
+</html>

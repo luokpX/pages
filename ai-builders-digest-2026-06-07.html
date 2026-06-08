@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Builders Digest — June 7, 2026</title>
+  <meta name="description" content="Weekly AI Builders Digest — curated from GitHub follow-builders feed, trending repos, and ecosystem news.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0b0f;
+      --surface: #12141a;
+      --surface2: #1a1d28;
+      --border: #2a2d3a;
+      --text: #e4e6f0;
+      --text-muted: #8b8fa3;
+      --accent: #6c5ce7;
+      --accent2: #00cec9;
+      --accent3: #fd79a8;
+      --green: #00b894;
+      --orange: #fdcb6e;
+      --red: #e17055;
+      --blue: #74b9ff;
+      --gradient-1: linear-gradient(135deg, #6c5ce7 0%, #00cec9 100%);
+      --gradient-2: linear-gradient(135deg, #fd79a8 0%, #6c5ce7 100%);
+      --gradient-3: linear-gradient(135deg, #00cec9 0%, #fdcb6e 100%);
+      --gradient-hero: linear-gradient(135deg, #0a0b0f 0%, #1a1d28 50%, #12141a 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated gradient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 80% 20%, rgba(108,92,231,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(0,206,201,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 50%, rgba(253,121,168,0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      padding: 60px 0 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--gradient-1);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      font-weight: 900;
+      background: var(--gradient-2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .header .subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .header .subtitle strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .header .meta {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .header .meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 40px 0;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .stat-card .num {
+      font-size: 36px;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+
+    .stat-card .label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin: 48px 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .section-header .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .section-header .icon.purple { background: rgba(108,92,231,0.2); color: var(--accent); }
+    .section-header .icon.teal { background: rgba(0,206,201,0.2); color: var(--accent2); }
+    .section-header .icon.orange { background: rgba(253,203,110,0.2); color: var(--orange); }
+    .section-header .icon.blue { background: rgba(116,185,255,0.2); color: var(--blue); }
+    .section-header .icon.pink { background: rgba(253,121,168,0.2); color: var(--accent3); }
+
+    .section-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-header h2 small {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* ── REPO CARD ── */
+    .repo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .repo-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--gradient-1);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .repo-card:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .repo-card:hover::before {
+      opacity: 1;
+    }
+
+    .repo-card .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .repo-card .repo-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .repo-card .repo-name:hover {
+      color: var(--accent2);
+    }
+
+    .repo-card .repo-name .owner {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .repo-card .repo-name .owner::after {
+      content: '/';
+      color: var(--border);
+      margin: 0 2px;
+    }
+
+    .repo-card .stats {
+      display: flex;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .repo-card .stats span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .repo-card .stats .stars { color: var(--orange); }
+    .repo-card .stats .forks { color: var(--accent2); }
+
+    .repo-card .description {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .repo-card .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 100px;
+      letter-spacing: 0.3px;
+    }
+
+    .tag-python { background: rgba(55,118,171,0.2); color: #4b8bbe; }
+    .tag-js { background: rgba(240,219,79,0.2); color: #f0db4f; }
+    .tag-ts { background: rgba(49,120,198,0.2); color: #3178c6; }
+    .tag-rust { background: rgba(239,85,59,0.2); color: #ef553b; }
+    .tag-go { background: rgba(0,173,216,0.2); color: #00add8; }
+    .tag-shell { background: rgba(60,194,136,0.2); color: #3cc288; }
+    .tag-html { background: rgba(227,76,38,0.2); color: #e34c26; }
+    .tag-ai { background: rgba(108,92,231,0.2); color: var(--accent); }
+    .tag-default { background: rgba(139,143,163,0.15); color: var(--text-muted); }
+
+    /* ── KEY POINTS ── */
+    .key-points {
+      background: var(--surface2);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+
+    .key-points h4 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent2);
+      margin-bottom: 10px;
+    }
+
+    .key-points ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .key-points li {
+      position: relative;
+      padding-left: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .key-points li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--accent2);
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    /* ── QUOTE BLOCK ── */
+    .quote-block {
+      background: linear-gradient(135deg, rgba(108,92,231,0.1) 0%, rgba(0,206,201,0.05) 100%);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+
+    .quote-block blockquote {
+      font-size: 16px;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .quote-block blockquote::before {
+      content: '"';
+      font-size: 40px;
+      color: var(--accent);
+      line-height: 0;
+      vertical-align: -10px;
+      margin-right: 4px;
+    }
+
+    .quote-block .attribution {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: normal;
+    }
+
+    .quote-block .attribution a {
+      color: var(--accent2);
+      text-decoration: none;
+    }
+
+    .quote-block .attribution a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── NEWS CARD ── */
+    .news-card {
+      display: flex;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+
+    .news-card:hover {
+      border-color: var(--accent);
+      transform: translateX(2px);
+    }
+
+    .news-card .news-date {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent2);
+      white-space: nowrap;
+      min-width: 70px;
+      padding-top: 2px;
+    }
+
+    .news-card .news-body h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .news-card .news-body p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .news-card .news-body a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .news-card .news-body a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── AUTHOR INFO ── */
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .author-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gradient-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .author-info .author-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .author-info .author-link {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .author-info .author-link:hover {
+      color: var(--accent2);
+    }
+
+    /* ── TRENDING NOW ── */
+    .trending-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .trending-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s;
+    }
+
+    .trending-item:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .trending-item .rank {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .trending-item .rank-num {
+      color: var(--accent3);
+    }
+
+    .trending-item h3 {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .trending-item h3 a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .trending-item h3 a:hover {
+      color: var(--accent);
+    }
+
+    .trending-item .trend-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 6px 0 10px;
+      line-height: 1.5;
+    }
+
+    .trending-item .trend-stats {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .trending-item .trend-stats .s { color: var(--orange); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 48px 0;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center;
+      padding: 48px 0 64px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .footer .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .footer .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer .footer-links a:hover {
+      color: var(--accent2);
+    }
+
+    .footer .footer-note {
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .header h1 { font-size: 32px; }
+      .header .meta { flex-direction: column; align-items: center; gap: 8px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .trending-grid { grid-template-columns: 1fr; }
+      .repo-card .top-row { flex-direction: column; }
+      .news-card { flex-direction: column; }
+    }
+
+    /* ── LOADING STATE / FADE IN ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section { animation: fadeInUp 0.6s ease-out both; }
+    .section:nth-child(2) { animation-delay: 0.1s; }
+    .section:nth-child(3) { animation-delay: 0.2s; }
+    .section:nth-child(4) { animation-delay: 0.3s; }
+    .section:nth-child(5) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="header">
+    <div class="badge">✦ Weekly Digest</div>
+    <h1>AI Builders Digest</h1>
+    <p class="subtitle">Curated from the <strong>GitHub AI Builders Feed</strong> — trending repos, ecosystem news &amp; community pulse</p>
+    <div class="meta">
+      <span>📅 June 7, 2026</span>
+      <span>📊 Week of Jun 1 – Jun 7</span>
+      <span>🔗 <a href="https://github.com/topics/ai-builders" style="color:var(--accent2);text-decoration:none;">#ai-builders</a></span>
+    </div>
+  </header>
+
+  <!-- ═══ STATS BAR ═══ -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="num">24</div>
+      <div class="label">Featured Repos</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">~1M</div>
+      <div class="label">Total ★ This Batch</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">9</div>
+      <div class="label">News Items</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">6</div>
+      <div class="label">Ecosystem Tags</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION: TRENDING NOW ═══ -->
+  <section class="section">
+    <div class="section-header">
+      <div class="icon purple">🔥</div>
+      <h2>Trending Now <small>— top AI repos by community velocity</small></h2>
+    </div>
+
+    <div class="trending-grid">
+
+      <div class="trending-item">
+        <div class="rank"><span class="rank-num">#1</span> · karpathy/autoresearch</div>
+        <h3><a href="https://github.com/karpathy/autoresearch">autoresearch</a></h3>
+        <div class="trend-desc">AI agents running research on single-GPU nanochat training automatically. Andrej Karpathy's latest — autonomous ML research agents.</div>
+        <div class="trend-stats">
+          <span class="s">★ 85.3k</span>
+          <span>⑂ 12.3k forks</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+
+      <div class="trending-item">
+        <div class="rank"><span class="rank-num">#2</span> · JuliusBrussee/caveman</div>
+        <h3><a href="https://github.com/JuliusBrussee/caveman">caveman</a></h3>
+        <div class="trend-desc">🪨 why use many token when few token do trick — Claude Code skill that cuts 65% of tokens by talking like caveman. Community darling.</div>
+        <div class="trend-stats">
+          <span class="s">★ 69.5k</span>
+          <span>⑂ 3.9k forks</span>
+          <span>🟨 JavaScript</span>
+        </div>
+      </div>
+
+      <div class="trending-item">
+        <div class="rank"><span class="rank-num">#3</span> · safishamsi/graphify</div>
+        <h3><a href="https://github.com/safishamsi/graphify">graphify</a></h3>
+        <div class="trend-desc">AI coding assistant skill to turn any folder of code, schemas, docs, images into a queryable knowledge graph. Multi-agent ready.</div>
+        <div class="trend-stats">
+          <span class="s">★ 60.6k</span>
+          <span>⑂ 6.2k forks</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+
+      <div class="trending-item">
+        <div class="rank"><span class="rank-num">#4</span> · MemPalace/mempalace</div>
+        <h3><a href="https://github.com/MemPalace/mempalace">mempalace</a></h3>
+        <div class="trend-desc">The best-benchmarked open-source AI memory system. Free. Built with ChromaDB + MCP integration.</div>
+        <div class="trend-stats">
+          <span class="s">★ 54.2k</span>
+          <span>⑂ 7.1k forks</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+
+      <div class="trending-item">
+        <div class="rank"><span class="rank-num">#5</span> · santifer/career-ops</div>
+        <h3><a href="https://github.com/santifer/career-ops">career-ops</a></h3>
+        <div class="trend-desc">AI-powered job search system on Claude Code. 14 skill modes, Go dashboard, PDF generation, batch processing.</div>
+        <div class="trend-stats">
+          <span class="s">★ 49.3k</span>
+          <span>⑂ 10.1k forks</span>
+          <span>🟨 JavaScript</span>
+        </div>
+      </div>
+
+      <div class="trending-item">
+        <div class="rank"><span class="rank-num">#6</span> · HKUDS/nanobot</div>
+        <h3><a href="https://github.com/HKUDS/nanobot">nanobot</a></h3>
+        <div class="trend-desc">Lightweight, open-source AI agent for your tools, chats, and workflows. Multi-provider (Claude, GPT, Gemini).</div>
+        <div class="trend-stats">
+          <span class="s">★ 43.7k</span>
+          <span>⑂ 7.7k forks</span>
+          <span>🐍 Python</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ SECTION: SPOTLIGHT ═══ -->
+  <section class="section">
+    <div class="section-header">
+      <div class="icon teal">🎯</div>
+      <h2>Spotlight Picks <small>— deep dives &amp; rising stars</small></h2>
+    </div>
+
+    <!-- 1. karpathy/autoresearch -->
+    <div class="repo-card">
+      <div class="top-row">
+        <a href="https://github.com/karpathy/autoresearch" class="repo-name">
+          <span class="owner">karpathy</span>autoresearch
+        </a>
+        <div class="stats">
+          <span class="stars">★ 85,383</span>
+          <span class="forks">⑂ 12,370</span>
+        </div>
+      </div>
+      <div class="description">
+        AI agents running research on single-GPU nanochat training automatically. Andrej Karpathy's vision: autonomous agents that iterate on LLM training experiments without human intervention — democratizing AI research infrastructure.
+      </div>
+      <div class="key-points">
+        <h4>Key Points</h4>
+        <ul>
+          <li>Automated ML research pipeline on a single GPU — no massive cluster needed</li>
+          <li>Nanochat training focus: small, fast conversational models</li>
+          <li>Represents the vision of "AI for AI research" — recursive self-improvement</li>
+        </ul>
+      </div>
+      <div class="quote-block">
+        <blockquote>The future of AI research is AI agents running experiments 24/7 while humans focus on direction. This is the first real step.</blockquote>
+        <div class="attribution">— Community sentiment on <a href="https://github.com/karpathy/autoresearch">karpathy/autoresearch</a></div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-python">Python</span>
+        <span class="tag tag-ai">AI Research</span>
+        <span class="tag tag-ai">Autonomous Agents</span>
+        <span class="tag tag-ai">LLM Training</span>
+      </div>
+      <div class="author-info">
+        <div class="author-avatar">AK</div>
+        <div>
+          <div class="author-name">Andrej Karpathy</div>
+          <a href="https://github.com/karpathy" class="author-link">@karpathy · Tesla AI, OpenAI co-founder</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. addyosmani/agent-skills -->
+    <div class="repo-card">
+      <div class="top-row">
+        <a href="https://github.com/addyosmani/agent-skills" class="repo-name">
+          <span class="owner">addyosmani</span>agent-skills
+        </a>
+        <div class="stats">
+          <span class="stars">★ 48,698</span>
+          <span class="forks">⑂ 5,415</span>
+        </div>
+      </div>
+      <div class="description">
+        Production-grade engineering skills for AI coding agents. A curated collection of skills from Google Chrome engineering lead — testing, perf profiling, accessibility audit skills built for Claude Code and Cursor.
+      </div>
+      <div class="key-points">
+        <h4>Key Points</h4>
+        <ul>
+          <li>Production-grade: designed for real-world CI/CD and testing workflows</li>
+          <li>Includes LCP/FID optimization, lighthouse auditing, web-vitals monitoring skills</li>
+          <li>Works across Claude Code, Cursor, and antigravity IDE</li>
+        </ul>
+      </div>
+      <div class="quote-block">
+        <blockquote>The quality bar for AI agents is rising fast. Skills that encode real production knowledge — not just toy examples — are the next frontier.</blockquote>
+        <div class="attribution">— Addy Osmani, Engineering Manager @ Google Chrome</div>
+      </div>
+      <div class="tags">
+        <span class="tag tag-shell">Shell</span>
+        <span class="tag tag-ai">Agent Skills</span>
+        <span class="tag tag-ai">Production</span>
+        <span class="tag tag-ai">Web Perf</span>
+      </div>
+      <div class="author-info">
+        <div class="author-avatar">AO</div>
+        <div>
+          <div class="author-name">Addy Osmani</div>
+          <a href="https://github.com/addyosmani" class="author-link">@addyosmani · Google Chrome</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. koala73/worldmonitor -->
+    <div class="repo-card">
+      <div class="top-row">
+        <a href="https://github.com/koala73/worldmonitor" class="repo-name">
+          <span class="owner">koala73</span>worldmonitor
+        </a>
+        <div class="stats">
+          <span class="stars">★ 55,922</span>
+          <span class="forks">⑂ 8,971</span>
+        </div>
+      </div>
+      <div class="description">
+        Real-time global intelligence dashboard. AI-powered news aggregation, geopolitical monitoring, and infrastructure tracking in a unified situational awareness interface.
+      </div>
+      <div class="tags">
+        <span class="tag tag-ts">TypeScript</span>
+        <span class="tag tag-ai">AI Dashboard</span>
+        <span class="tag tag-ai">OSINT</span>
+        <span class="tag tag-ai">Geopolitics</span>
+      </div>
+      <div class="author-info">
+        <div class="author-avatar">K</div>
+        <div>
+          <div class="author-name">koala73</div>
+          <a href="https://github.com/koala73" class="author-link">@koala73</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. jamiepine/voicebox -->
+    <div class="repo-card">
+      <div class="top-row">
+        <a href="https://github.com/jamiepine/voicebox" class="repo-name">
+          <span class="owner">jamiepine</span>voicebox
+        </a>
+        <div class="stats">
+          <span class="stars">★ 29,462</span>
+          <span class="forks">⑂ 3,607</span>
+        </div>
+      </div>
+      <div class="description">
+        The open-source AI voice studio. Clone, dictate, create. Supports CUDA, MLX, Qwen3-TTS, Whisper — a full-stack voice AI platform for developers.
+      </div>
+      <div class="tags">
+        <span class="tag tag-ts">TypeScript</span>
+        <span class="tag tag-ai">Voice AI</span>
+        <span class="tag tag-ai">TTS</span>
+        <span class="tag tag-ai">Voice Clone</span>
+      </div>
+    </div>
+
+    <!-- 5. googleworkspace/cli -->
+    <div class="repo-card">
+      <div class="top-row">
+        <a href="https://github.com/googleworkspace/cli" class="repo-name">
+          <span class="owner">googleworkspace</span>cli
+        </a>
+        <div class="stats">
+          <span class="stars">★ 26,892</span>
+          <span class="forks">⑂ 1,416</span>
+        </div>
+      </div>
+      <div class="description">
+        Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.
+      </div>
+      <div class="key-points">
+        <h4>Key Points</h4>
+        <ul>
+          <li>Provides Gemini CLI extension for AI-powered workspace automation</li>
+          <li>Built-in agent skills for Claude Code and other AI coding agents</li>
+          <li>OAuth2-based — securely connects to your Google Workspace</li>
+        </ul>
+      </div>
+      <div class="tags">
+        <span class="tag tag-rust">Rust</span>
+        <span class="tag tag-ai">Google Workspace</span>
+        <span class="tag tag-ai">Agent Skills</span>
+        <span class="tag tag-ai">CLI</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ SECTION: FULL ROSTER ═══ -->
+  <section class="section">
+    <div class="section-header">
+      <div class="icon orange">📋</div>
+      <h2>Full Roster <small>— all trending AI repos this week</small></h2>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse: collapse; font-size: 14px;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <th style="padding: 12px 8px; text-align: left; color: var(--text-muted); font-weight: 600;">Repo</th>
+            <th style="padding: 12px 8px; text-align: right; color: var(--text-muted); font-weight: 600;">★ Stars</th>
+            <th style="padding: 12px 8px; text-align: right; color: var(--text-muted); font-weight: 600;">⑂ Forks</th>
+            <th style="padding: 12px 8px; text-align: left; color: var(--text-muted); font-weight: 600;">Lang</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/pewdiepie-archdaemon/odysseus" style="color:#fff;text-decoration:none;">pewdiepie-archdaemon/odysseus</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">58,958</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">7,089</td><td style="padding: 10px 8px;">Python</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/zeroclaw-labs/zeroclaw" style="color:#fff;text-decoration:none;">zeroclaw-labs/zeroclaw</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">31,798</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">4,699</td><td style="padding: 10px 8px;">Rust</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/tinyhumansai/openhuman" style="color:#fff;text-decoration:none;">tinyhumansai/openhuman</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">30,980</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">3,001</td><td style="padding: 10px 8px;">Rust</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/rohitg00/ai-engineering-from-scratch" style="color:#fff;text-decoration:none;">rohitg00/ai-engineering-from-scratch</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">29,382</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">4,801</td><td style="padding: 10px 8px;">Python</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/Gitlawb/openclaude" style="color:#fff;text-decoration:none;">Gitlawb/openclaude</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">28,419</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">8,705</td><td style="padding: 10px 8px;">TypeScript</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/heygen-com/hyperframes" style="color:#fff;text-decoration:none;">heygen-com/hyperframes</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">25,014</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">2,338</td><td style="padding: 10px 8px;">TypeScript</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/jackwener/OpenCLI" style="color:#fff;text-decoration:none;">jackwener/OpenCLI</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">23,666</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">2,374</td><td style="padding: 10px 8px;">JavaScript</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/esengine/DeepSeek-Reasonix" style="color:#fff;text-decoration:none;">esengine/DeepSeek-Reasonix</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">18,837</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">1,127</td><td style="padding: 10px 8px;">Go</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/tanweai/pua" style="color:#fff;text-decoration:none;">tanweai/pua</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">17,975</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">1,071</td><td style="padding: 10px 8px;">TypeScript</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/JCodesMore/ai-website-cloner-template" style="color:#fff;text-decoration:none;">JCodesMore/ai-website-cloner-template</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">16,467</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">2,525</td><td style="padding: 10px 8px;">TypeScript</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/op7418/guizang-ppt-skill" style="color:#fff;text-decoration:none;">op7418/guizang-ppt-skill</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">15,386</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">1,144</td><td style="padding: 10px 8px;">HTML</td></tr>
+          <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 10px 8px;"><a href="https://github.com/Leonxlnx/taste-skill" style="color:#fff;text-decoration:none;">Leonxlnx/taste-skill</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">35,227</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">2,579</td><td style="padding: 10px 8px;">Shell</td></tr>
+          <tr><td style="padding: 10px 8px;"><a href="https://github.com/coreyhaines31/marketingskills" style="color:#fff;text-decoration:none;">coreyhaines31/marketingskills</a></td><td style="padding: 10px 8px; text-align: right; color: var(--orange);">32,180</td><td style="padding: 10px 8px; text-align: right; color: var(--accent2);">5,291</td><td style="padding: 10px 8px;">JavaScript</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION: ECOSYSTEM NEWS ═══ -->
+  <section class="section">
+    <div class="section-header">
+      <div class="icon blue">📰</div>
+      <h2>Ecosystem News <small>— GitHub blog &amp; community</small></h2>
+    </div>
+
+    <div class="news-card">
+      <div class="news-date">Jun 4</div>
+      <div class="news-body">
+        <h3><a href="https://github.blog/news-insights/company-news/github-universe-is-back-all-together-now-in-the-agentic-era/">GitHub Universe is back: All together now, in the agentic era</a></h3>
+        <p>GitHub Universe returns for 2026 — the flagship developer conference with an agentic AI focus.</p>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-date">Jun 2</div>
+      <div class="news-body">
+        <h3><a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot app: The agent-native desktop experience</a></h3>
+        <p>Copilot evolves into an agent-native desktop application — bringing autonomous coding agents directly into the developer workflow.</p>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-date">May 22</div>
+      <div class="news-body">
+        <h3><a href="https://github.blog/ai-and-ml/github-copilot/github-recognized-as-a-leader-in-the-gartner-magic-quadrant-for-enterprise-ai-coding-agents-for-the-third-year-in-a-row/">GitHub named Gartner Leader for Enterprise AI Coding Agents — 3rd year</a></h3>
+        <p>GitHub recognized as a Leader in the Gartner Magic Quadrant for Enterprise AI Coding Agents for the third consecutive year.</p>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-date">May 15</div>
+      <div class="news-body">
+        <h3><a href="https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/">Building a general-purpose accessibility agent</a></h3>
+        <p>GitHub shares lessons from building an AI agent specialized in accessibility — a peek into specialized agent development.</p>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-date">May 18</div>
+      <div class="news-body">
+        <h3><a href="https://github.blog/news-insights/product-news/take-your-local-github-sessions-anywhere/">Take your local GitHub sessions anywhere</a></h3>
+        <p>New portable sessions feature for GitHub — bring your development environment across machines.</p>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-date">May 21</div>
+      <div class="news-body">
+        <h3><a href="https://github.blog/open-source/gaming/beyond-the-engine-10-open-source-projects-shaping-how-games-actually-get-made/">10 open source projects shaping game development</a></h3>
+        <p>AI-powered game development tools and frameworks highlighted in GitHub's latest curation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION: THEMES & INSIGHTS ═══ -->
+  <section class="section">
+    <div class="section-header">
+      <div class="icon pink">💡</div>
+      <h2>Key Themes &amp; Insights</h2>
+    </div>
+
+    <div class="quote-block">
+      <blockquote>The agent-skill ecosystem is exploding. From caveman token optimization to production-grade engineering skills — the community is building the OS for AI agents.</blockquote>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 20px;">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
+        <h4 style="color:var(--accent2); font-size:16px; margin-bottom:8px;">🤖 Agent Skills are the New Libraries</h4>
+        <p style="color:var(--text-muted); font-size:14px; line-height:1.6;">
+          This week's top repos are overwhelmingly AI coding agent skills — not standalone apps. Caveman, Graphify, Taste-Skill, Agent-Skills, MarketingSkills — each encodes domain expertise into a format AI agents can consume. The <strong>package manager for skills</strong> is emerging.
+        </p>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
+        <h4 style="color:var(--accent3); font-size:16px; margin-bottom:8px;">🎤 Voice AI Hits Open Source</h4>
+        <p style="color:var(--text-muted); font-size:14px; line-height:1.6;">
+          Voicebox's 29.4K stars signal a major shift: voice cloning and TTS are now viable open-source projects. With Qwen3-TTS, Whisper, and MLX support, the barrier to building voice-enabled AI products has dropped dramatically.
+        </p>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
+        <h4 style="color:var(--orange); font-size:16px; margin-bottom:8px;">⚡ Self-Hosted AI Becomes Mainstream</h4>
+        <p style="color:var(--text-muted); font-size:14px; line-height:1.6;">
+          Odysseus, NanoBot, ZeroClaw, and OpenHuman all crossed 30K stars, each offering self-hosted AI alternatives. The "bring your own API key" model is winning. Privacy + control + cost efficiency drive adoption.
+        </p>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
+        <h4 style="color:var(--blue); font-size:16px; margin-bottom:8px;">🧠 Memory & Knowledge Graphs Heat Up</h4>
+        <p style="color:var(--text-muted); font-size:14px; line-height:1.6;">
+          MemPalace (54K⭐) and Graphify (60K⭐) represent two sides of the same coin: AI needs structured memory. Both projects address the fundamental problem of AI agents having no persistent, queryable context.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION: RESOURCES ═══ -->
+  <section class="section">
+    <div class="section-header">
+      <div class="icon purple">🔗</div>
+      <h2>Resource Links</h2>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px;">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:12px; color:var(--accent2); font-weight:600; margin-bottom:4px;">FEED</div>
+        <a href="https://github.com/topics/ai-builders" style="color:#fff; text-decoration:none; font-weight:600;">github.com/topics/ai-builders</a>
+        <div style="color:var(--text-muted); font-size:13px; margin-top:4px;">The main AI builders topic feed on GitHub</div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:12px; color:var(--accent2); font-weight:600; margin-bottom:4px;">TRENDING</div>
+        <a href="https://github.com/trending?since=weekly" style="color:#fff; text-decoration:none; font-weight:600;">github.com/trending</a>
+        <div style="color:var(--text-muted); font-size:13px; margin-top:4px;">Weekly trending repositories on GitHub</div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:12px; color:var(--accent2); font-weight:600; margin-bottom:4px;">BLOG</div>
+        <a href="https://github.blog/ai-and-ml/" style="color:#fff; text-decoration:none; font-weight:600;">github.blog/ai-and-ml</a>
+        <div style="color:var(--text-muted); font-size:13px; margin-top:4px;">GitHub official AI & ML blog</div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:12px; color:var(--accent2); font-weight:600; margin-bottom:4px;">EXPLORE</div>
+        <a href="https://github.com/collections/ai-agents" style="color:#fff; text-decoration:none; font-weight:600;">GitHub Collections: AI Agents</a>
+        <div style="color:var(--text-muted); font-size:13px; margin-top:4px;">Curated collections of AI agent projects</div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:12px; color:var(--accent2); font-weight:600; margin-bottom:4px;">NEWS</div>
+        <a href="https://news.ycombinator.com/" style="color:#fff; text-decoration:none; font-weight:600;">news.ycombinator.com</a>
+        <div style="color:var(--text-muted); font-size:13px; margin-top:4px;">Hacker News — AI builder community</div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-size:12px; color:var(--accent2); font-weight:600; margin-bottom:4px;">DIGEST</div>
+        <span style="color:#fff; font-weight:600;">AI Builders Digest</span>
+        <div style="color:var(--text-muted); font-size:13px; margin-top:4px;">Weekly curated by Vera 🌹</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://github.com/topics/ai-builders">AI Builders Topic</a>
+      <a href="https://github.com/trending">Trending</a>
+      <a href="https://github.blog/ai-and-ml/">GitHub AI Blog</a>
+    </div>
+    <p>AI Builders Digest · Weekly curation from the GitHub AI ecosystem</p>
+    <p class="footer-note">Generated by Vera 🌹 · June 7, 2026</p>
+  </footer>
+
+</div>
+
+</body>
+</html>

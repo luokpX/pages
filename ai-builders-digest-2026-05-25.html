@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest #31 — 2026-05-25</title>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --card: #1a1f35;
+    --accent: #8b5cf6;
+    --accent2: #06b6d4;
+    --accent3: #f472b6;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #1e293b;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  /* Hero gradient header */
+  .hero {
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1035 30%, #0f1a2a 60%, #0a0e1a 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 60px 24px 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(6,182,212,0.06) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 80%, rgba(244,114,182,0.05) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #c084fc, #22d3ee, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .hero .subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    position: relative;
+  }
+  .hero .badge-group {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    position: relative;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: .82rem;
+    font-weight: 600;
+    background: rgba(139,92,246,0.15);
+    border: 1px solid rgba(139,92,246,0.25);
+    color: #c084fc;
+  }
+  .badge.green { background: rgba(6,182,212,0.12); border-color: rgba(6,182,212,0.25); color: #22d3ee; }
+  .badge.pink { background: rgba(244,114,182,0.12); border-color: rgba(244,114,182,0.25); color: #f472b6; }
+  .badge.amber { background: rgba(251,191,36,0.12); border-color: rgba(251,191,36,0.25); color: #fbbf24; }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding: 20px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { text-align: center; }
+  .stat-value { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+
+  /* Section header */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 20px;
+  }
+  .section-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-header .icon { font-size: 1.3rem; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: transform .15s, border-color .15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    border-color: rgba(139,92,246,0.3);
+    transform: translateY(-2px);
+  }
+  .card .top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .card .repo-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .card .repo-name a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .card .repo-name a:hover { color: var(--accent); }
+  .card .stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: .9rem;
+    font-weight: 700;
+    color: #fbbf24;
+    white-space: nowrap;
+  }
+  .card .owner {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .card .owner img {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+  }
+  .card .owner span {
+    font-size: .82rem;
+    color: var(--muted);
+  }
+  .card .desc {
+    font-size: .92rem;
+    color: #cbd5e1;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .card .meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: .78rem;
+    color: var(--muted);
+  }
+  .card .meta span { display: flex; align-items: center; gap: 4px; }
+  .card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .card .tag {
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: .72rem;
+    font-weight: 500;
+    background: rgba(139,92,246,0.1);
+    border: 1px solid rgba(139,92,246,0.15);
+    color: #a78bfa;
+  }
+  .card .tag.lang { background: rgba(6,182,212,0.08); border-color: rgba(6,182,212,0.15); color: #22d3ee; }
+  .card .tag.license { background: rgba(251,191,36,0.08); border-color: rgba(251,191,36,0.15); color: #fbbf24; }
+
+  /* Quote block */
+  .quote-block {
+    background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(6,182,212,0.05));
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 24px 0;
+  }
+  .quote-block p {
+    font-style: italic;
+    color: #c4b5fd;
+    font-size: .95rem;
+  }
+  .quote-block .cite {
+    font-style: normal;
+    font-size: .8rem;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* Trending section */
+  .trending-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .trending-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: transform .15s;
+  }
+  .trending-item:hover { transform: translateY(-2px); border-color: rgba(139,92,246,0.25); }
+  .trending-item .name { font-weight: 600; margin-bottom: 4px; }
+  .trending-item .name a { color: var(--text); text-decoration: none; }
+  .trending-item .name a:hover { color: var(--accent); }
+  .trending-item .s { color: #fbbf24; font-weight: 700; font-size: .85rem; }
+  .trending-item .d { color: var(--muted); font-size: .8rem; margin: 4px 0; }
+
+  /* Resource links */
+  .resources { margin: 24px 0; }
+  .resource-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color .15s;
+  }
+  .resource-link:hover { border-color: rgba(139,92,246,0.3); }
+  .resource-link .emoji { font-size: 1.2rem; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  .footer p { color: var(--muted); font-size: .82rem; }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* Key points list */
+  .key-points { list-style: none; padding: 0; }
+  .key-points li {
+    padding: 4px 0 4px 20px;
+    position: relative;
+    font-size: .9rem;
+    color: #cbd5e1;
+  }
+  .key-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 12px; }
+    .stats-bar { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>🤖 AI Builders Digest #31</h1>
+  <p class="subtitle">2026-05-25 · Weekly Open Source AI Agent Roundup</p>
+  <div class="badge-group">
+    <span class="badge">🧠 Agents</span>
+    <span class="badge green">🔌 MCP Protocol</span>
+    <span class="badge pink">⚡ Coding Tools</span>
+    <span class="badge amber">📈 Trending</span>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-value">15</div>
+    <div class="stat-label">Featured Projects</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">1.3M+</div>
+    <div class="stat-label">Total Stars ⭐</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">5</div>
+    <div class="stat-label">New this Month 🚀</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- Intro -->
+<div class="quote-block">
+  <p>"The agentic era isn't coming — it's already here. This week's GitHub landscape shows AI agents evolving from experimental frameworks into production infrastructure, with MCP becoming the universal protocol layer connecting LLMs to real-world tools."</p>
+  <div class="cite">— AI Builders Digest Editorial</div>
+</div>
+
+<!-- === SECTION: Major Platforms === -->
+<div class="section-header">
+  <span class="icon">🏛️</span>
+  <h2>All-Star AI Agent Platforms</h2>
+</div>
+
+<!-- n8n -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/n8n-io/n8n" target="_blank">n8n-io/n8n</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/45487711?v=4&s=40" alt="n8n-io" loading="lazy">
+        <span>n8n-io</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 189,550</div>
+  </div>
+  <div class="desc">Fair-code workflow automation platform with native AI capabilities. Combines visual building with custom code, self-host or cloud, 400+ integrations. Now a leading MCP client/server provider.</div>
+  <ul class="key-points">
+    <li>400+ integrations with native MCP support</li>
+    <li>Self-hostable workflow automation with AI nodes</li>
+    <li>57K forks — one of the most active OSS communities</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">TypeScript</span>
+    <span class="tag">ai</span>
+    <span class="tag">mcp</span>
+    <span class="tag">mcp-server</span>
+    <span class="tag">workflow-automation</span>
+    <span class="tag license">Other License</span>
+  </div>
+</div>
+
+<!-- AutoGPT -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/Significant-Gravitas/AutoGPT" target="_blank">Significant-Gravitas/AutoGPT</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/130738209?v=4&s=40" alt="Significant-Gravitas" loading="lazy">
+        <span>Significant-Gravitas</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 184,514</div>
+  </div>
+  <div class="desc">The vision of accessible AI for everyone — to use and to build on. Autonomous agent framework with LLM-powered decision making, tool use, and long-term memory.</div>
+  <ul class="key-points">
+    <li>Pioneering autonomous agent framework</li>
+    <li>Active development with multi-agent support</li>
+    <li>46K forks, massive community ecosystem</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">Python</span>
+    <span class="tag">autonomous-agents</span>
+    <span class="tag">agentic-ai</span>
+    <span class="tag">llm</span>
+    <span class="tag license">Other License</span>
+  </div>
+</div>
+
+<!-- Dify -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/langgenius/dify" target="_blank">langgenius/dify</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/127165244?v=4&s=40" alt="langgenius" loading="lazy">
+        <span>langgenius</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 142,475</div>
+  </div>
+  <div class="desc">Production-ready platform for agentic workflow development. Low-code/no-code LLM app builder with RAG, agent, workflow, and MCP support.</div>
+  <ul class="key-points">
+    <li>Production-grade agentic workflow platform</li>
+    <li>Native MCP integration</li>
+    <li>22K forks, active 841 open issues</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">TypeScript</span>
+    <span class="tag">agentic-workflow</span>
+    <span class="tag">rag</span>
+    <span class="tag">mcp</span>
+    <span class="tag">low-code</span>
+    <span class="tag license">Other License</span>
+  </div>
+</div>
+
+<!-- LangChain -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/langchain-ai/langchain" target="_blank">langchain-ai/langchain</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/126733545?v=4&s=40" alt="langchain-ai" loading="lazy">
+        <span>langchain-ai</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 137,546</div>
+  </div>
+  <div class="desc">The agent engineering platform. Framework for building LLM-powered applications with composable chains, agents, tools, and memory. Industry standard for RAG and agent development.</div>
+  <ul class="key-points">
+    <li>Industry-standard agent engineering platform</li>
+    <li>LangGraph for multi-agent orchestration</li>
+    <li>22K forks, 585 open issues</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">Python</span>
+    <span class="tag">agents</span>
+    <span class="tag">langgraph</span>
+    <span class="tag">rag</span>
+    <span class="tag">multiagent</span>
+    <span class="tag license">MIT</span>
+  </div>
+</div>
+
+<!-- Gemini CLI -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/google-gemini/gemini-cli" target="_blank">google-gemini/gemini-cli</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/161781182?v=4&s=40" alt="google-gemini" loading="lazy">
+        <span>google-gemini</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 104,565</div>
+  </div>
+  <div class="desc">An open-source AI agent that brings the power of Gemini directly into your terminal. Features MCP client/server, tool use, and agentic workflows.</div>
+  <ul class="key-points">
+    <li>Google's official terminal AI agent</li>
+    <li>MCP client & server built-in</li>
+    <li>13K forks, rapidly growing</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">TypeScript</span>
+    <span class="tag">gemini</span>
+    <span class="tag">mcp-client</span>
+    <span class="tag">mcp-server</span>
+    <span class="tag">cli</span>
+    <span class="tag license">Apache-2.0</span>
+  </div>
+</div>
+
+<!-- TradingAgents -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/TauricResearch/TradingAgents" target="_blank">TauricResearch/TradingAgents</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/192884433?v=4&s=40" alt="TauricResearch" loading="lazy">
+        <span>TauricResearch</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 79,244</div>
+  </div>
+  <div class="desc">Multi-Agent LLM Financial Trading Framework. Research-backed multi-agent system for financial market analysis and trading decisions.</div>
+  <ul class="key-points">
+    <li>ArXiv paper-backed multi-agent trading</li>
+    <li>15K forks — explosive community growth</li>
+    <li>LLM-powered financial analysis</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">Python</span>
+    <span class="tag">multiagent</span>
+    <span class="tag">finance</span>
+    <span class="tag">trading</span>
+    <span class="tag license">Apache-2.0</span>
+  </div>
+</div>
+
+<!-- OpenHands -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/OpenHands/OpenHands" target="_blank">OpenHands/OpenHands</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/225919603?v=4&s=40" alt="OpenHands" loading="lazy">
+        <span>OpenHands</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 74,751</div>
+  </div>
+  <div class="desc">AI-Driven Development platform. Autonomous coding agent that writes, debugs, and deploys code based on natural language instructions.</div>
+  <ul class="key-points">
+    <li>Full-stack autonomous coding agent</li>
+    <li>Claude- and GPT-powered development</li>
+    <li>9.4K forks, active open source community</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">Python</span>
+    <span class="tag">agent</span>
+    <span class="tag">claude-ai</span>
+    <span class="tag">cli</span>
+    <span class="tag license">MIT</span>
+  </div>
+</div>
+
+<div class="quote-block">
+  <p>"The best AI agent frameworks are the ones you don't notice — they melt into your existing workflow and just make everything faster."</p>
+  <div class="cite">— Community Wisdom</div>
+</div>
+
+<!-- === SECTION: Agent Infrastructure === -->
+<div class="section-header">
+  <span class="icon">🔧</span>
+  <h2>Agent Infrastructure & Frameworks</h2>
+</div>
+
+<!-- AutoGen -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/microsoft/autogen" target="_blank">microsoft/autogen</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/6154722?v=4&s=40" alt="microsoft" loading="lazy">
+        <span>microsoft</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 58,362</div>
+  </div>
+  <div class="desc">A programming framework for agentic AI. Microsoft's multi-agent conversation framework enabling complex agent collaboration patterns.</div>
+  <ul class="key-points">
+    <li>Multi-agent conversation orchestration by Microsoft</li>
+    <li>Enterprise-grade agent patterns</li>
+    <li>8.8K forks</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">Python</span>
+    <span class="tag">agentic-ai</span>
+    <span class="tag">multi-agent</span>
+    <span class="tag">microsoft</span>
+    <span class="tag license">MIT</span>
+  </div>
+</div>
+
+<!-- ruflo -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/ruvnet/ruflo" target="_blank">ruvnet/ruflo</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/2934394?v=4&s=40" alt="ruvnet" loading="lazy">
+        <span>ruvnet</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 54,801</div>
+  </div>
+  <div class="desc">Leading agent orchestration platform for Claude. Deploy intelligent multi-agent swarms, coordinate autonomous workflows, and build conversational AI with native Claude Code / Codex integration.</div>
+  <ul class="key-points">
+    <li>Multi-agent swarm orchestration</li>
+    <li>Native Claude Code & Codex integration</li>
+    <li>RAG, self-learning, enterprise architecture</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">TypeScript</span>
+    <span class="tag">agentic-ai</span>
+    <span class="tag">multi-agent</span>
+    <span class="tag">mcp-server</span>
+    <span class="tag">claude-code</span>
+    <span class="tag license">MIT</span>
+  </div>
+</div>
+
+<!-- rtk -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/rtk-ai/rtk" target="_blank">rtk-ai/rtk</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/258253854?v=4&s=40" alt="rtk-ai" loading="lazy">
+        <span>rtk-ai</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 53,612</div>
+  </div>
+  <div class="desc">CLI proxy that reduces LLM token consumption by 60-90% on common dev commands. Single Rust binary, zero dependencies — pure performance.</div>
+  <ul class="key-points">
+    <li>60-90% token cost reduction</li>
+    <li>Zero-dependency Rust binary</li>
+    <li>Works with Claude Code and other AI coding tools</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">Rust</span>
+    <span class="tag">ai-coding</span>
+    <span class="tag">token-optimization</span>
+    <span class="tag">claude-code</span>
+    <span class="tag license">Apache-2.0</span>
+  </div>
+</div>
+
+<!-- IntentKit -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/crestalnetwork/intentkit" target="_blank">crestalnetwork/intentkit</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/156485526?v=4&s=40" alt="crestalnetwork" loading="lazy">
+        <span>crestalnetwork</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 6,495</div>
+  </div>
+  <div class="desc">Open-source, self-hosted cloud agent cluster that manages a collaborative team of AI agents for you. Agent-as-a-Service infrastructure.</div>
+  <ul class="key-points">
+    <li>Self-hosted cloud agent cluster</li>
+    <li>Collaborative multi-agent team management</li>
+    <li>703 forks, Python-based</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">Python</span>
+    <span class="tag">agent-cluster</span>
+    <span class="tag">multi-agent</span>
+    <span class="tag">self-hosted</span>
+    <span class="tag license">Apache-2.0</span>
+  </div>
+</div>
+
+<!-- === SECTION: New This Month === -->
+<div class="section-header">
+  <span class="icon">🚀</span>
+  <h2>Hot New Projects (April–May 2026)</h2>
+</div>
+
+<!-- Obscura -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/h4ckf0r0day/obscura" target="_blank">h4ckf0r0day/obscura</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/271927676?v=4&s=40" alt="h4ckf0r0day" loading="lazy">
+        <span>h4ckf0r0day</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 13,682 ⚡</div>
+  </div>
+  <div class="desc">The headless browser for AI agents and web scraping. Built in Rust — fast, reliable, purpose-built for agentic web interaction.</div>
+  <ul class="key-points">
+    <li>Rust-based headless browser designed for AI agents</li>
+    <li>13.6K stars in just 6 weeks — viral growth</li>
+    <li>Apache-2.0 license</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">Rust</span>
+    <span class="tag">headless-browser</span>
+    <span class="tag">ai-agent</span>
+    <span class="tag">web-scraping</span>
+    <span class="tag license">Apache-2.0</span>
+  </div>
+</div>
+
+<!-- guizang-ppt-skill -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/op7418/guizang-ppt-skill" target="_blank">op7418/guizang-ppt-skill</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/13505770?v=4&s=40" alt="op7418" loading="lazy">
+        <span>op7418</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 11,748 ⚡</div>
+  </div>
+  <div class="desc">AI-agent Skill for generating polished HTML slide decks: editorial magazine and Swiss layouts, image prompts, social covers, and a WebGL/low-power presentation runtime.</div>
+  <ul class="key-points">
+    <li>AI-powered HTML presentation generation</li>
+    <li>11.7K stars in 1 month</li>
+    <li>Swiss design, WebGL runtime</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">HTML</span>
+    <span class="tag">ai-agent</span>
+    <span class="tag">ppt</span>
+    <span class="tag">claude-code</span>
+    <span class="tag">skills</span>
+    <span class="tag license">MIT</span>
+  </div>
+</div>
+
+<!-- Evolver -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/EvoMap/evolver" target="_blank">EvoMap/evolver</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/263044117?v=4&s=40" alt="EvoMap" loading="lazy">
+        <span>EvoMap</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 7,550 ⚡</div>
+  </div>
+  <div class="desc">The GEP-powered self-evolving engine for AI agents. Auditable evolution with Genes, Capsules, and Events. Self-evolving AI infrastructure.</div>
+  <ul class="key-points">
+    <li>Self-evolving AI agent engine (GEP-powered)</li>
+    <li>Auditable evolution with Genes & Capsules</li>
+    <li>MCP, A2A protocol support</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">JavaScript</span>
+    <span class="tag">self-evolution</span>
+    <span class="tag">agent-framework</span>
+    <span class="tag">mcp</span>
+    <span class="tag">ai-agent</span>
+    <span class="tag license">GPL-3.0</span>
+  </div>
+</div>
+
+<!-- Fireworks Tech Graph -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/yizhiyanhua-ai/fireworks-tech-graph" target="_blank">yizhiyanhua-ai/fireworks-tech-graph</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/251871046?v=4&s=40" alt="yizhiyanhua-ai" loading="lazy">
+        <span>yizhiyanhua-ai</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 7,057 ⚡</div>
+  </div>
+  <div class="desc">Generate production-quality SVG+PNG technical diagrams from natural language. 7 styles, UML support, and AI/Agent workflow patterns.</div>
+  <ul class="key-points">
+    <li>Natural language → SVG/PNG diagrams</li>
+    <li>7 styles, UML support</li>
+    <li>Built for AI/Agent workflow visualization</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">Python</span>
+    <span class="tag">diagram-generation</span>
+    <span class="tag">svg</span>
+    <span class="tag">ai-agent</span>
+    <span class="tag license">MIT</span>
+  </div>
+</div>
+
+<!-- DeepSeek-Reasonix -->
+<div class="card">
+  <div class="top-row">
+    <div>
+      <div class="repo-name"><a href="https://github.com/esengine/DeepSeek-Reasonix" target="_blank">esengine/DeepSeek-Reasonix</a></div>
+      <div class="owner">
+        <img src="https://avatars.githubusercontent.com/u/18465053?v=4&s=40" alt="esengine" loading="lazy">
+        <span>esengine</span>
+      </div>
+    </div>
+    <div class="stars">⭐ 6,581 ⚡</div>
+  </div>
+  <div class="desc">DeepSeek-native AI coding agent for your terminal. Engineered around prefix-cache stability — designed to run continuously.</div>
+  <ul class="key-points">
+    <li>DeepSeek-native coding agent</li>
+    <li>Prefix-cache optimized for stability</li>
+    <li>Terminal TUI with Ink framework</li>
+  </ul>
+  <div class="tags">
+    <span class="tag lang">TypeScript</span>
+    <span class="tag">deepseek</span>
+    <span class="tag">coding-agent</span>
+    <span class="tag">terminal</span>
+    <span class="tag">prompt-caching</span>
+    <span class="tag license">MIT</span>
+  </div>
+</div>
+
+<div class="quote-block">
+  <p>"Self-evolving agents, AI-native browsers, and token-optimized coding tools — the May 2026 crop of projects is about making agents cheaper, faster, and smarter."</p>
+  <div class="cite">— AI Builders Digest</div>
+</div>
+
+<!-- === SECTION: Trends & Insights === -->
+<div class="section-header">
+  <span class="icon">📊</span>
+  <h2>Key Trends This Week</h2>
+</div>
+
+<div class="card">
+  <h3 style="margin-bottom:12px;font-size:1.05rem;color:#c084fc;">🔌 MCP Goes Mainstream</h3>
+  <p style="color:#cbd5e1;font-size:.9rem;margin-bottom:12px;">
+    Model Context Protocol (MCP) has become the de facto standard for LLM-tool integration. With 16,005 MCP server repos and platforms like n8n, Dify, and Gemini CLI all baking in native MCP support, the ecosystem is maturing fast. GitHub's own MCP Registry launch cements this trend.
+  </p>
+  <ul class="key-points">
+    <li>16,005+ MCP server repositories on GitHub</li>
+    <li>n8n, Dify, Gemini CLI all ship native MCP</li>
+    <li>GitHub MCP Registry now live</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3 style="margin-bottom:12px;font-size:1.05rem;color:#22d3ee;">🧠 Multi-Agent Patterns Dominate</h3>
+  <p style="color:#cbd5e1;font-size:.9rem;margin-bottom:12px;">
+    From TradingAgents (79K⭐) to ruflo (54K⭐) and AutoGen (58K⭐), multi-agent architectures are the dominant pattern. Teams are moving from single-agent chatbots to collaborative agent swarms with specialized roles.
+  </p>
+  <ul class="key-points">
+    <li>TradingAgents: 79K⭐ for financial multi-agent system</li>
+    <li>ruflo: 54K⭐ for Claude swarm orchestration</li>
+    <li>AutoGen: 58K⭐ for enterprise multi-agent patterns</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3 style="margin-bottom:12px;font-size:1.05rem;color:#f472b6;">⚡ Token Optimization Is the New Battleground</h3>
+  <p style="color:#cbd5e1;font-size:.9rem;margin-bottom:12px;">
+    As AI coding agents become everyday tools, token cost optimization is a hot area. rtk (53K⭐) promises 60-90% reduction on common dev commands, while DeepSeek-Reasonix optimizes around prefix-cache stability.
+  </p>
+  <ul class="key-points">
+    <li>rtk: 60-90% token reduction, Rust binary</li>
+    <li>DeepSeek-Reasonix: prefix-cache optimization</li>
+    <li>Cost efficiency is key to agent adoption</li>
+  </ul>
+</div>
+
+<!-- === SECTION: Resources === -->
+<div class="section-header">
+  <span class="icon">🔗</span>
+  <h2>Resource Links</h2>
+</div>
+
+<div class="resources">
+  <a class="resource-link" href="https://github.com/mcp" target="_blank">
+    <span class="emoji">🔌</span>
+    <span>GitHub MCP Registry — Discover and publish MCP servers</span>
+  </a>
+  <a class="resource-link" href="https://github.com/topics/ai-agent" target="_blank">
+    <span class="emoji">🧠</span>
+    <span>GitHub Topic: AI Agent — 2,928+ repositories</span>
+  </a>
+  <a class="resource-link" href="https://github.com/topics/mcp-server" target="_blank">
+    <span class="emoji">📦</span>
+    <span>GitHub Topic: MCP Server — 16,005+ repositories</span>
+  </a>
+  <a class="resource-link" href="https://github.com/topics/agent-framework" target="_blank">
+    <span class="emoji">🏗️</span>
+    <span>GitHub Topic: Agent Framework — 265+ repositories</span>
+  </a>
+  <a class="resource-link" href="https://github.com/topics/ai-coding" target="_blank">
+    <span class="emoji">💻</span>
+    <span>GitHub Topic: AI Coding — Tools for AI-assisted development</span>
+  </a>
+  <a class="resource-link" href="https://github.com/trending?since=weekly" target="_blank">
+    <span class="emoji">📈</span>
+    <span>GitHub Trending (Weekly) — See what's hot right now</span>
+  </a>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>🤖 <strong>AI Builders Digest #31</strong> · Generated by Vera 🌹 on 2026-05-25</p>
+  <p>Data sourced from <a href="https://docs.github.com/en/rest/search" target="_blank">GitHub Search API</a> &amp; <a href="https://github.com/trending" target="_blank">GitHub Trending</a></p>
+  <p style="margin-top:8px;">
+    <a href="https://luokpx.github.io/pages/ai-builders-digest-2026-05-25.html" target="_blank">📄 Permalink</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/luokpX/pages" target="_blank">📦 GitHub Repo</a>
+  </p>
+</div>
+
+</div>
+</body>
+</html>

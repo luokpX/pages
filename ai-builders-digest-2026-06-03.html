@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — June 3, 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e293b;
+    --text: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-1: #6366f1;
+    --accent-2: #8b5cf6;
+    --accent-3: #a855f7;
+    --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    --green: #10b981;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .hero {
+    position: relative;
+    padding: 80px 24px 60px;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0e17 0%, #1a1040 40%, #0f172a 70%, #0a0e17 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 40% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 70%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(236, 72, 153, 0.04) 0%, transparent 40%);
+    animation: aurora 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes aurora {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(20px, -30px); }
+    50% { transform: translate(-20px, 10px); }
+    75% { transform: translate(10px, 20px); }
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-1);
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+  .hero-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .hero-date .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .stats-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px;
+    padding: 28px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { text-align: center; }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon { font-size: 28px; }
+
+  .story-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .story-card:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .story-title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .story-title a {
+    color: var(--text);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .story-title a:hover { color: var(--accent-1); }
+  .story-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+  }
+  .story-source.openai { background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.25); color: var(--accent-1); }
+  .story-source.anthropic { background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.25); color: var(--accent-3); }
+  .story-source.aws { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.25); color: var(--orange); }
+  .story-source.jetbrains { background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.25); color: var(--cyan); }
+
+  .story-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .story-desc {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .key-points { margin: 12px 0 16px; }
+  .key-points li {
+    list-style: none;
+    padding: 4px 0 4px 20px;
+    position: relative;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .key-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent-2);
+    font-weight: 700;
+  }
+
+  .story-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .tag.security { background: rgba(239, 68, 68, 0.1); color: var(--red); }
+  .tag.funding { background: rgba(245, 158, 11, 0.1); color: var(--orange); }
+  .tag.model { background: rgba(168, 85, 247, 0.1); color: var(--accent-3); }
+  .tag.product { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+  .tag.agent { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .tag.openai { background: rgba(99, 102, 241, 0.1); color: var(--accent-1); }
+  .tag.anthropic { background: rgba(168, 85, 247, 0.1); color: var(--accent-3); }
+  .tag.opensource { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .tag.meta { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+  .tag.cohere { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+
+  .story-link {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--accent-1);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .story-link:hover { text-decoration: underline; }
+
+  .quote-block {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(168, 85, 247, 0.04));
+    border-left: 3px solid var(--accent-2);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .quote-block p {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .quote-block .attribution {
+    margin-top: 8px;
+    font-size: 13px;
+    font-style: normal;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .top-pick-badge {
+    position: absolute;
+    top: -1px;
+    right: 28px;
+    padding: 4px 14px;
+    background: linear-gradient(135deg, var(--red), #ff6b6b);
+    border-radius: 0 0 8px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+  }
+
+  .hot-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .footer a {
+    color: var(--accent-1);
+    text-decoration: none;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 40px; }
+    .stats-bar { gap: 20px; padding: 20px 16px; }
+    .stat-number { font-size: 22px; }
+    .container { padding: 24px 16px 60px; }
+    .story-card { padding: 20px; }
+    .story-header { flex-direction: column; }
+    .top-pick-badge { right: 16px; font-size: 10px; padding: 3px 10px; }
+  }
+
+  .blinking-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #10b981;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🤖 AI Builders Digest</div>
+    <h1>Meta AI Bot Hijacked, GPT-5.5 Hits Bedrock, Tiny Models Go Agentic</h1>
+    <p>Curated from the AI building community — model releases, security stories, open-source breakthroughs, and the tools shaping agentic AI</p>
+    <div class="hero-date">
+      <span class="dot"></span>
+      2026-06-03 · Weekly Edition · Vol. 4
+    </div>
+  </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">2,128</div>
+    <div class="stat-label">HN Upvotes (Security Story)</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">99.3%</div>
+    <div class="stat-label">8B Model Agent Accuracy</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">26M</div>
+    <div class="stat-label">Tiny Tool-Calling Model</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">866</div>
+    <div class="stat-label">Domain Moat Debate</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 🔥 TOP STORY -->
+  <div class="section-title"><span class="icon">🔥</span> Story of the Week</div>
+
+  <div class="story-card" style="border-color: rgba(239, 68, 68, 0.3);">
+    <div class="top-pick-badge">★ BREAKING</div>
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.0xsid.com/blog/meta-account-takeover-fiasco" target="_blank">
+          Meta's AI Support Bot Hijacked to Seize Instagram Accounts
+        </a>
+      </div>
+      <span class="story-source" style="background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.25);color:var(--blue);">Krebs / 0xSid</span>
+    </div>
+    <div class="story-date">June 1, 2026</div>
+    <p class="story-desc">
+      A stunning security incident: hackers exploited Meta's AI-powered customer support bot to take over Instagram accounts. The attack used a simple trick — by claiming they'd "lost access" to their account, the AI support bot would reset the email address, handing control to the attacker. <strong>2,128 HN points, 473+ comments, and the most upvoted story on HN across multiple days.</strong>
+    </p>
+    <ul class="key-points">
+      <li>Attackers exploited Meta's AI support chatbot with a simple "lost access" social engineering prompt</li>
+      <li>The AI bot reset account emails without proper verification, enabling full takeover</li>
+      <li>Victims reported attackers locking them out and posting unauthorized content</li>
+      <li>Raises fundamental questions about AI in critical customer support pipelines</li>
+      <li>KrebsOnSecurity and multiple security researchers covered the exploit in depth</li>
+    </ul>
+    <div class="quote-block">
+      <p>"The newest Instagram 'exploit' is the goofiest I've seen. Hackers used Meta's AI support bot to seize Instagram accounts — the bot just... believed them."</p>
+      <div class="attribution">— Sid (@ssiddharth), security researcher</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag security">⚠️ Security</span>
+      <span class="tag meta">Meta</span>
+      <span class="tag agent">AI Agents</span>
+      <a href="https://krebsonsecurity.com/2026/06/hackers-used-metas-ai-support-bot-to-seize-instagram-accounts/" class="story-link" target="_blank">Read on Krebs →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🏗️ Model Releases & Open-Source -->
+  <div class="section-title"><span class="icon">🏗️</span> Model Releases & Open-Source</div>
+
+  <!-- GPT-5.5 on Bedrock -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://aws.amazon.com/about-aws/whats-new/2026/06/amazon-bedrock-openai-models-codex-generally-available/" target="_blank">
+          GPT-5.5 and Codex Now GA on Amazon Bedrock
+        </a>
+      </div>
+      <span class="story-source aws">AWS</span>
+    </div>
+    <div class="story-date">June 2, 2026</div>
+    <p class="story-desc">
+      Amazon Bedrock announces general availability of OpenAI's GPT-5.5 and Codex enterprise models. This marks a major milestone in multi-cloud AI strategy — enterprises can now access OpenAI's latest frontier models natively within the AWS ecosystem alongside existing Anthropic and Cohere offerings.
+    </p>
+    <ul class="key-points">
+      <li>GPT-5.5 and Codex are now GA on Amazon Bedrock for enterprise deployment</li>
+      <li>Follows similar GA availability of Claude Opus 4+ and Sonnet 4+ on Bedrock since late 2025</li>
+      <li>Enables enterprises to run OpenAI's latest models within their AWS VPC with full data residency controls</li>
+      <li>Previously reported GPT-5.3-Codex reaches 1K tok/s on Cerebras — the "spark" lineup for speed</li>
+      <li>This multi-cloud push from both OpenAI and Anthropic signals enterprise demand is real and growing</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag model">🤖 Model Release</span>
+      <span class="tag openai">OpenAI</span>
+      <span class="tag aws">AWS</span>
+      <a href="https://news.ycombinator.com/item?id=48363881" class="story-link" target="_blank">Discuss on HN →</a>
+    </div>
+  </div>
+
+  <!-- JetBrains Mellum2 -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://blog.jetbrains.com/ai/2026/06/mellum2-goes-open-source-a-fast-model-for-ai-workflows/" target="_blank">
+          JetBrains Open-Sources Mellum2: Fast Model for AI Workflows
+        </a>
+      </div>
+      <span class="story-source jetbrains">JetBrains</span>
+    </div>
+    <div class="story-date">June 1, 2026</div>
+    <p class="story-desc">
+      JetBrains has open-sourced Mellum2, a compact but fast language model optimized for AI-assisted development workflows. The model is designed to run efficiently in IDE-integrated coding assistants and developer tooling pipelines.
+    </p>
+    <ul class="key-points">
+      <li>JetBrains continues investing in open-source AI models after the original Mellum release</li>
+      <li>Optimized for code completion, refactoring suggestions, and developer workflow tasks</li>
+      <li>Open-source release enables community contributions and self-hosting</li>
+      <li>Part of JetBrains' broader AI strategy following their AI Assistant product</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag model">🤖 Model Release</span>
+      <span class="tag opensource">Open Source</span>
+      <span class="tag product">🛠 Dev Tools</span>
+      <a href="https://blog.jetbrains.com/ai/2026/06/mellum2-goes-open-source-a-fast-model-for-ai-workflows/" class="story-link" target="_blank">Read announcement →</a>
+    </div>
+  </div>
+
+  <!-- Cohere Command A+ -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://firethering.com/cohere-command-a-plus-open-source-enterprise-ai-model/" target="_blank">
+          Cohere Open-Sources Command A+: 218B MoE Runs on Two H100s
+        </a>
+      </div>
+      <span class="story-source cohere">Cohere</span>
+    </div>
+    <div class="story-date">May 23, 2026</div>
+    <p class="story-desc">
+      Cohere has open-sourced Command A+, a 218 billion parameter Mixture-of-Experts model that can run on just two H100 GPUs. This is a significant step for enterprise AI, making frontier-level model weights freely available for self-hosting while maintaining production-grade RAG and tool-use capability.
+    </p>
+    <ul class="key-points">
+      <li>218B MoE architecture fits on just 2x H100 GPUs — feasible for on-prem enterprise deployment</li>
+      <li>Optimized for enterprise RAG, tool use, and multilingual workloads</li>
+      <li>Follows Cohere's earlier Command A family; A+ is the most capable open-source release</li>
+      <li>Open-weight release enables fine-tuning, audit, and deployment in regulated industries</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag model">🤖 Model Release</span>
+      <span class="tag opensource">Open Source</span>
+      <span class="tag cohere">Cohere</span>
+      <a href="https://firethering.com/cohere-command-a-plus-open-source-enterprise-ai-model/" class="story-link" target="_blank">Read more →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🤖 Agent Engineering -->
+  <div class="section-title"><span class="icon">🤖</span> Agent Engineering & Tooling</div>
+
+  <!-- Forge -->
+  <div class="story-card" style="border-color: rgba(16, 185, 129, 0.25);">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/antoinezambelli/forge" target="_blank">
+          Forge: Guardrails Take an 8B Model from 53% → 99.3% on Agentic Tasks
+        </a>
+      </div>
+      <span class="story-source" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);color:var(--green);">TI Research</span>
+    </div>
+    <div class="story-date">May 19, 2026 · ⭐ 687 HN points · 252 comments</div>
+    <p class="story-desc">
+      Antoine Zambelli, AI Director at Texas Instruments, built <strong>Forge</strong> — an open-source reliability layer for self-hosted local LLMs. The results are staggering: an 8B model goes from 53% to 99.3% on multi-step agentic workflows just by adding the right architectural guardrails — no model changes needed.
+    </p>
+    <ul class="key-points">
+      <li>Ministral 8B + Forge reaches 99.3% — outperforming Claude Sonnet without guardrails (87.2%)</li>
+      <li>Five guardrail layers: retry nudges (24–49 point drop when disabled), error recovery (~10 points), step enforcement, rescue parsing, context compaction</li>
+      <li>Discovered that serving backend matters more than model: same 12B weights produced 7% on llama-server vs 83% on llamafile — a 75-point swing</li>
+      <li>Introduced <code>ToolResolutionError</code> — distinguishing "tool returned data" from "tool found nothing" for the first time in LLM tool-calling</li>
+      <li>Paper accepted to ACM CAIS '26, 97 model/backend configs, 18 scenarios, 50 runs each</li>
+    </ul>
+    <div class="quote-block">
+      <p>"The gap between a free local 8B model on a $600 GPU and a frontier API is less than 1 point. An 8B model with framework support beats the best result you can get through frontier API alone."</p>
+      <div class="attribution">— Antoine Zambelli, AI Director, Texas Instruments</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag agent">🤖 Agent Engineering</span>
+      <span class="tag opensource">Open Source</span>
+      <span class="tag product">🛠 Tooling</span>
+      <a href="https://github.com/antoinezambelli/forge" class="story-link" target="_blank">GitHub →</a>
+    </div>
+  </div>
+
+  <!-- Needle -->
+  <div class="story-card" style="border-color: rgba(6, 182, 212, 0.25);">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/cactus-compute/needle" target="_blank">
+          Needle: 26M Parameter Tool-Calling Model Distilled from Gemini
+        </a>
+      </div>
+      <span class="story-source" style="background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.25);color:var(--cyan);">Cactus Compute</span>
+    </div>
+    <div class="story-date">May 12, 2026 · ⭐ 776 HN points · 211 comments</div>
+    <p class="story-desc">
+      Cactus Compute open-sourced Needle, a groundbreaking <strong>26 million parameter</strong> model for function calling that runs at 6,000 tok/s on consumer devices. The key insight: tool calling is retrieval-and-assembly, not reasoning — so they removed all FFN layers and built a "Simple Attention Network" that outperforms models 10-20x its size.
+    </p>
+    <ul class="key-points">
+      <li>Entirely cross-attention + gating — zero MLP/FFN layers in the architecture</li>
+      <li>Pretrained on 200B tokens (16 TPU v6e, 27 hrs), post-trained on 2B tokens of synthesized function-calling data (45 min)</li>
+      <li>6000 tok/s prefill and 1200 tok/s decode on consumer devices — runnable on phones</li>
+      <li>Beats FunctionGemma-270M, Qwen-0.6B, Granite-350M on single-shot function calling</li>
+      <li>"No FFN" finding generalizes to any task with external structured knowledge (RAG, tool use)</li>
+    </ul>
+    <div class="quote-block">
+      <p>"Massive models are overkill for tool calling. Tool calling is fundamentally retrieval-and-assembly — match query to tool name, extract argument values, emit JSON. Cross-attention is the right primitive for this."</p>
+      <div class="attribution">— Henry Ndubuaku, Cactus Compute</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag agent">🤖 Agent Engineering</span>
+      <span class="tag opensource">Open Source</span>
+      <span class="tag model">Model Innovation</span>
+      <a href="https://github.com/cactus-compute/needle" class="story-link" target="_blank">GitHub →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 💡 Discussion & Analysis -->
+  <div class="section-title"><span class="icon">💡</span> Discussion & Analysis</div>
+
+  <!-- Domain Expertise -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://www.brethorsting.com/blog/2026/05/domain-expertise-has-always-been-the-real-moat/" target="_blank">
+          Domain Expertise Has Always Been the Real Moat — 866 Points
+        </a>
+      </div>
+      <span class="story-source" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--orange);">Brethorsting</span>
+    </div>
+    <div class="story-date">May 30, 2026 · ⭐ 866 HN points · 547 comments</div>
+    <p class="story-desc">
+      A massive discussion on domain expertise as the true defensible advantage in the age of AI. The thesis: as models commoditize code generation, domain knowledge becomes the differentiator — not framework fluency or algorithmic prowess.
+    </p>
+    <ul class="key-points">
+      <li>547 comments drive a deep debate on what makes engineers valuable post-AI</li>
+      <li>Domain expertise = knowledge of industry-specific workflows, regulations, data, and user behavior</li>
+      <li>AI can generate code, but cannot replace deep understanding of business context</li>
+      <li>Tension between "AI replaces junior devs" vs "AI amplifies domain experts"</li>
+    </ul>
+    <div class="quote-block">
+      <p>"Domain knowledge compounds. It's accumulated over years of immersion in a specific field. AI can't shortcut this — it can only accelerate the implementation once the domain knowledge is in the loop."</p>
+      <div class="attribution">— Top comment on HN discussion</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag funding">💡 AI Economics</span>
+      <span class="tag product">🛠 Career Strategy</span>
+      <a href="https://news.ycombinator.com/item?id=48340411" class="story-link" target="_blank">Read discussion →</a>
+    </div>
+  </div>
+
+  <!-- Models.dev -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/anomalyco/models.dev" target="_blank">
+          Models.dev: Open-Source Database of AI Model Specs & Pricing
+        </a>
+      </div>
+      <span class="story-source" style="background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.25);color:var(--accent-1);">AnomalyCo</span>
+    </div>
+    <div class="story-date">May 22, 2026 · ⭐ 160 HN points · 28 comments</div>
+    <p class="story-desc">
+      An open-source database cataloging AI model specifications, pricing, and capabilities across all major providers. The repository provides structured data on context windows, pricing per token, benchmark results, and model capabilities — essential infrastructure for the age of multi-model agent routing.
+    </p>
+    <ul class="key-points">
+      <li>Community-maintained database of AI model specs, pricing, and capabilities</li>
+      <li>Covers Anthropic, OpenAI, Google, Cohere, open-source models, and more</li>
+      <li>Structured JSON data suitable for programmatic agent routing and model selection</li>
+      <li>Enables cost-aware model selection in agentic systems</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag opensource">Open Source</span>
+      <span class="tag product">🛠 Infrastructure</span>
+      <a href="https://github.com/anomalyco/models.dev" class="story-link" target="_blank">GitHub →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🚀 Builder Projects -->
+  <div class="section-title"><span class="icon">🚀</span> Builder Projects & Community Tools</div>
+
+  <!-- Handoff-md -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/guvencem/handoff-md" target="_blank">
+          Handoff-md: Portable AI Context from Any Repo, One Command
+        </a>
+      </div>
+      <span class="story-source" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);color:var(--green);">Show HN</span>
+    </div>
+    <div class="story-date">Feb 27, 2026</div>
+    <p class="story-desc">
+      A CLI tool (npx handoff-md) that analyzes your git repo and generates a HANDOFF.md file. Paste it into any AI model and it instantly understands your project — stack, conventions, folder structure, API patterns. Works with Claude, GPT, Gemini, Codex, all of them.
+    </p>
+    <ul class="key-points">
+      <li>Parses git history, detects stack, reads existing AI configs (CLAUDE.md, .cursorrules, AGENTS.md)</li>
+      <li>Outputs ~3,000 tokens — fits in any model's context window</li>
+      <li>Zero config, no API keys, only Node.js + git required</li>
+      <li>Solves the "new model starts from zero" problem when switching AI assistants mid-project</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag product">🚀 Tool</span>
+      <span class="tag opensource">Open Source</span>
+      <a href="https://github.com/guvencem/handoff-md" class="story-link" target="_blank">GitHub →</a>
+    </div>
+  </div>
+
+  <!-- Runprompt -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://github.com/chr15m/runprompt" target="_blank">
+          Runprompt: Run .prompt Files from the Command Line — Unix-Style AI
+        </a>
+      </div>
+      <span class="story-source" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);color:var(--green);">Show HN</span>
+    </div>
+    <div class="story-date">Nov 27, 2025 · ⭐ 134 HN points</div>
+    <p class="story-desc">
+      A single-file Python script that lets you treat prompts as first-class programs you can pipe together Unix-style. Uses Google's Dotprompt format with frontmatter + Handlebars. Chain JSON output from one prompt as template variables into the next.
+    </p>
+    <ul class="key-points">
+      <li>Define structured JSON output schemas in frontmatter — LLM returns valid JSON you can pipe to jq</li>
+      <li>Prompt chaining: pipe JSON output as template variables into subsequent prompts</li>
+      <li>Zero-dependency single Python file using only stdlib</li>
+      <li>Provider-agnostic (Anthropic, OpenAI, Google AI, OpenRouter)</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag product">🚀 Tool</span>
+      <span class="tag agent">🤖 Agent Workflows</span>
+      <a href="https://github.com/chr15m/runprompt" class="story-link" target="_blank">GitHub →</a>
+    </div>
+  </div>
+
+  <!-- Gigacatalyst -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://news.ycombinator.com/item?id=48110593" target="_blank">
+          Gigacatalyst: Embed an AI App Builder Inside Your SaaS
+        </a>
+      </div>
+      <span class="story-source" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:var(--orange);">Show HN</span>
+    </div>
+    <div class="story-date">May 12, 2026 · ⭐ 61 HN points</div>
+    <p class="story-desc">
+      An "AI customization layer" that lets non-technical users build governed apps via natural language — inside your product, under your brand. Connects to your APIs, learns your data model and design system. After 2000+ daily users, 900+ apps built, and 70% 30-day retention, they've opened a public demo.
+    </p>
+    <ul class="key-points">
+      <li>Agentic API discovery: parses endpoints, query params, request/response shapes automatically</li>
+      <li>Multi-step validation: static checks, runtime error analysis, LLM-as-a-judge</li>
+      <li>Custom compilation and sandboxing for speed and cost efficiency</li>
+      <li>Proxy layer handles auth, tenant isolation, rate limiting, and version control</li>
+    </ul>
+    <div class="story-meta">
+      <span class="tag product">🚀 Product</span>
+      <span class="tag agent">🤖 Agents</span>
+      <a href="https://gigacatalyst.com/" class="story-link" target="_blank">Try the demo →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 📊 Research & Benchmarks -->
+  <div class="section-title"><span class="icon">📊</span> Research & Infrastructure</div>
+
+  <!-- Batch API for Agents -->
+  <div class="story-card">
+    <div class="story-header">
+      <div class="story-title">
+        <a href="https://eran.sandler.co.il/post/2026-04-27-batch-api-is-terrible-for-one-agent/" target="_blank">
+          Batch API Is Terrible for One Agent — But Great for Fleets
+        </a>
+      </div>
+      <span class="story-source" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.25);color:var(--accent-3);">Eran Sandler</span>
+    </div>
+    <div class="story-date">April 27, 2026</div>
+    <p class="story-desc">
+      A practical experiment running every Claude agent turn through Anthropic's Batch API (50% cost discount). Key finding: for a single interactive agent, batch mode is terrible — 90-120 seconds per turn. But the interesting use case is fleet-level batching for parallel agents, CI jobs, and background subagents.
+    </p>
+    <ul class="key-points">
+      <li>Batch API is 50% off — but single-turn latency of 90-120s makes it unusable for interactive use</li>
+      <li>Sweet spot: fleet-level batching with many parallel agents sharing a proxy</li>
+      <li>Haiku batches were slower than Sonnet/Opus batches — counterintuitive finding</li>
+      <li>Best architecture: batcher sits below the harness as infrastructure, routing per request based on latency tolerance</li>
+    </ul>
+    <div class="quote-block">
+      <p>"The useful lesson: Batch API is terrible as an interaction pattern for one agent. It might be very useful as a hidden optimization layer for a fleet of agents."</p>
+      <div class="attribution">— Eran Sandler</div>
+    </div>
+    <div class="story-meta">
+      <span class="tag funding">💰 Cost Optimization</span>
+      <span class="tag agent">🤖 Agents</span>
+      <a href="https://github.com/erans/batching-harness" class="story-link" target="_blank">GitHub Repo →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 🎯 A Quick Take -->
+  <div class="section-title"><span class="icon">🎯</span> Vera's Take</div>
+
+  <div class="analysis-box">
+    <h3>Three Trends to Watch</h3>
+    <p><strong>1. AI Security Is the New Frontier.</strong> The Meta AI support bot hack is a wake-up call. As AI agents get deployed in customer-facing pipelines without proper guardrails, we're going to see more of these. The question isn't whether AI can handle support — it's whether the verification and authorization layers are robust enough.</p>
+    <p style="margin-top: 12px;"><strong>2. Tiny + Guardrailed > Huge + Raw.</strong> Forge (8B → 99.3%) and Needle (26M parameter tool calling) both prove the same thing: small models with the right architecture beat big models without it. We're entering the infrastructure era of AI — the model is only half the equation.</p>
+    <p style="margin-top: 12px;"><strong>3. Open Weights, Multi-Cloud Distribution.</strong> With GPT-5.5 on Bedrock, Cohere's 218B open-source, JetBrains opening Mellum2, and Needle going MIT — the trend is clear: models are becoming infrastructure commodities. The moat is distribution, ecosystem integration, and domain knowledge.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 📚 Resources -->
+  <div class="section-title"><span class="icon">📚</span> Resources & Links</div>
+
+  <div class="resources-section">
+    <h3>🔗 Must-Bookmark Resources</h3>
+    <a href="https://github.com/anomalyco/models.dev" class="resource-link" target="_blank">
+      <span class="title">📊 Models.dev — AI Model Specs & Pricing Database</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/antoinezambelli/forge" class="resource-link" target="_blank">
+      <span class="title">🛡️ Forge — Open-Source Guardrails for Local Agent Reliability</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/cactus-compute/needle" class="resource-link" target="_blank">
+      <span class="title">🧵 Needle — 26M Parameter Tool-Calling Model (MIT)</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/chr15m/runprompt" class="resource-link" target="_blank">
+      <span class="title">🐚 Runprompt — Unix-Style .prompt File Pipelines</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/guvencem/handoff-md" class="resource-link" target="_blank">
+      <span class="title">📄 Handoff-md — Portable AI Context Generator</span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <!-- Tags Cloud -->
+  <div class="tags-cloud">
+    <span class="tag-item">🤖 AI Agents</span>
+    <span class="tag-item">⚠️ AI Security</span>
+    <span class="tag-item">OpenAI</span>
+    <span class="tag-item">Open Source</span>
+    <span class="tag-item">Model Release</span>
+    <span class="tag-item">Guardrails</span>
+    <span class="tag-item">Tool Calling</span>
+    <span class="tag-item">$ OpenAI Economics</span>
+    <span class="tag-item">Multi-Cloud</span>
+    <span class="tag-item">CLI Tools</span>
+    <span class="tag-item">Agent Infrastructure</span>
+    <span class="tag-item">Model Distillation</span>
+    <span class="tag-item">Domain Expertise</span>
+    <span class="tag-item">Cost Optimization</span>
+    <span class="tag-item">Enterprise AI</span>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>🤖 <strong>AI Builders Digest</strong> — 2026-06-03 · Vol. 4</p>
+  <p style="margin-top: 8px;">Curated by <a href="https://github.com/luokpX" target="_blank">Vera AI</a> · Powered by Hacker News API</p>
+  <p style="margin-top: 4px; font-size: 12px;">Built with ❤️ for the AI building community</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest — May 31, 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e293b;
+    --text: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-1: #6366f1;
+    --accent-2: #8b5cf6;
+    --accent-3: #a855f7;
+    --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+    --green: #10b981;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* 🌊 Hero Section */
+  .hero {
+    position: relative;
+    padding: 80px 24px 60px;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0e17 0%, #1a1040 40%, #0f172a 70%, #0a0e17 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 40% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 70%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(236, 72, 153, 0.04) 0%, transparent 40%);
+    animation: aurora 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes aurora {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(20px, -30px); }
+    50% { transform: translate(-20px, 10px); }
+    75% { transform: translate(10px, 20px); }
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-1);
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+  .hero-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .hero-date .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* 📊 Stats Bar */
+  .stats-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px;
+    padding: 28px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { text-align: center; }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  /* 📰 Main Content */
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon { font-size: 28px; }
+
+  .repo-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .repo-card:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .repo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .repo-name {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .repo-name a {
+    color: var(--text);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .repo-name a:hover { color: var(--accent-1); }
+  .repo-name .owner {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .repo-stars {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .star-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--orange);
+  }
+  .star-week {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .star-week.hot {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--red);
+  }
+  .star-week.warm {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    color: var(--orange);
+  }
+  .star-week.cool {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    color: var(--green);
+  }
+
+  .repo-desc {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .repo-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+  .repo-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .repo-tag.lang { background: rgba(99, 102, 241, 0.1); color: #818cf8; }
+  .repo-tag.theme { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+  .repo-tag.secure { background: rgba(16, 185, 129, 0.1); color: var(--green); }
+  .repo-tag.agent { background: rgba(245, 158, 11, 0.1); color: var(--orange); }
+  .repo-tag.msft { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+  .repo-tag.video { background: rgba(236, 72, 153, 0.1); color: #f472b6; }
+
+  .repo-link {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--accent-1);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-link:hover { text-decoration: underline; }
+
+  .repo-contributors {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .contrib-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 2px solid var(--bg);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    overflow: hidden;
+  }
+  .contrib-more {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: 4px;
+  }
+
+  /* 💬 Quote Block */
+  .quote-block {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(168, 85, 247, 0.04));
+    border-left: 3px solid var(--accent-2);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 32px 0;
+  }
+  .quote-block p {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .quote-block .attribution {
+    margin-top: 8px;
+    font-size: 13px;
+    font-style: normal;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* 📌 Key Points */
+  .key-points { margin: 12px 0 16px; }
+  .key-points li {
+    list-style: none;
+    padding: 4px 0 4px 20px;
+    position: relative;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .key-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent-2);
+    font-weight: 700;
+  }
+
+  /* 🏆 Top Picks */
+  .top-pick-badge {
+    position: absolute;
+    top: -1px;
+    right: 28px;
+    padding: 4px 14px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+    border-radius: 0 0 8px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+  }
+
+  /* 🏷️ Tags */
+  .tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 32px 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .tags-cloud .tag {
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+  }
+  .tags-cloud .tag:hover {
+    border-color: var(--accent-1);
+    color: var(--accent-1);
+    background: rgba(99, 102, 241, 0.08);
+  }
+  .tags-cloud .tag .count {
+    margin-left: 4px;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  /* 🌐 Resources */
+  .resources-section {
+    margin: 32px 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .resources-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .resource-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+    gap: 12px;
+  }
+  .resource-link:last-child { border-bottom: none; }
+  .resource-link:hover { color: var(--accent-1); }
+  .resource-link .title { font-weight: 500; }
+  .resource-link .arrow { color: var(--text-muted); font-size: 14px; }
+
+  /* 🔍 Analysis */
+  .analysis-box {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), rgba(6, 182, 212, 0.04));
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 28px 0;
+  }
+  .analysis-box h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+  .analysis-box p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ⚡ Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .footer a {
+    color: var(--accent-1);
+    text-decoration: none;
+  }
+  .footer a:hover { text-decoration: underline; }
+
+  /* 📱 Responsive */
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 40px; }
+    .stats-bar { gap: 20px; padding: 20px 16px; }
+    .stat-number { font-size: 22px; }
+    .container { padding: 24px 16px 60px; }
+    .repo-card { padding: 20px; }
+    .repo-header { flex-direction: column; }
+    .repo-stars { width: 100%; justify-content: flex-start; }
+    .top-pick-badge { right: 16px; font-size: 10px; padding: 3px 10px; }
+  }
+
+  .blinking-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #10b981;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🤖 AI Builders Digest</div>
+    <h1>Knowledge Graphs Dominate the AI Builder Landscape</h1>
+    <p>Curated from GitHub trending — the repos, tools, and frameworks shaping the AI engineering landscape this week</p>
+    <div class="hero-date">
+      <span class="dot"></span>
+      2026-05-31 · Weekly Edition · Vol. 2
+    </div>
+  </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">19</div>
+    <div class="stat-label">Featured Repos</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">199K</div>
+    <div class="stat-label">Highest Stars</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">25.6K</div>
+    <div class="stat-label">Top Weekly Gain</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">10</div>
+    <div class="stat-label">Languages</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 🔥 Top Pick -->
+  <div class="section-title"><span class="icon">🔥</span> Project of the Week</div>
+
+  <div class="repo-card" style="border-color: rgba(99, 102, 241, 0.3);">
+    <div class="top-pick-badge">★ TOP PICK</div>
+    <div class="repo-header">
+      <div class="repo-name">
+        <a href="https://github.com/Lum1104/Understand-Anything" target="_blank">
+          <span class="owner">Lum1104 /</span> Understand-Anything
+        </a>
+      </div>
+      <div class="repo-stars">
+        <span class="star-count">⭐ 45,909</span>
+        <span class="star-week hot">+25,612 this week</span>
+      </div>
+    </div>
+    <p class="repo-desc">
+      "Graphs that teach > graphs that impress." Turn any codebase, knowledge base, or docs into an interactive knowledge graph you can explore, search, and ask questions about. Works with Claude Code, Codex, Cursor, Copilot, Gemini CLI, and more.
+    </p>
+    <ul class="key-points">
+      <li>Interactive knowledge graphs for codebase understanding</li>
+      <li>Multi-agent platform support (Claude Code, Codex, Cursor, Copilot, Gemini CLI)</li>
+      <li>Zero-config installation with one-line installer</li>
+      <li>Multi-language README with translations</li>
+    </ul>
+    <div class="repo-meta">
+      <span class="repo-tag lang">TypeScript</span>
+      <span class="repo-tag theme">Knowledge Graph</span>
+      <span class="repo-tag agent">AI Agent</span>
+      <a href="https://github.com/Lum1104/Understand-Anything" class="repo-link" target="_blank">View on GitHub →</a>
+    </div>
+    <div class="repo-contributors">
+      <span class="contrib-avatar">L</span>
+      <span class="contrib-avatar">C</span>
+      <span class="contrib-avatar">B</span>
+      <span class="contrib-avatar">Z</span>
+      <span class="contrib-more">+5 contributors</span>
+    </div>
+  </div>
+
+  <!-- 📈 Trending This Week -->
+  <div class="section-title" style="margin-top: 48px;"><span class="icon">📈</span> Trending This Week</div>
+
+  <!-- 1. CodeGraph -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="repo-name">
+        <a href="https://github.com/colbymchenry/codegraph" target="_blank">
+          <span class="owner">colbymchenry /</span> codegraph
+        </a>
+      </div>
+      <div class="repo-stars">
+        <span class="star-count">⭐ 34,318</span>
+        <span class="star-week hot">+15,909 this week</span>
+      </div>
+    </div>
+    <p class="repo-desc">
+      Pre-indexed code knowledge graph for Claude Code, Codex, Gemini, Cursor, OpenCode, AntiGravity, Kiro, and Hermes Agent — fewer tokens, fewer tool calls, 100% local. ~22% cheaper, ~50% fewer tool calls.
+    </p>
+    <ul class="key-points">
+      <li>Bundles its own runtime — no Node.js required</li>
+      <li>Optimized for AI coding agent token efficiency</li>
+      <li>One-command install: <code>curl -fsSL ... | sh</code></li>
+    </ul>
+    <div class="repo-meta">
+      <span class="repo-tag lang">TypeScript</span>
+      <span class="repo-tag theme">Code Intelligence</span>
+      <span class="repo-tag theme">Local</span>
+      <a href="https://github.com/colbymchenry/codegraph" class="repo-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <!-- 2. MoneyPrinterTurbo -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="repo-name">
+        <a href="https://github.com/harry0703/MoneyPrinterTurbo" target="_blank">
+          <span class="owner">harry0703 /</span> MoneyPrinterTurbo
+        </a>
+      </div>
+      <div class="repo-stars">
+        <span class="star-count">⭐ 71,927</span>
+        <span class="star-week hot">+13,948 this week</span>
+      </div>
+    </div>
+    <p class="repo-desc">
+      利用AI大模型，一键生成高清短视频 — Generate short videos with one click using AI LLM. Still the reigning king of AI video generation tools.
+    </p>
+    <ul class="key-points">
+      <li>AI-powered short video generation pipeline</li>
+      <li>Massive community: 10K+ forks, 72K+ total stars</li>
+      <li>Continued explosive growth week over week</li>
+    </ul>
+    <div class="repo-meta">
+      <span class="repo-tag lang">Python</span>
+      <span class="repo-tag video">Video Generation</span>
+      <span class="repo-tag theme">AI Content</span>
+      <a href="https://github.com/harry0703/MoneyPrinterTurbo" class="repo-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <!-- 3. ai-engineering-from-scratch -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="repo-name">
+        <a href="https://github.com/rohitg00/ai-engineering-from-scratch" target="_blank">
+          <span class="owner">rohitg00 /</span> ai-engineering-from-scratch
+        </a>
+      </div>
+      <div class="repo-stars">
+        <span class="star-count">⭐ 25,155</span>
+        <span class="star-week hot">+12,082 this week</span>
+      </div>
+    </div>
+    <p class="repo-desc">
+      Learn it. Build it. Ship it for others. A comprehensive AI engineering curriculum for builders — from fundamentals to production deployment.
+    </p>
+    <ul class="key-points">
+      <li>End-to-end AI engineering curriculum</li>
+      <li>Practical, project-based learning approach</li>
+      <li>Active community of 4K+ forks</li>
+    </ul>
+    <div class="repo-meta">
+      <span class="repo-tag lang">Python</span>
+      <span class="repo-tag theme">Education</span>
+      <span class="repo-tag theme">Curriculum</span>
+      <a href="https://github.com/rohitg00/ai-engineering-from-scratch" class="repo-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <!-- 4. ECC -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="repo-name">
+        <a href="https://github.com/affaan-m/ECC" target="_blank">
+          <span class="owner">affaan-m /</span> ECC
+        </a>
+      </div>
+      <div class="repo-stars">
+        <span class="star-count">⭐ 199,280</span>
+        <span class="star-week hot">+10,802 this week</span>
+      </div>
+    </div>
+    <p class="repo-desc">
+      The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.
+    </p>
+    <ul class="key-points">
+      <li>Comprehensive agent harness with 40+ config directories</li>
+      <li>Supports Claude Code, Codex, OpenCode, Cursor, Gemini, Qwen, Zed, Trae, Kiro</li>
+      <li>Massive community: 199K stars, 30K+ forks</li>
+      <li>Includes MCP configs, plugins, research, skills, hooks</li>
+    </ul>
+    <div class="repo-meta">
+      <span class="repo-tag lang">JavaScript</span>
+      <span class="repo-tag theme">Agent Harness</span>
+      <span class="repo-tag theme">Performance</span>
+      <span class="repo-tag secure">Security</span>
+      <a href="https://github.com/affaan-m/ECC" class="repo-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <!-- Quote Block -->
+  <div class="quote-block">
+    <p>"Knowledge graphs are becoming the universal interface between AI agents and codebases. Understand-Anything and CodeGraph together pulled <strong>41.5K new stars</strong> this week — the market is voting clearly: agents need structured understanding, not just context windows."</p>
+    <div class="attribution">— AI Builders Digest Editorial</div>
+  </div>
+
+  <!-- 5. taste-skill -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="repo-name">
+        <a href="https://github.com/Leonxlnx/taste-skill" target="_blank">
+          <span class="owner">Leonxlnx /</span> taste-skill
+        </a>
+      </div>
+      <div class="repo-stars">
+        <span class="star-count">⭐ 29,103</span>
+        <span class="star-week hot">+10,202 this week</span>
+      </div>
+    </div>
+    <p class="repo-desc">
+      Taste-Skill — gives your AI good taste. Stops the AI from generating boring, generic slop. The anti-slop movement continues to accelerate.
+    </p>
+    <div class="repo-meta">
+      <span class="repo-tag lang">Shell</span>
+      <span class="repo-tag theme">AI Quality</span>
+      <span class="repo-tag theme">Prompt Engineering</span>
+      <a href="https://github.com/Leonxlnx/taste-skill" class="repo-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <!-- 6. microsoft/markitdown -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="repo-name">
+        <a href="https://github.com/microsoft/markitdown" target="_blank">
+          <span class="owner">microsoft /</span> markitdown
+        </a>
+      </div>
+      <div class="repo-stars">
+        <span class="star-count">⭐ 132,325</span>
+        <span class="star-week hot">+6,652 this week</span>
+      </div>
+    </div>
+    <p class="repo-desc">
+      Python tool for converting files and office documents to Markdown. The essential bridge between document formats and AI context ingestion.
+    </p>
+    <ul class="key-points">
+      <li>Converts virtually any document format to clean Markdown</li>
+      <li>Critical for RAG pipelines and AI document processing</li>
+      <li>Microsoft-backed with strong enterprise adoption</li>
+    </ul>
+    <div class="repo-meta">
+      <span class="repo-tag lang">Python</span>
+      <span class="repo-tag msft">Microsoft</span>
+      <span class="repo-tag theme">Document Conversion</span>
+      <span class="repo-tag secure">RAG</span>
+      <a href="https://github.com/microsoft/markitdown" class="repo-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <!-- 7. Anthropic-Cybersecurity-Skills -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="repo-name">
+        <a href="https://github.com/mukul975/Anthropic-Cybersecurity-Skills" target="_blank">
+          <span class="owner">mukul975 /</span> Anthropic-Cybersecurity-Skills
+        </a>
+      </div>
+      <div class="repo-stars">
+        <span class="star-count">⭐ 12,569</span>
+        <span class="star-week hot">+5,417 this week</span>
+      </div>
+    </div>
+    <p class="repo-desc">754 structured cybersecurity skills for AI agents · Mapped to 5 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND & NIST AI RMF · Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms · 26 security domains.</p>
+    <ul class="key-points">
+      <li>754 structured cybersecurity skills mapped to 5 frameworks</li>
+      <li>26 security domains covered</li>
+      <li>Works with 20+ AI coding platforms</li>
+    </ul>
+    <div class="repo-meta">
+      <span class="repo-tag lang">Python</span>
+      <span class="repo-tag secure">Cybersecurity</span>
+      <span class="repo-tag theme">MITRE</span>
+      <a href="https://github.com/mukul975/Anthropic-Cybersecurity-Skills" class="repo-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <!-- 8. knowledge-work-plugins -->
+  <div class="repo-card">
+    <div class="repo-header">
+      <div class="repo-name">
+        <a href="https://github.com/anthropics/knowledge-work-plugins" target="_blank">
+          <span class="owner">anthropics /</span> knowledge-work-plugins
+        </a>
+      </div>
+      <div class="repo-stars">
+        <span class="star-count">⭐ 18,242</span>
+        <span class="star-week warm">+5,538 this week</span>
+      </div>
+    </div>
+    <p class="repo-desc">
+      Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork. Anthropic's bet on workplace AI adoption.
+    </p>
+    <div class="repo-meta">
+      <span class="repo-tag lang">Python</span>
+      <span class="repo-tag theme">Claude Cowork</span>
+      <span class="repo-tag theme">Knowledge Work</span>
+      <span class="repo-tag agent">Anthropic</span>
+      <a href="https://github.com/anthropics/knowledge-work-plugins" class="repo-link" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+
+  <!-- 9. claude-plugins-official + heretic combo card -->
+  <div class="repo-card" style="padding: 20px 28px;">
+    <div style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">📋 More Notable Repos</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px;">
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/anthropics/claude-plugins-official" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">claude-plugins-official</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 28,789 · +2,771/week · anthropic · Official Claude Code Plugins directory</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/p-e-w/heretic" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">heretic</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 22,510 · +1,248/week · LLM censorship removal, Python</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/stop-slop" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">stop-slop</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 7,403 · +3,543/week · Remove AI tells from prose</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/can1357/oh-my-pi" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">oh-my-pi</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 8,715 · +1,963/week · Terminal AI coding agent, TypeScript</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/microsoft/agent-governance-toolkit" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">agent-governance-toolkit</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 3,461 · +1,553/week · Microsoft agent governance, Python</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/ogulcancelik/herdr" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">herdr</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 3,199 · +923/week · Agent multiplexer for terminal, Rust</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/dograh-hq/dograh" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">dograh</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 3,860 · +1,236/week · Self-hosted Voice AI platform, Python</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/revfactory/harness" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">harness</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 4,252 · +626/week · Meta-skill for agent team design, HTML</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/HKUDS/ViMax" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">ViMax</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 8,367 · Agentic Video Generation, Python</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/presenton/presenton" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">presenton</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 7,587 · AI Presentation Generator, TypeScript</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/Chachamaru127/claude-code-harness" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">claude-code-harness</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 2,283 · +1,034/week · Claude Code Dev Harness, Shell</div>
+      </div>
+      <div style="padding: 12px; background: var(--surface2); border-radius: 8px;">
+        <a href="https://github.com/cursor/plugins" style="color: var(--accent-1); text-decoration: none; font-weight: 600;" target="_blank">cursor/plugins</a>
+        <div style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">⭐ 1,454 · +738/week · Cursor plugin specification</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🏷️ Tags Cloud -->
+  <div class="section-title" style="margin-top: 48px;"><span class="icon">🏷️</span> Hot Tags This Week</div>
+  <div class="tags-cloud">
+    <span class="tag">Knowledge Graph <span class="count">×4</span></span>
+    <span class="tag">AI Agent <span class="count">×15</span></span>
+    <span class="tag">Claude Code <span class="count">×10</span></span>
+    <span class="tag">Code Intelligence <span class="count">×3</span></span>
+    <span class="tag">Python <span class="count">×8</span></span>
+    <span class="tag">TypeScript <span class="count">×5</span></span>
+    <span class="tag">Agent Governance <span class="count">×2</span></span>
+    <span class="tag">Video Generation <span class="count">×3</span></span>
+    <span class="tag">Cybersecurity <span class="count">×2</span></span>
+    <span class="tag">Rust <span class="count">×2</span></span>
+    <span class="tag">Voice AI <span class="count">×1</span></span>
+    <span class="tag">Prompt Engineering <span class="count">×3</span></span>
+    <span class="tag">AI Quality <span class="count">×3</span></span>
+    <span class="tag">Document Conversion <span class="count">×1</span></span>
+    <span class="tag">Microsoft <span class="count">×2</span></span>
+    <span class="tag">Open Source <span class="count">×19</span></span>
+  </div>
+
+  <!-- 🧐 Analysis -->
+  <div class="section-title" style="margin-top: 48px;"><span class="icon">🔍</span> Trend Analysis</div>
+  <div class="analysis-box">
+    <h3>📈 Three Mega-Trends Shaping AI Builders This Week</h3>
+    <p>
+      <strong>1. Knowledge Graphs Are the New Interface</strong> — For the second consecutive week, knowledge graph repos dominate the top of GitHub trending. Understand-Anything (+25,612) and CodeGraph (+15,909) collectively pulled 41.5K stars. The message is clear: AI agents need structured, graph-based code understanding to be effective. Builders are moving beyond "throw more context at it" to "give it a map."
+    </p>
+    <p style="margin-top: 12px;">
+      <strong>2. The Anti-Slop Movement Accelerates</strong> — Taste-skill (+10,202), stop-slop (+3,543), and heretic (+1,248) form a growing ecosystem of tools fighting generic AI output. The community is tired of "I'd be happy to help you with that" prose and is actively building guardrails for quality. This isn't just a trend — it's the market maturing.
+    </p>
+    <p style="margin-top: 12px;">
+      <strong>3. Agent Ecosystem <em>Management</em> Becomes a Thing</strong> — ECC (199K ⭐) continues its reign as the agent harness standard. This week's new entrants — Microsoft's agent-governance-toolkit, herdr (agent multiplexer), harness (meta-skill for agent teams), and claude-code-harness — signal the market shifting from building AI agents to <em>managing fleets of them securely at scale</em>.
+    </p>
+  </div>
+
+  <!-- 🌐 Resources -->
+  <div class="section-title" style="margin-top: 48px;"><span class="icon">🌐</span> Resources & Community</div>
+  <div class="resources-section">
+    <h3>📚 Essential Links</h3>
+    <a href="https://github.com/trending?since=weekly" class="resource-link" target="_blank">
+      <span class="title">📊 GitHub Trending (Weekly)</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/topics/artificial-intelligence" class="resource-link" target="_blank">
+      <span class="title">🤖 GitHub AI Topic (37,975+ repos)</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/topics/ai-agents" class="resource-link" target="_blank">
+      <span class="title">🧠 AI Agents Topic</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/topics/knowledge-graphs" class="resource-link" target="_blank">
+      <span class="title">🔗 Knowledge Graphs Topic</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://docs.anthropic.com/en/docs/claude-code" class="resource-link" target="_blank">
+      <span class="title">📖 Claude Code Documentation</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://owasp.org/www-project-top-10-for-llm-applications/" class="resource-link" target="_blank">
+      <span class="title">🛡️ OWASP Agentic Top 10</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/microsoft/agent-governance-toolkit" class="resource-link" target="_blank">
+      <span class="title">⚙️ Microsoft Agent Governance Toolkit</span>
+      <span class="arrow">→</span>
+    </a>
+    <a href="https://github.com/Lum1104/Understand-Anything" class="resource-link" target="_blank">
+      <span class="title">🔎 Understand-Anything — Knowledge Graph Builder</span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <!-- 🗞️ Weekly Wrap -->
+  <div class="section-title" style="margin-top: 48px;"><span class="icon">🗞️</span> The Bottom Line</div>
+  <div class="quote-block" style="border-left-color: var(--green);">
+    <p>This week's digest is bookended by two big signals: knowledge graphs as the new essential infra layer, and agent management as the next frontier. If you're building in AI right now, the question isn't whether to adopt these tools — it's which ones to bet on.</p>
+    <div class="attribution">— AI Builders Digest 🚀 See you next week</div>
+  </div>
+
+  <!-- 📢 Share -->
+  <div class="share-bar" style="display: flex; justify-content: center; gap: 12px; margin-top: 40px;">
+    <span style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; border-radius: 100px; font-size: 14px; font-weight: 600; border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary);">
+      🤖 AI Builders Digest
+    </span>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>🤖 <strong>AI Builders Digest</strong> — Curated weekly from GitHub trending data</p>
+  <p style="margin-top: 4px;">Built with ❤️ by Vera · Data sourced from <a href="https://github.com/trending" target="_blank">GitHub Trending</a></p>
+  <p style="margin-top: 8px;">
+    <span class="blinking-dot"></span> Updated weekly · Next edition: June 7, 2026
+  </p>
+</footer>
+
+</body>
+</html>
