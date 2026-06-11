@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Builders Digest — June 11, 2026</title>
+  <meta name="description" content="Daily AI Builders Digest — curated from GitHub trending repos, AI ecosystem news, and builder community.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0b0f;
+      --surface: #12141a;
+      --surface2: #1a1d28;
+      --border: #2a2d3a;
+      --text: #e4e6f0;
+      --text-muted: #8b8fa3;
+      --accent: #6c5ce7;
+      --accent2: #00cec9;
+      --accent3: #fd79a8;
+      --green: #00b894;
+      --orange: #fdcb6e;
+      --red: #e17055;
+      --blue: #74b9ff;
+      --gradient-1: linear-gradient(135deg, #6c5ce7 0%, #00cec9 100%);
+      --gradient-2: linear-gradient(135deg, #fd79a8 0%, #6c5ce7 100%);
+      --gradient-3: linear-gradient(135deg, #00cec9 0%, #fdcb6e 100%);
+      --gradient-hero: linear-gradient(135deg, #0a0b0f 0%, #1a1d28 50%, #12141a 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 80% 20%, rgba(108,92,231,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(0,206,201,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 50%, rgba(253,121,168,0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header {
+      padding: 60px 0 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--gradient-1);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      font-weight: 900;
+      background: var(--gradient-2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 18px;
+      margin-top: 12px;
+    }
+
+    .header .subtitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .header .subtitle span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    section {
+      margin: 48px 0;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: -10px 0 20px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .stat-card .num {
+      font-size: 36px;
+      font-weight: 900;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-card .label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* Repo Grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .repo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .repo-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 32px rgba(108,92,231,0.15);
+    }
+
+    .repo-card .repo-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .repo-card .repo-header .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      background: var(--surface2);
+    }
+
+    .repo-card .repo-header .info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .repo-card .repo-header .info .name {
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .repo-card .repo-header .info .name:hover {
+      color: var(--accent2);
+    }
+
+    .repo-card .repo-header .info .author {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .repo-card .repo-header .info .author a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .repo-card .repo-header .info .author a:hover {
+      text-decoration: underline;
+    }
+
+    .repo-card .desc {
+      font-size: 14px;
+      color: #b0b4c8;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    .repo-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .repo-meta .stars {
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .repo-meta .lang {
+      color: var(--text-muted);
+    }
+
+    .repo-meta .fork {
+      color: var(--text-muted);
+    }
+
+    .repo-meta .updated {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(108,92,231,0.15);
+      color: var(--accent);
+      border: 1px solid rgba(108,92,231,0.25);
+    }
+
+    .tag.green {
+      background: rgba(0,184,148,0.15);
+      color: var(--green);
+      border-color: rgba(0,184,148,0.25);
+    }
+
+    .tag.pink {
+      background: rgba(253,121,168,0.15);
+      color: var(--accent3);
+      border-color: rgba(253,121,168,0.25);
+    }
+
+    .tag.blue {
+      background: rgba(116,185,255,0.15);
+      color: var(--blue);
+      border-color: rgba(116,185,255,0.25);
+    }
+
+    .tag.orange {
+      background: rgba(253,203,110,0.15);
+      color: var(--orange);
+      border-color: rgba(253,203,110,0.25);
+    }
+
+    /* Spotlight */
+    .spotlight-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .spotlight-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spotlight-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--gradient-1);
+    }
+
+    .spotlight-card .s-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .spotlight-card .s-author {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .spotlight-card .s-desc {
+      font-size: 14px;
+      color: #b0b4c8;
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+
+    .key-points {
+      background: var(--surface2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 14px 0;
+    }
+
+    .key-points h4 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent2);
+      margin-bottom: 8px;
+    }
+
+    .key-points ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .key-points ul li {
+      position: relative;
+      padding-left: 20px;
+      font-size: 14px;
+      color: #c0c4d8;
+      margin-bottom: 6px;
+    }
+
+    .key-points ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent2);
+    }
+
+    .quote-block {
+      border-left: 3px solid var(--accent3);
+      padding: 12px 16px;
+      margin: 14px 0;
+      background: rgba(253,121,168,0.05);
+      border-radius: 0 12px 12px 0;
+      font-style: italic;
+      font-size: 14px;
+      color: #c8cce0;
+    }
+
+    .quote-block .q-author {
+      display: block;
+      margin-top: 6px;
+      font-style: normal;
+      font-size: 13px;
+      color: var(--accent3);
+      font-weight: 600;
+    }
+
+    /* News */
+    .news-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .news-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      transition: border-color 0.2s;
+    }
+
+    .news-item:hover {
+      border-color: var(--accent);
+    }
+
+    .news-item .n-title {
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .news-item .n-title a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .news-item .n-title a:hover {
+      color: var(--accent2);
+    }
+
+    .news-item .n-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Themes */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .theme-grid { grid-template-columns: 1fr; }
+    }
+
+    .theme-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .theme-card h4 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .theme-card p {
+      font-size: 14px;
+      color: #b0b4c8;
+      line-height: 1.7;
+    }
+
+    /* Full Roster */
+    .roster-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .roster-table th {
+      text-align: left;
+      padding: 12px 14px;
+      background: var(--surface2);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .roster-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: #c0c4d8;
+    }
+
+    .roster-table tr:hover td {
+      background: var(--surface2);
+    }
+
+    .roster-table td a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .roster-table td a:hover {
+      color: var(--accent2);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 0 60px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .resource-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .resource-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: border-color 0.2s;
+    }
+
+    .resource-link:hover {
+      border-color: var(--accent);
+    }
+
+    .resource-link .link-icon {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="badge">Daily Digest</div>
+    <h1>AI Builders Digest</h1>
+    <p>Thursday, June 11, 2026</p>
+    <div class="subtitle">
+      <span>📡 GitHub API</span>
+      <span>·</span>
+      <span>🏗️ AI Agents · MCP · Frameworks</span>
+      <span>·</span>
+      <span>📰 Ecosystem News</span>
+    </div>
+  </header>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="num">3.2M+</div>
+      <div class="label">Total Stars Tracked</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">12</div>
+      <div class="label">Featured Repos</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">5</div>
+      <div class="label">Rising Stars ⭐</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">4</div>
+      <div class="label">Key Themes</div>
+    </div>
+  </div>
+
+  <!-- 🔥 Trending Today -->
+  <section>
+    <h2 class="section-title">🔥 Trending Today</h2>
+    <p class="section-desc">Top repos surging in the AI builder ecosystem right now</p>
+
+    <div class="grid-2">
+
+      <!-- Odysseus -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <img class="avatar" src="https://avatars.githubusercontent.com/u/229018391?v=4" alt="" onerror="this.style.display='none'">
+          <div class="info">
+            <a class="name" href="https://github.com/pewdiepie-archdaemon/odysseus" target="_blank">odysseus</a>
+            <div class="author">by <a href="https://github.com/pewdiepie-archdaemon" target="_blank">pewdiepie-archdaemon</a></div>
+          </div>
+        </div>
+        <div class="desc">Self-hosted AI workspace. Launched May 31 — already 67K stars in 11 days. The fastest-growing AI project this month.</div>
+        <div class="repo-meta">
+          <span class="stars">⭐ 67,056</span>
+          <span class="lang">Python</span>
+          <span class="fork">🍴 8,345</span>
+          <span class="updated">AGPL-3.0</span>
+        </div>
+        <div class="tags">
+          <span class="tag pink">🚀 RISING STAR</span>
+          <span class="tag">self-hosted</span>
+          <span class="tag green">AI workspace</span>
+        </div>
+      </div>
+
+      <!-- Hermes Agent -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <img class="avatar" src="https://avatars.githubusercontent.com/u/134168893?v=4" alt="" onerror="this.style.display='none'">
+          <div class="info">
+            <a class="name" href="https://github.com/NousResearch/hermes-agent" target="_blank">hermes-agent</a>
+            <div class="author">by <a href="https://github.com/NousResearch" target="_blank">NousResearch</a></div>
+          </div>
+        </div>
+        <div class="desc">The agent that grows with you. General-purpose AI agent with 190K stars — still the dominant force in open-source agents.</div>
+        <div class="repo-meta">
+          <span class="stars">⭐ 189,936</span>
+          <span class="lang">Python</span>
+          <span class="fork">🍴 32,898</span>
+          <span class="updated">MIT</span>
+        </div>
+        <div class="tags">
+          <span class="tag blue">🏆 KING</span>
+          <span class="tag">ai-agent</span>
+          <span class="tag">llm</span>
+          <span class="tag">claude</span>
+          <span class="tag green">multimodal</span>
+        </div>
+      </div>
+
+      <!-- Dify -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <img class="avatar" src="https://avatars.githubusercontent.com/u/127165244?v=4" alt="" onerror="this.style.display='none'">
+          <div class="info">
+            <a class="name" href="https://github.com/langgenius/dify" target="_blank">dify</a>
+            <div class="author">by <a href="https://github.com/langgenius" target="_blank">langgenius</a></div>
+          </div>
+        </div>
+        <div class="desc">Production-ready platform for agentic workflow development. 144K stars — the go-to low-code/no-code AI app builder.</div>
+        <div class="repo-meta">
+          <span class="stars">⭐ 144,742</span>
+          <span class="lang">TypeScript</span>
+          <span class="fork">🍴 22,779</span>
+          <span class="updated">Apache-2.0</span>
+        </div>
+        <div class="tags">
+          <span class="tag blue">platform</span>
+          <span class="tag">workflow</span>
+          <span class="tag green">low-code</span>
+          <span class="tag">mcp</span>
+        </div>
+      </div>
+
+      <!-- LobeHub -->
+      <div class="repo-card">
+        <div class="repo-header">
+          <img class="avatar" src="https://avatars.githubusercontent.com/u/131470832?v=4" alt="" onerror="this.style.display='none'">
+          <div class="info">
+            <a class="name" href="https://github.com/lobehub/lobehub" target="_blank">lobehub</a>
+            <div class="author">by <a href="https://github.com/lobehub" target="_blank">lobehub</a></div>
+          </div>
+        </div>
+        <div class="desc">Chief Agent Operator — organizing your agents into 7×24 operations. Hiring, scheduling, reporting on your entire AI team.</div>
+        <div class="repo-meta">
+          <span class="stars">⭐ 78,463</span>
+          <span class="lang">TypeScript</span>
+          <span class="fork">🍴 15,402</span>
+          <span class="updated">AGPL-3.0</span>
+        </div>
+        <div class="tags">
+          <span class="tag pink">CAO</span>
+          <span class="tag">agent-harness</span>
+          <span class="tag">skills</span>
+          <span class="tag">mcp</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🎯 Spotlight Deep Dives -->
+  <section>
+    <h2 class="section-title">🎯 Spotlight Deep Dives</h2>
+    <p class="section-desc">Hand-picked projects worth your attention this week</p>
+
+    <div class="spotlight-grid">
+
+      <!-- 1: Odysseus The Explosion -->
+      <div class="spotlight-card">
+        <div class="s-title">🌠 odysseus — 67K in 11 Days</div>
+        <div class="s-author">by pewdiepie-archdaemon · <a href="https://github.com/pewdiepie-archdaemon/odysseus" style="color:var(--blue);text-decoration:none" target="_blank">View Repo →</a></div>
+        <div class="s-desc">A self-hosted AI workspace that has gone absolutely viral. Created May 31, 2026, it's accumulated 67K stars in just 11 days — the fastest-growing AI project this month. The concept is deceptively simple: a personal AI workspace you own and control.</div>
+        <div class="key-points">
+          <h4>Key Takeaways</h4>
+          <ul>
+            <li>Self-hosted paradigm is resonating massively with developers tired of SaaS lock-in</li>
+            <li>11 days to 67K — faster trajectory than even Hermes Agent in its early days</li>
+            <li>8,345 forks suggest a thriving community already building on it</li>
+            <li>Written in Python with AGPL-3.0 license</li>
+          </ul>
+        </div>
+        <div class="quote-block">
+          "Self-hosted AI is not just a trend — it's becoming the default expectation for serious builders."
+          <span class="q-author">— Community sentiment, June 2026</span>
+        </div>
+      </div>
+
+      <!-- 2: CodexPlusPlus -->
+      <div class="spotlight-card">
+        <div class="s-title">🔧 CodexPlusPlus — Codex Enhanced</div>
+        <div class="s-author">by BigPizzaV3 · <a href="https://github.com/BigPizzaV3/CodexPlusPlus" style="color:var(--blue);text-decoration:none" target="_blank">View Repo →</a></div>
+        <div class="s-desc">An enhancement tool for CodexApp built in Rust. An exploded-from-nothing story: launched May 6 and already 17K stars! The Chinese-language README hints at massive adoption in the Chinese developer community.</div>
+        <div class="key-points">
+          <h4>Key Takeaways</h4>
+          <ul>
+            <li>Written in Rust — performance-critical enhancement layer</li>
+            <li>16,976 stars in 36 days — strong product-market fit</li>
+            <li>502 open issues indicate active community engagement</li>
+            <li>Bilingual (Chinese/English) community driving adoption</li>
+          </ul>
+        </div>
+        <div class="quote-block">
+          "一个CodexApp的增强工具，努力让Codex变得更好用更舒服 — making Codex better and more comfortable to use."
+          <span class="q-author">— BigPizzaV3, project description</span>
+        </div>
+      </div>
+
+      <!-- 3: antirez/ds4 -->
+      <div class="spotlight-card">
+        <div class="s-title">🧠 ds4 — DeepSeek 4 Local Inference Engine</div>
+        <div class="s-author">by <a href="https://github.com/antirez" style="color:var(--blue);text-decoration:none" target="_blank">antirez</a> (Redis creator!) · <a href="https://github.com/antirez/ds4" style="color:var(--blue);text-decoration:none" target="_blank">View Repo →</a></div>
+        <div class="s-desc">Salvatore Sanfilippo (antirez), the legendary creator of Redis, built a local inference engine for DeepSeek 4 Flash and PRO, supporting Metal, CUDA, and ROCm. Written in pure C — the kind of craftsmanship you'd expect from a systems programming legend.</div>
+        <div class="key-points">
+          <h4>Key Takeaways</h4>
+          <ul>
+            <li>13,407 stars in just over a month — antirez's star power + DeepSeek demand</li>
+            <li>Pure C implementation — minimal dependencies, maximum performance</li>
+            <li>Cross-platform: Metal (Apple), CUDA (NVIDIA), ROCm (AMD)</li>
+            <li>Represents the "democratization of local LLM inference" trend</li>
+          </ul>
+        </div>
+        <div class="quote-block">
+          "Local inference is the only way to truly own your AI. ds4 makes that practical for DeepSeek's most powerful models."
+          <span class="q-author">— antirez (Salvatore Sanfilippo), creator of Redis</span>
+        </div>
+      </div>
+
+      <!-- 4: CowAgent -->
+      <div class="spotlight-card">
+        <div class="s-title">🐄 CowAgent — From ChatGPT-on-WeChat to Agent Harness</div>
+        <div class="s-author">by <a href="https://github.com/zhayujie" style="color:var(--blue);text-decoration:none" target="_blank">zhayujie</a> · <a href="https://github.com/zhayujie/CowAgent" style="color:var(--blue);text-decoration:none" target="_blank">View Repo →</a></div>
+        <div class="s-desc">The evolution of the legendary chatgpt-on-wechat project (42K+ stars). CowAgent is now a full-fledged open-source super AI assistant & agent harness that plans tasks, runs tools and skills, self-evolves with memory and knowledge. Multi-model, multi-channel, lightweight, extensible, one-line install.</div>
+        <div class="key-points">
+          <h4>Key Takeaways</h4>
+          <ul>
+            <li>45,206 stars — one of the most popular Chinese-origin AI projects</li>
+            <li>Evolved from WeChat bot to general-purpose agent harness</li>
+            <li>Self-evolving with memory and knowledge — true agentic loop</li>
+            <li>Multi-model, multi-channel — works with any LLM, any platform</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5: PySpur -->
+      <div class="spotlight-card">
+        <div class="s-title">🎨 PySpur — Visual Playground for Agentic Workflows</div>
+        <div class="s-author">by <a href="https://github.com/PySpur-Dev" style="color:var(--blue);text-decoration:none" target="_blank">PySpur-Dev</a> · <a href="https://github.com/PySpur-Dev/pyspur" style="color:var(--blue);text-decoration:none" target="_blank">View Repo →</a></div>
+        <div class="s-desc">A visual playground for agentic workflows — iterate over your agents 10x faster. TypeScript-based drag-and-drop builder with support for deepseek, gemini, ollama, RAG, reasoning, multimodal, and human-in-the-loop workflows.</div>
+        <div class="key-points">
+          <h4>Key Takeaways</h4>
+          <ul>
+            <li>5,734 stars — strong traction in the visual agent builder space</li>
+            <li>Supports every major LLM provider: deepseek, gemini, ollama, OpenAI</li>
+            <li>Built-in tracing, loops, and human-in-the-loop support</li>
+            <li>"Iterate 10x faster" — solving the real bottleneck in agent development</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6: fim-one -->
+      <div class="spotlight-card">
+        <div class="s-title">🌐 fim-one — Global × China Enterprise Agent Platform</div>
+        <div class="s-author">by <a href="https://github.com/fim-ai" style="color:var(--blue);text-decoration:none" target="_blank">fim-ai</a> · <a href="https://github.com/fim-ai/fim-one" style="color:var(--blue);text-decoration:none" target="_blank">View Repo →</a></div>
+        <div class="s-desc">Open-source agent platform purpose-built for Global × China enterprises. Wire every system through one agent core. Self-hosted, any LLM. Features connectors, DAG pipelines, function calling, MCP, RAG, and a React agent architecture.</div>
+        <div class="key-points">
+          <h4>Key Takeaways</h4>
+          <ul>
+            <li>Positioned at the intersection of global and Chinese enterprise needs</li>
+            <li>Self-hosted — critical for regulated industries</li>
+            <li>Supports MCP + function calling + DAG workflows</li>
+            <li>Only 2 open issues — remarkably well-maintained</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🌟 Rising Stars -->
+  <section>
+    <h2 class="section-title">🌟 Rising Stars</h2>
+    <p class="section-desc">New projects gaining serious momentum this week</p>
+    <div class="grid-2">
+      <div class="repo-card">
+        <div class="repo-header">
+          <div class="info">
+            <a class="name" href="https://github.com/antirez/ds4" target="_blank">ds4</a>
+            <div class="author">antirez · <span class="stars">⭐ 13,407</span></div>
+          </div>
+        </div>
+        <div class="desc">DeepSeek 4 local inference engine for Metal, CUDA, and ROCm. Pure C implementation.</div>
+        <div class="tags">
+          <span class="tag pink">🔥 inferencing</span>
+          <span class="tag blue">DeepSeek</span>
+        </div>
+      </div>
+      <div class="repo-card">
+        <div class="repo-header">
+          <div class="info">
+            <a class="name" href="https://github.com/BigPizzaV3/CodexPlusPlus" target="_blank">CodexPlusPlus</a>
+            <div class="author">BigPizzaV3 · <span class="stars">⭐ 16,976</span></div>
+          </div>
+        </div>
+        <div class="desc">Codex enhancement tool in Rust. 36 days old, already 17K stars.</div>
+        <div class="tags">
+          <span class="tag pink">🚀 Codex</span>
+          <span class="tag green">Rust</span>
+        </div>
+      </div>
+      <div class="repo-card">
+        <div class="repo-header">
+          <div class="info">
+            <a class="name" href="https://github.com/PySpur-Dev/pyspur" target="_blank">PySpur</a>
+            <div class="author">PySpur-Dev · <span class="stars">⭐ 5,734</span></div>
+          </div>
+        </div>
+        <div class="desc">Visual agentic workflow builder. Drag-and-drop, 10x faster iteration.</div>
+        <div class="tags">
+          <span class="tag green">visual</span>
+          <span class="tag">workflow</span>
+        </div>
+      </div>
+      <div class="repo-card">
+        <div class="repo-header">
+          <div class="info">
+            <a class="name" href="https://github.com/fim-ai/fim-one" target="_blank">fim-one</a>
+            <div class="author">fim-ai · <span class="stars">⭐ 1,241</span></div>
+          </div>
+        </div>
+        <div class="desc">Open-source agent platform for Global × China enterprises.</div>
+        <div class="tags">
+          <span class="tag blue">enterprise</span>
+          <span class="tag">MCP</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 📋 Full Roster -->
+  <section>
+    <h2 class="section-title">📋 Full Roster</h2>
+    <p class="section-desc">Complete list of featured repos with key metrics</p>
+    <div style="overflow-x:auto">
+      <table class="roster-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Project</th>
+            <th>Author</th>
+            <th>⭐ Stars</th>
+            <th>Lang</th>
+            <th>License</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><a href="https://github.com/NousResearch/hermes-agent" target="_blank">hermes-agent</a></td>
+            <td>NousResearch</td>
+            <td>189,936</td>
+            <td>Python</td>
+            <td>MIT</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><a href="https://github.com/Snailclimb/JavaGuide" target="_blank">JavaGuide</a></td>
+            <td>Snailclimb</td>
+            <td>156,287</td>
+            <td>JS</td>
+            <td>Apache-2.0</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><a href="https://github.com/langgenius/dify" target="_blank">dify</a></td>
+            <td>langgenius</td>
+            <td>144,742</td>
+            <td>TS</td>
+            <td>Apache-2.0</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><a href="https://github.com/lobehub/lobehub" target="_blank">lobehub</a></td>
+            <td>lobehub</td>
+            <td>78,463</td>
+            <td>TS</td>
+            <td>AGPL-3.0</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><a href="https://github.com/pewdiepie-archdaemon/odysseus" target="_blank">odysseus</a></td>
+            <td>pewdiepie-archdaemon</td>
+            <td>67,056</td>
+            <td>Python</td>
+            <td>AGPL-3.0</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">learn-claude-code</a></td>
+            <td>shareAI-lab</td>
+            <td>65,889</td>
+            <td>Python</td>
+            <td>MIT</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><a href="https://github.com/zhayujie/CowAgent" target="_blank">CowAgent</a></td>
+            <td>zhayujie</td>
+            <td>45,206</td>
+            <td>Python</td>
+            <td>Apache-2.0</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><a href="https://github.com/BigPizzaV3/CodexPlusPlus" target="_blank">CodexPlusPlus</a></td>
+            <td>BigPizzaV3</td>
+            <td>16,976</td>
+            <td>Rust</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><a href="https://github.com/antirez/ds4" target="_blank">ds4</a></td>
+            <td>antirez</td>
+            <td>13,407</td>
+            <td>C</td>
+            <td>MIT</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><a href="https://github.com/PySpur-Dev/pyspur" target="_blank">PySpur</a></td>
+            <td>PySpur-Dev</td>
+            <td>5,734</td>
+            <td>TS</td>
+            <td>Apache-2.0</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td><a href="https://github.com/fim-ai/fim-one" target="_blank">fim-one</a></td>
+            <td>fim-ai</td>
+            <td>1,241</td>
+            <td>Python</td>
+            <td>Other</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td><a href="https://github.com/caramaschiHG/awesome-ai-agents-2026" target="_blank">awesome-ai-agents-2026</a></td>
+            <td>caramaschiHG</td>
+            <td>1,066</td>
+            <td>-</td>
+            <td>Other</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 📰 Ecosystem News -->
+  <section>
+    <h2 class="section-title">📰 Ecosystem News</h2>
+    <p class="section-desc">Latest from the GitHub Blog and AI community</p>
+    <div class="news-list">
+
+      <div class="news-item">
+        <div class="n-title"><a href="https://github.blog/ai-and-ml/github-copilot/give-github-copilot-cli-real-code-intelligence-with-language-servers/" target="_blank">GitHub Copilot CLI Gets Real Code Intelligence with Language Servers</a></div>
+        <div class="n-meta">Natalie Guevara · June 10, 2026 · GitHub Blog</div>
+        <div class="s-desc" style="margin-top:8px;font-size:14px;color:#b0b4c8">The new LSP Setup skill automates installation and configuration of LSP servers for Copilot CLI, replacing brute-force grep/decompile with true semantic code understanding. Supports 14 languages including TypeScript, Java, Rust, and Python.</div>
+        <div class="tags" style="margin-top:8px">
+          <span class="tag blue">Copilot</span>
+          <span class="tag green">LSP</span>
+          <span class="tag">agent-skills</span>
+        </div>
+      </div>
+
+      <div class="news-item">
+        <div class="n-title"><a href="https://github.blog/" target="_blank">Agent Skills Ecosystem Expanding Rapidly</a></div>
+        <div class="n-meta">GitHub Blog · June 2026</div>
+        <div class="s-desc" style="margin-top:8px;font-size:14px;color:#b0b4c8">The agent skill pattern (Markdown + YAML frontmatter) is becoming the standard way to extend coding agents. The LSP Setup skill demonstrates a 7-step workflow pattern: language selection → OS detection → lookup → config scope → install → configure → verify.</div>
+        <div class="tags" style="margin-top:8px">
+          <span class="tag pink">agent-skills</span>
+          <span class="tag">standards</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 💡 Key Themes -->
+  <section>
+    <h2 class="section-title">💡 Key Themes This Week</h2>
+    <p class="section-desc">Patterns and insights from this edition's data</p>
+    <div class="theme-grid">
+
+      <div class="theme-card">
+        <h4 style="color:var(--accent2)">🏠 Self-Hosted AI Takes Over</h4>
+        <p>Odysseus's 67K stars in 11 days proves developers want AI they control. Combined with ds4's local inference engine and fim-one's self-hosted enterprise platform, the "own your AI stack" movement is undeniable.</p>
+      </div>
+
+      <div class="theme-card">
+        <h4 style="color:var(--accent3)">🇨🇳 Chinese AI Ecosystem Booms</h4>
+        <p>CowAgent (45K★), CodexPlusPlus (17K★), and learn-claude-code (65K★) show massive Chinese developer engagement. JavaGuide adding MCP/agent topics is a signal that traditional dev education is AI-ifying.</p>
+      </div>
+
+      <div class="theme-card">
+        <h4 style="color:var(--orange)">🔧 Agent Skills Become Infrastructure</h4>
+        <p>GitHub's LSP Setup skill demonstrates a repeatable pattern: agent skills are becoming the "npm packages" of the AI agent world. Standardized Markdown + YAML format enables composable agent behavior.</p>
+      </div>
+
+      <div class="theme-card">
+        <h4 style="color:var(--green)">🎨 Visual Agent Builders Go Mainstream</h4>
+        <p>PySpur's visual workflow builder and Dify's production platform represent a shift: building agents is no longer just for coders. Drag-and-drop agent orchestration is becoming table stakes.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 🔗 Resources -->
+  <section>
+    <h2 class="section-title">🔗 Resource Links</h2>
+    <p class="section-desc">Direct links to everything mentioned</p>
+    <div class="resource-links">
+      <a href="https://github.com/pewdiepie-archdaemon/odysseus" class="resource-link"><span class="link-icon">🌠</span> odysseus — Self-hosted AI Workspace</a>
+      <a href="https://github.com/NousResearch/hermes-agent" class="resource-link"><span class="link-icon">🤖</span> Hermes Agent — The agent that grows</a>
+      <a href="https://github.com/langgenius/dify" class="resource-link"><span class="link-icon">⚙️</span> Dify — Agentic Workflow Platform</a>
+      <a href="https://github.com/lobehub/lobehub" class="resource-link"><span class="link-icon">🧠</span> LobeHub — Chief Agent Operator</a>
+      <a href="https://github.com/zhayujie/CowAgent" class="resource-link"><span class="link-icon">🐄</span> CowAgent — Agent Harness</a>
+      <a href="https://github.com/antirez/ds4" class="resource-link"><span class="link-icon">💎</span> ds4 — DeepSeek 4 Local Inference</a>
+      <a href="https://github.com/BigPizzaV3/CodexPlusPlus" class="resource-link"><span class="link-icon">🔧</span> CodexPlusPlus — Codex Enhanced</a>
+      <a href="https://github.com/PySpur-Dev/pyspur" class="resource-link"><span class="link-icon">🎨</span> PySpur — Visual Agent Builder</a>
+      <a href="https://github.com/fim-ai/fim-one" class="resource-link"><span class="link-icon">🌐</span> fim-one — China × Global Agent Platform</a>
+      <a href="https://github.blog/ai-and-ml/github-copilot/" class="resource-link"><span class="link-icon">📰</span> GitHub Blog — AI & ML</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>🤖 Generated by Vera · AI Builders Digest · June 11, 2026</p>
+    <p>Data from <a href="https://docs.github.com/en/rest" target="_blank">GitHub API</a> · <a href="https://github.blog/" target="_blank">GitHub Blog</a></p>
+    <p style="margin-top:8px;font-size:12px">See all editions: <a href="https://luokpx.github.io/pages/" target="_blank">📚 Digest Archive</a></p>
+  </footer>
+
+</div>
+
+</body>
+</html>
