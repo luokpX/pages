@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Builders Digest — June 14, 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #0f0f2e 50%, #0a0a1a 100%);
+      color: #e0e0f0;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    .header {
+      padding: 48px 0 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: -20%;
+      width: 140%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 10%, rgba(139,92,246,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .header-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+      border: 1px solid rgba(99,102,241,0.3);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #a5b4fc;
+      margin-bottom: 16px;
+    }
+    .header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    .header p {
+      margin-top: 12px;
+      color: #94a3b8;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    .header-date {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 16px;
+      background: rgba(30,41,59,0.6);
+      border-radius: 999px;
+      font-size: 14px;
+      color: #64748b;
+    }
+    .header-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .header-meta span {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .header-meta strong {
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+
+    /* Section */
+    .section {
+      padding: 40px 0;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title .icon { font-size: 24px; }
+    .section-subtitle {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent);
+      margin: 0 0 24px;
+    }
+
+    /* Card Grid */
+    .repo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 540px) {
+      .repo-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Repo Card */
+    .repo-card {
+      background: linear-gradient(135deg, rgba(30,41,59,0.5), rgba(15,23,42,0.7));
+      border: 1px solid rgba(99,102,241,0.12);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .repo-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .repo-card:hover {
+      border-color: rgba(99,102,241,0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .repo-card:hover::before { opacity: 1; }
+
+    /* Author Row */
+    .repo-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .repo-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(99,102,241,0.3);
+      flex-shrink: 0;
+    }
+    .repo-author-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .repo-owner {
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .repo-owner a {
+      color: #a5b4fc;
+      text-decoration: none;
+    }
+    .repo-owner a:hover { text-decoration: underline; }
+    .repo-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    .repo-name a {
+      color: #e2e8f0;
+      text-decoration: none;
+    }
+    .repo-name a:hover { color: #818cf8; }
+
+    /* Stats */
+    .repo-stats {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .stat em {
+      font-style: normal;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .stat-icon { font-size: 14px; }
+
+    /* Description */
+    .repo-desc {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    /* Tags */
+    .repo-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+      background: rgba(99,102,241,0.1);
+      color: #a5b4fc;
+      border: 1px solid rgba(99,102,241,0.15);
+      letter-spacing: 0.3px;
+    }
+    .tag.lang {
+      background: rgba(34,197,94,0.1);
+      color: #4ade80;
+      border-color: rgba(34,197,94,0.2);
+    }
+    .tag.hot {
+      background: rgba(244,114,182,0.1);
+      color: #f472b6;
+      border-color: rgba(244,114,182,0.2);
+    }
+    .tag.idea {
+      background: rgba(250,204,21,0.1);
+      color: #fde047;
+      border-color: rgba(250,204,21,0.15);
+    }
+
+    /* Links */
+    .repo-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .repo-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .link-github {
+      background: rgba(99,102,241,0.12);
+      color: #a5b4fc;
+      border: 1px solid rgba(99,102,241,0.2);
+    }
+    .link-github:hover {
+      background: rgba(99,102,241,0.2);
+    }
+    .link-x {
+      background: rgba(29,161,242,0.1);
+      color: #7dd3fc;
+      border: 1px solid rgba(29,161,242,0.15);
+    }
+    .link-x:hover {
+      background: rgba(29,161,242,0.18);
+    }
+    .link-yt {
+      background: rgba(255,0,0,0.1);
+      color: #fca5a5;
+      border: 1px solid rgba(255,0,0,0.15);
+    }
+    .link-yt:hover {
+      background: rgba(255,0,0,0.18);
+    }
+    .link-docs {
+      background: rgba(34,211,238,0.1);
+      color: #67e8f9;
+      border: 1px solid rgba(34,211,238,0.15);
+    }
+    .link-docs:hover {
+      background: rgba(34,211,238,0.18);
+    }
+
+    /* Quote Block */
+    .quote-block {
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: rgba(99,102,241,0.06);
+      border-left: 3px solid #818cf8;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #c7d2fe;
+      font-style: italic;
+    }
+    .quote-block strong {
+      font-style: normal;
+      color: #a5b4fc;
+    }
+
+    /* Key Points */
+    .key-points {
+      margin: 10px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .key-points li {
+      font-size: 13px;
+      color: #94a3b8;
+      padding: 3px 0;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .key-points li::before {
+      content: '›';
+      color: #818cf8;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    /* Tweet-specific card */
+    .tweet-text {
+      font-size: 14px;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .tweet-meta {
+      font-size: 12px;
+      color: #64748b;
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    /* Podcast Section */
+    .podcast-card {
+      background: linear-gradient(135deg, rgba(30,41,59,0.5), rgba(15,23,42,0.7));
+      border: 1px solid rgba(99,102,241,0.12);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .podcast-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #f472b6, #c084fc, #818cf8);
+      opacity: 1;
+    }
+    .podcast-card:hover {
+      border-color: rgba(99,102,241,0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .podcast-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .podcast-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+    .podcast-info { flex: 1; }
+    .podcast-show {
+      font-size: 13px;
+      font-weight: 600;
+      color: #f472b6;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .podcast-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin: 4px 0;
+    }
+    .podcast-date {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .podcast-insights {
+      margin-top: 16px;
+    }
+    .podcast-insights h4 {
+      font-size: 14px;
+      color: #a5b4fc;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .insight-block {
+      margin-bottom: 14px;
+    }
+    .insight-topic {
+      font-size: 13px;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 4px;
+    }
+    .insight-text {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 40px 0;
+      text-align: center;
+      border-top: 1px solid rgba(99,102,241,0.08);
+      margin-top: 20px;
+    }
+    .footer p {
+      font-size: 13px;
+      color: #475569;
+    }
+    .footer a {
+      color: #818cf8;
+      text-decoration: none;
+    }
+
+    /* Digest info banner */
+    .digest-info {
+      background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.05));
+      border: 1px solid rgba(99,102,241,0.15);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 32px;
+    }
+    .digest-info h3 {
+      font-size: 15px;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
+    .digest-info ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+    }
+    .digest-info li {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+    .digest-info li::before {
+      content: '✦ ';
+      color: #818cf8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-badge">🤖 DAILY CURATION</div>
+    <h1>AI Builders Digest</h1>
+    <p>What the top builders in AI are saying, building, and debating</p>
+    <div class="header-date">📅 Sunday, June 14, 2026 · June 13–14</div>
+    <div class="header-meta">
+      <span>🎙️ <strong>1</strong> podcast</span>
+      <span>🐦 <strong>16</strong> builders</span>
+      <span>📝 <strong>39</strong> tweets</span>
+    </div>
+  </header>
+
+  <!-- Digest Info -->
+  <div class="digest-info">
+    <h3>📡 This Week's Signal</h3>
+    <ul>
+      <li>Fable backlash grows — silent limitations on AI dev prompts spark developer revolt</li>
+      <li>Open weight models "hitting peak" — labs are pulling back from open sourcing frontier models</li>
+      <li>Vercel ships HarnessAgent — a unified agent orchestration abstraction via AI SDK</li>
+      <li>Swyx declares "Git needs to die" — 20-40% of code spend is merge conflict management</li>
+      <li>Peter Steinberger's Codex has been building itself for 4 days — signing up for services autonomously</li>
+    </ul>
+  </div>
+
+  <!-- Podcast -->
+  <section class="section">
+    <div class="section-title"><span class="icon">🎙️</span> Podcast Feature</div>
+    <div class="section-subtitle">In-depth conversation from the builder ecosystem</div>
+    <div class="section-divider"></div>
+
+    <div class="podcast-card">
+      <div class="podcast-header">
+        <div class="podcast-icon">🎧</div>
+        <div class="podcast-info">
+          <div class="podcast-show">Unsupervised Learning</div>
+          <div class="podcast-title">AI Vibe Check: Lab Wars, Why APIs Might Vanish &amp; Future Predictions</div>
+          <div class="podcast-date">📅 June 12, 2026 · Jacob Efron with Ari (Datalogy) &amp; Rob (Radical)</div>
+        </div>
+      </div>
+
+      <div class="podcast-insights">
+        <h4>🔑 Key Insights</h4>
+
+        <div class="insight-block">
+          <div class="insight-topic">🎯 The State of Open Weight AI — "Peak Open Models"</div>
+          <div class="insight-text">The big debate: are open-weight models going away? Ari and Rob both see signs that Meta is pulling back from open LLMs, and Chinese labs (Qwen, DeepSeek) are keeping their most performant models proprietary behind APIs. The financial incentives just don't work — massive upfront compute costs with no direct revenue from open-weight releases. <strong>We may have already passed peak open models.</strong></div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-topic">🔮 APIs Might Vanish — Compute Crunch Is Real</div>
+          <div class="insight-text">Ari's provocative take: "It's not hard to imagine a world where Anthropic is so compute constrained that they cut off the API." Both labs are prioritizing first-party products (Claude Code, ChatGPT) over API access. OpenAI is already selling futures for guaranteed inference tokens. The bottleneck isn't model intelligence — it's <strong>compute supply</strong>, and it's going to stay acute for years.</div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-topic">⚔️ Fable Released — Step Change or Hype?</div>
+          <div class="insight-text">Fable launched to strong benchmarks but immediate controversy: silent limitations on AI-development-related prompts. The community is angry not about the restriction itself, but about the <strong>lack of transparency</strong> — the model performs poorly on certain tasks without telling you why. Ari sees this as a competitive move rather than a safety one.</div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-topic">🏗️ From IC to Manager of Agents</div>
+          <div class="insight-text">The biggest change in the last 6 months: engineers are moving from individual contributors to "managers of agents." Coding agents are finally working at longer time horizons. But with it comes new bottlenecks — code review, understanding gaps, and the "swamp" of AI-generated code that's harder to validate.</div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-topic">💡 The Open Models Survival Strategy</div>
+          <div class="insight-text">Ari's thesis: open source the model, keep the <strong>scaffolding and harness proprietary</strong>. Sell API access to the full system. Kimi (Moonshot) is doing this at hundreds of millions in ARR. The harness layer is where the real innovation and defensibility lives.</div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-topic">📊 Pretraining Didn't Hit a Wall</div>
+          <div class="insight-text">The "pretraining plateau" narrative was premature. The issue was that naive scaling (more of the same) stopped working, but getting the right details — architecture, data mix, training recipe — still yields step changes. Fable proves pretraining gains are not done yet.</div>
+        </div>
+
+        <div class="quote-block" style="margin-top: 16px;">
+          <strong>Bottom line:</strong> "The open weight era may be peaking. The compute crunch is real. APIs may disappear. And engineers are now managers of agents, not writers of code." — This episode is required listening for anyone building on top of frontier models.
+        </div>
+
+        <div class="repo-links" style="margin-top: 16px;">
+          <a class="link-yt" href="https://www.youtube.com/watch?v=W_iO8XxgD_I">▶️ Watch on YouTube</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Builders -->
+  <section class="section">
+    <div class="section-title"><span class="icon">🐦</span> Featured Builders</div>
+    <div class="section-subtitle">What the builders are saying on X — 16 voices, 39 tweets</div>
+    <div class="section-divider"></div>
+
+    <div class="repo-grid">
+
+      <!-- Andrej Karpathy -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/karpathy" alt="karpathy" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/karpathy">@karpathy</a></div>
+            <div class="repo-name">Andrej Karpathy</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>1 tweet</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">I like training large deep neural nets.</p>
+        <div class="tweet-text">"In awe of SpaceX and its story - past, present and the future. You can think about it in 10+ different ways and continue re-blowing your mind in circles. Huge congrats to the team! 🚀"</div>
+        <div class="tweet-meta">❤️ 17,009 · 🔁 791 · 💬 257</div>
+        <div class="quote-block">
+          <strong>Why it matters:</strong> Karpathy doesn't tweet much, but when he does, it carries weight. SpaceX's trajectory — from scrappy startup to orbital data centers powering xAI — is the narrative that's consuming Silicon Valley.
+        </div>
+        <div class="repo-tags">
+          <span class="tag hot">🔥 17K Likes</span>
+          <span class="tag idea">SpaceX</span>
+          <span class="tag">Karpathy</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/karpathy/status/2065490793092337691">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Swyx -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/swyx" alt="swyx" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/swyx">@swyx</a></div>
+            <div class="repo-name">Swyx</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>99</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">Cognition · dxTips · Temporal · Latent Space · AI Engineer</p>
+
+        <div class="tweet-text" style="border-left:2px solid rgba(250,204,21,0.3);padding-left:12px;">
+💥 <strong>"The Future Codebase"</strong> — "After the PR dies, after the Code Review dies, I am seriously wondering if Git needs to die next. Roughly 20-40% of code spend is just managing and updating merge conflicts. Necessary evil? Or legacy 'horseless carriage'? Maybe the future codebase looks more like a Notion or Linear database than .git objects."
+        </div>
+        <div class="tweet-meta">❤️ 90 · 🔁 4 · 💬 56</div>
+
+        <div class="tweet-text" style="margin-top:10px;border-left:2px solid rgba(59,130,246,0.3);padding-left:12px;">
+🧵 "Developer exception engineering: the happy paths are all happy in their own way. The unhappy paths are ~universally the same."
+        </div>
+        <div class="tweet-meta">❤️ 8</div>
+
+        <div class="quote-block">
+          <strong>Hot take:</strong> "Git needs to die" — merging is 20-40% of engineering spend, and AI agents make it worse, not better. Swyx is questioning whether git's branch-merge model is a cargo-culted relic.
+        </div>
+        <div class="repo-tags">
+          <span class="tag idea">🔥 Future of Code</span>
+          <span class="tag">Git</span>
+          <span class="tag">Agent Workflow</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/swyx/status/2065559864559145420">🐦 View Thread</a>
+        </div>
+      </div>
+
+      <!-- Thibault Sottiaux -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/thsottiaux" alt="thsottiaux" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/thsottiaux">@thsottiaux</a></div>
+            <div class="repo-name">Thibault Sottiaux</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>1 tweet</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>5,271</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">Codex & ChatGPT @OpenAI</p>
+        <div class="tweet-text">"Heard your (amusing) feedback that it was at times annoying to receive a reset of your Codex usage without warning. Next time we press the button you will get to choose when it actually applies. Happy codexing."</div>
+        <div class="tweet-meta">❤️ 5,271 · 🔁 157 · 💬 470</div>
+        <div class="repo-tags">
+          <span class="tag hot">🔥 5.2K Likes</span>
+          <span class="tag">Codex</span>
+          <span class="tag">OpenAI</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/thsottiaux/status/2065468501750649006">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Peter Yang -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/petergyang" alt="petergyang" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/petergyang">@petergyang</a></div>
+            <div class="repo-name">Peter Yang</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>2,740</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">AI tutorials · 150K+ readers · Product at Roblox</p>
+        <div class="tweet-text" style="border-left:2px solid rgba(239,68,68,0.3);padding-left:12px;">
+🚨 <strong>"Suspending Fable for all 'foreign person inside the US' is wild. How can you even enforce this properly?"</strong> — 2,015 likes
+        </div>
+        <div class="tweet-text" style="margin-top:8px;">
+"Yeah I think ID verification will soon be required to access the best models." — 674 likes
+        </div>
+        <div class="quote-block">
+          <strong>Signal:</strong> Access to frontier models is becoming restricted by geography and identity. The era of "anyone with internet access gets the best AI" may be ending.
+        </div>
+        <div class="repo-tags">
+          <span class="tag hot">🔥 Controversy</span>
+          <span class="tag">Fable</span>
+          <span class="tag">Access Control</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/petergyang/status/2065602691850764667">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Amjad Masad -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/amasad" alt="amasad" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/amasad">@amasad</a></div>
+            <div class="repo-name">Amjad Masad</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>778</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">CEO @Replit</p>
+        <div class="tweet-text" style="border-left:2px solid rgba(239,68,68,0.3);padding-left:12px;">
+"<strong>Sounds like we're going to have to turn off access to Fable.</strong>" — Amjad responding to the Fable restrictions controversy (450 likes)
+        </div>
+        <div class="tweet-text" style="margin-top:8px;">
+"When the whole Tokenmaxxing craze started, some enterprise customers asked us for a leaderboard. We said no. Would've been 'great' for business but we're not in the business of selling tokens. We sell outcomes." — 228 likes
+        </div>
+        <div class="quote-block">
+          <strong>Replit's stance:</strong> Tokenmaxxing was a fad. Replit refused to gamify token consumption — they sell outcomes, not usage. And they may have to cut off Fable access entirely.
+        </div>
+        <div class="repo-tags">
+          <span class="tag hot">🔥 Fable</span>
+          <span class="tag">Replit</span>
+          <span class="tag idea">Tokenmaxxing</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/amasad/status/2065600809224814835">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Guillermo Rauch -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/rauchg" alt="rauchg" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/rauchg">@rauchg</a></div>
+            <div class="repo-name">Guillermo Rauch</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>2,282</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">CEO @Vercel</p>
+
+        <div class="tweet-text" style="border-left:2px solid rgba(16,185,129,0.3);padding-left:12px;">
+🚀 <strong>"We just shipped HarnessAgent</strong> — a unified abstraction to orchestrate and integrate any agent's 'brain' into your app. @aisdk now frees you from both model and agent lock-in." — 828 likes
+        </div>
+        <div class="tweet-text" style="margin-top:8px;">
+"HTML is so back." — 1,065 likes
+        </div>
+        <div class="quote-block">
+          <strong>Vercel's bet:</strong> HarnessAgent is a unified agent orchestration layer. No more vendor lock-in at the agent level. And "HTML is so back" signals a return to simpler, portable web primitives.
+        </div>
+        <div class="repo-tags">
+          <span class="tag idea">HarnessAgent</span>
+          <span class="tag">Vercel</span>
+          <span class="tag">AI SDK</span>
+          <span class="tag">HTML</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/rauchg/status/2065520041894756480">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Alex Albert -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/alexalbert__" alt="alexalbert__" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/alexalbert__">@alexalbert__</a></div>
+            <div class="repo-name">Alex Albert</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>2 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>965</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">Research @AnthropicAI</p>
+        <div class="tweet-text">"Fable feels superhuman at working over long agentic conversations, sometimes to the point where I can't keep up with what it's telling me 😅" — 880 likes</div>
+        <div class="tweet-text" style="margin-top:8px;">"Pulled this from our prompting guide which has many more tips for working with Fable" — 85 likes</div>
+        <div class="repo-tags">
+          <span class="tag">Fable</span>
+          <span class="tag">Anthropic</span>
+          <span class="tag">Prompting</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/alexalbert__/status/2065493229760565758">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Aaron Levie -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/levie" alt="levie" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/levie">@levie</a></div>
+            <div class="repo-name">Aaron Levie</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>1,111</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">CEO @Box</p>
+        <div class="tweet-text" style="border-left:2px solid rgba(250,204,21,0.3);padding-left:12px;">
+📜 <strong>"This is a big turning point for AI regulation.</strong> The government is starting to deem some models too powerful for certain uses. I'm in the camp that this is unnecessary — we should be regulating use of AI, not the underlying models. Either way, it's unlikely we're going back." — 451 likes
+        </div>
+        <div class="tweet-text" style="margin-top:8px;">
+"Congrats to SpaceX on 25 years. Amazing to have examples that push the future forward." — 276 likes
+        </div>
+        <div class="repo-tags">
+          <span class="tag idea">AI Regulation</span>
+          <span class="tag">Box</span>
+          <span class="tag">Policy</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/levie/status/2065616509666472329">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Garry Tan -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/garrytan" alt="garrytan" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/garrytan">@garrytan</a></div>
+            <div class="repo-name">Garry Tan</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>966</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">President & CEO @YCombinator</p>
+        <div class="tweet-text" style="border-left:2px solid rgba(250,204,21,0.3);padding-left:12px;">
+🚨 <strong>"Everyone thinks AI coding tools set founders free. Watch what people actually build with them: rules, approvals, process, layers. The same cage, assembled faster. Speed of construction is speed of calcification."</strong> — 746 likes, 🔁 67
+        </div>
+        <div class="tweet-text" style="margin-top:8px;">
+"Proud of @datacurve (YC W24) — building THE defining software engineering benchmark in DeepSWE." — 88 likes
+        </div>
+        <div class="quote-block">
+          <strong>Deep take:</strong> Garry Tan warns that AI doesn't liberate founders — it just accelerates the bureaucracy-building. The tool that scaffolds anything in an afternoon will scaffold your bureaucracy in an afternoon too.
+        </div>
+        <div class="repo-tags">
+          <span class="tag idea">Deep Insight</span>
+          <span class="tag">YC</span>
+          <span class="tag">AI Tools</span>
+          <span class="tag">Bureaucracy</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/garrytan/status/2065416181943865611">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Peter Steinberger -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/steipete" alt="steipete" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/steipete">@steipete</a></div>
+            <div class="repo-name">Peter Steinberger</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>931</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">Polyagentmorous ClawFather · @OpenClaw + @OpenAI</p>
+        <div class="tweet-text" style="border-left:2px solid rgba(16,185,129,0.3);padding-left:12px;">
+🤯 <strong>"Codex runs INSIDE crabbox while it is building crabbox. Codex been looping nonstop for the last 4 days in multiple trees. Since all of it is e2e verifiable it basically builds itself. Codex even signs up for the services automatically via browser/computer use. My main job is adding credit card details."</strong> — 234 likes
+        </div>
+        <div class="tweet-text" style="margin-top:8px;">
+'"not consistently candid in their communications" is my fav new americanism.' — 524 likes
+        </div>
+        <div class="quote-block">
+          <strong>This is the future:</strong> Codex building OpenClaw while running inside OpenClaw. The agent self-hosts, self-builds, and self-signs up for services. Peter's role has been reduced to "adding credit card details."
+        </div>
+        <div class="repo-tags">
+          <span class="tag hot">🔥 Self-building</span>
+          <span class="tag">Codex</span>
+          <span class="tag">OpenClaw</span>
+          <span class="tag">Agent Loop</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/steipete/status/2065650561484267540">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Dan Shipper -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/danshipper" alt="danshipper" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/danshipper">@danshipper</a></div>
+            <div class="repo-name">Dan Shipper</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>857</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">CEO @Every</p>
+        <div class="tweet-text">"This seriously messes up my weekend plans — I may have to actually see people." — 564 likes</div>
+        <div class="tweet-text" style="margin-top:8px;">"CFOs everywhere: we are so back" — 217 likes</div>
+        <div class="quote-block">
+          <strong>Vibe:</strong> Dan's wry commentary on the Fable/regulation news — his weekend plans of playing with the new model are ruined, and CFOs are cheering the government stepping in.
+        </div>
+        <div class="repo-tags">
+          <span class="tag">Every</span>
+          <span class="tag">Fable</span>
+          <span class="tag">Weekend</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/danshipper/status/2065618107750916323">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Aaron Levie / Zara / rest -->
+      <!-- Nikunj Kothari -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/nikunj" alt="nikunj" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/nikunj">@nikunj</a></div>
+            <div class="repo-name">Nikunj Kothari</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">Partner @FPV Ventures</p>
+        <div class="tweet-text">"My shot at how application companies survive the 'what if large lab builds this' question 😅" — 77 likes</div>
+        <div class="repo-tags">
+          <span class="tag">Startup Strategy</span>
+          <span class="tag">VC</span>
+          <span class="tag">Lab Competition</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/nikunj/status/2065581110822593000">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Zara Zhang -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/zarazhangrui" alt="zarazhangrui" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/zarazhangrui">@zarazhangrui</a></div>
+            <div class="repo-name">Zara Zhang</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>2 tweets</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">Builder · Harvard '17</p>
+        <div class="tweet-text">"A viral product has a founder people can see and hear. People buy from people. A screen recording from the founder beats a corporate promo video." — 20 likes</div>
+        <div class="quote-block">
+          <strong>Builder wisdom:</strong> In the age of AI-generated everything, authenticity still wins. Show your face.
+        </div>
+        <div class="repo-tags">
+          <span class="tag">Builder</span>
+          <span class="tag idea">Authenticity</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/zarazhangrui/status/2065674426197393779">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Claude -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/claudeai" alt="claudeai" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/claudeai">@claudeai</a></div>
+            <div class="repo-name">Claude</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>3 tweets</em></span>
+          <span class="stat"><span class="stat-icon">❤️</span> <em>3,422</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">AI assistant by @AnthropicAI</p>
+        <div class="tweet-text">"What are you building?" — 737 likes</div>
+        <div class="tweet-text" style="margin-top:8px;">(Two additional image-based posts: 1,750 + 935 likes)</div>
+        <div class="repo-tags">
+          <span class="tag">Claude</span>
+          <span class="tag">Anthropic</span>
+          <span class="tag">Community</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/claudeai/status/2065456700379807900">🐦 View Tweet</a>
+        </div>
+      </div>
+
+      <!-- Garry Tan / Madhu Guru / Aditya Agarwal -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <img class="repo-avatar" src="https://unavatar.io/x/adityaag" alt="adityaag" loading="lazy">
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://x.com/adityaag">@adityaag</a></div>
+            <div class="repo-name">Aditya Agarwal</div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">💬</span> <em>2 tweets</em></span>
+        </div>
+        <p class="repo-owner" style="font-size:13px;color:#64748b;margin-bottom:10px;">GP @SouthParkCommons · Co-founder @Bevel</p>
+        <div class="tweet-text">"It's a good day to be called SPC. We are temporarily renaming ourselves to Space Park Commons." — 🚀 SpaceX mania reaches VC firms</div>
+        <div class="repo-tags">
+          <span class="tag">SpaceX</span>
+          <span class="tag">VC</span>
+        </div>
+        <div class="repo-links">
+          <a class="link-x" href="https://x.com/adityaag/status/2065467866930135491">🐦 View Tweet</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Weekly Narrative -->
+  <section class="section">
+    <div class="section-title"><span class="icon">📊</span> This Week's Narrative</div>
+    <div class="section-divider"></div>
+
+    <div class="digest-info" style="margin-bottom:0;">
+      <h3>🔄 The Big Story: Fable's Double-Edged Sword</h3>
+      <p style="color:#94a3b8;font-size:14px;margin-bottom:12px;line-height:1.7;">
+        Anthropic's Fable launch this week is the dominant narrative — and it cuts both ways.
+      </p>
+      <ul>
+        <li><strong>Capabilities leap:</strong> Fable is widely seen as a genuine step change, especially in long-context agentic conversations. Alex Albert calls it "superhuman."</li>
+        <li><strong>Trust backlash:</strong> Silent limitations on AI development prompts eroded trust. The community's reaction was swift and angry — not about the restriction, but the lack of transparency.</li>
+        <li><strong>Competitive whiplash:</strong> Replit's Amjad Masad may cut off Fable access entirely. Developers are discussing switching to OpenAI's Codex en masse.</li>
+        <li><strong>Regulation precedent:</strong> Aaron Levie flags this as a turning point for AI regulation — governments are now deeming models "too powerful" for certain uses.</li>
+      </ul>
+    </div>
+
+    <div class="digest-info" style="margin-top:16px;">
+      <h3>🚀 Theme: The Codebase Is Eating Itself</h3>
+      <p style="color:#94a3b8;font-size:14px;margin-bottom:12px;line-height:1.7;">
+        Multiple builders are questioning the fundamental assumptions of how we build software.
+      </p>
+      <ul>
+        <li><strong>Swyx:</strong> Git is obsolete — 20-40% of code spend is merge conflicts. The future codebase looks like a database, not a git tree.</li>
+        <li><strong>Peter Steinberger:</strong> Codex is building OpenClaw inside itself. The agent signs up for services, submits PRs, and loops for days autonomously.</li>
+        <li><strong>Garry Tan:</strong> AI tools accelerate bureaucracy, not liberation. Speed of construction = speed of calcification.</li>
+        <li><strong>Guillermo Rauch:</strong> HarnessAgent frees developers from agent lock-in. And "HTML is so back."</li>
+      </ul>
+    </div>
+
+    <div class="digest-info" style="margin-top:16px;">
+      <h3>🌍 Meta Theme: The End of Open Frontier Models</h3>
+      <p style="color:#94a3b8;font-size:14px;margin-bottom:12px;line-height:1.7;">
+        The podcast this week crystallizes what many have been feeling: we may have passed peak open model release.
+      </p>
+      <ul>
+        <li><strong>Compute crunch:</strong> Labs can't afford to service both API customers and their own products. APIs may vanish entirely.</li>
+        <li><strong>China pulling back:</strong> Even the Chinese labs (Qwen, DeepSeek) are keeping their best models proprietary now.</li>
+        <li><strong>Identity verification:</strong> Peter Yang predicts ID verification will be required for access to the best models.</li>
+        <li><strong>The survival strategy:</strong> Open source the model, keep the scaffolding proprietary — sell the full system as an API.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>🤖 <strong>AI Builders Digest</strong> — What the builders are actually saying</p>
+    <p>Curated from podcast transcripts and X/Twitter feeds · Generated June 14, 2026</p>
+    <p><a href="https://github.com/luokpX/pages">View on GitHub</a> · Powered by follow-builders skill · Generated by OpenClaw 🦞</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
