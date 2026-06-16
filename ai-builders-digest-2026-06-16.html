@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Builders Digest — June 16, 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #0f0f2e 50%, #0a0a1a 100%);
+      color: #e0e0f0;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    .header {
+      padding: 48px 0 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: -20%;
+      width: 140%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 10%, rgba(139,92,246,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .header-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+      border: 1px solid rgba(99,102,241,0.3);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #a5b4fc;
+      margin-bottom: 16px;
+    }
+    .header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    .header p {
+      margin-top: 12px;
+      color: #94a3b8;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    .header-date {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 16px;
+      background: rgba(30,41,59,0.6);
+      border-radius: 999px;
+      font-size: 14px;
+      color: #64748b;
+    }
+    .header-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .header-meta span {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .header-meta strong {
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+
+    /* Section */
+    .section {
+      padding: 40px 0;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title .icon { font-size: 24px; }
+    .section-subtitle {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent);
+      margin: 0 0 24px;
+    }
+
+    /* Card Grid */
+    .repo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 540px) {
+      .repo-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Repo Card */
+    .repo-card {
+      background: linear-gradient(135deg, rgba(30,41,59,0.5), rgba(15,23,42,0.7));
+      border: 1px solid rgba(99,102,241,0.12);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .repo-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .repo-card:hover {
+      border-color: rgba(99,102,241,0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .repo-card:hover::before { opacity: 1; }
+
+    /* Author Row */
+    .repo-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .repo-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .repo-author-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .repo-owner {
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .repo-owner a {
+      color: #a5b4fc;
+      text-decoration: none;
+    }
+    .repo-owner a:hover { text-decoration: underline; }
+    .repo-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    .repo-name a {
+      color: #e2e8f0;
+      text-decoration: none;
+    }
+    .repo-name a:hover { color: #818cf8; }
+
+    /* Stats */
+    .repo-stats {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .stat em {
+      font-style: normal;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .stat-icon { font-size: 14px; }
+
+    /* Description */
+    .repo-desc {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    /* Tags */
+    .repo-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+      background: rgba(99,102,241,0.1);
+      color: #a5b4fc;
+      border: 1px solid rgba(99,102,241,0.15);
+      letter-spacing: 0.3px;
+    }
+    .tag.lang {
+      background: rgba(34,197,94,0.1);
+      color: #4ade80;
+      border-color: rgba(34,197,94,0.2);
+    }
+    .tag.hot {
+      background: rgba(244,114,182,0.1);
+      color: #f472b6;
+      border-color: rgba(244,114,182,0.2);
+    }
+    .tag.idea {
+      background: rgba(250,204,21,0.1);
+      color: #fde047;
+      border-color: rgba(250,204,21,0.15);
+    }
+    .tag.tool {
+      background: rgba(56,189,248,0.1);
+      color: #7dd3fc;
+      border-color: rgba(56,189,248,0.15);
+    }
+    .tag.security {
+      background: rgba(239,68,68,0.1);
+      color: #fca5a5;
+      border-color: rgba(239,68,68,0.15);
+    }
+    .tag.cn {
+      background: rgba(251,191,36,0.1);
+      color: #fcd34d;
+      border-color: rgba(251,191,36,0.15);
+    }
+
+    /* Key Points */
+    .key-points {
+      background: rgba(99,102,241,0.06);
+      border: 1px solid rgba(99,102,241,0.12);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+    }
+    .key-points-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #818cf8;
+      margin-bottom: 8px;
+    }
+    .key-points ul {
+      list-style: none;
+      padding: 0;
+    }
+    .key-points ul li {
+      position: relative;
+      padding-left: 18px;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      line-height: 1.5;
+    }
+    .key-points ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #818cf8;
+    }
+
+    /* Quote Block */
+    .quote-block {
+      background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(99,102,241,0.05));
+      border-left: 3px solid #818cf8;
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+    }
+    .quote-block .quote-text {
+      font-size: 14px;
+      font-style: italic;
+      color: #c4b5fd;
+      line-height: 1.6;
+    }
+    .quote-block .quote-author {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 8px;
+      font-style: normal;
+    }
+
+    /* Links */
+    .repo-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .repo-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .link-github {
+      background: rgba(99,102,241,0.12);
+      color: #a5b4fc;
+      border: 1px solid rgba(99,102,241,0.2);
+    }
+    .link-github:hover {
+      background: rgba(99,102,241,0.2);
+    }
+    .link-x {
+      background: rgba(29,161,242,0.1);
+      color: #7dd3fc;
+      border: 1px solid rgba(29,161,242,0.15);
+    }
+    .link-x:hover {
+      background: rgba(29,161,242,0.18);
+    }
+    .link-docs {
+      background: rgba(34,211,238,0.1);
+      color: #67e8f9;
+      border: 1px solid rgba(34,211,238,0.15);
+    }
+    .link-docs:hover {
+      background: rgba(34,211,238,0.18);
+    }
+    .link-yt {
+      background: rgba(255,0,0,0.1);
+      color: #fca5a5;
+      border: 1px solid rgba(255,0,0,0.15);
+    }
+
+    /* HN Card */
+    .hn-card {
+      background: linear-gradient(135deg, rgba(255,102,0,0.06), rgba(255,69,0,0.03));
+      border: 1px solid rgba(255,102,0,0.15);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .hn-score {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 48px;
+      padding: 6px 0;
+    }
+    .hn-score-num {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ff6a00;
+      line-height: 1;
+    }
+    .hn-score-label {
+      font-size: 10px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hn-content { flex: 1; min-width: 0; }
+    .hn-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+    .hn-title a {
+      color: #e2e8f0;
+      text-decoration: none;
+    }
+    .hn-title a:hover { color: #f97316; }
+    .hn-meta {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    .hn-meta a { color: #a5b4fc; text-decoration: none; }
+    .hn-meta a:hover { text-decoration: underline; }
+
+    /* Trending Spotlight */
+    .trending-spotlight {
+      background: linear-gradient(135deg, rgba(250,204,21,0.06), rgba(245,158,11,0.03));
+      border: 1px solid rgba(250,204,21,0.15);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .trending-spotlight .spotlight-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fbbf24;
+      margin-bottom: 8px;
+    }
+    .trending-spotlight h3 {
+      font-size: 20px;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+    }
+    .trending-spotlight h3 a { color: #f1f5f9; text-decoration: none; }
+    .trending-spotlight h3 a:hover { color: #fbbf24; }
+    .trending-spotlight p { color: #94a3b8; font-size: 14px; line-height: 1.6; }
+
+    /* Insight Quote */
+    .insight-quote {
+      background: linear-gradient(135deg, rgba(52,211,153,0.06), rgba(16,185,129,0.03));
+      border: 1px solid rgba(52,211,153,0.12);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    .insight-quote .quote-text {
+      font-size: 15px;
+      font-style: italic;
+      color: #6ee7b7;
+      line-height: 1.7;
+    }
+    .insight-quote .quote-source {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 8px;
+    }
+    .insight-quote .quote-tags {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, rgba(30,41,59,0.5), rgba(15,23,42,0.7));
+      border: 1px solid rgba(99,102,241,0.12);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+    .stat-note {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 48px 0 64px;
+      border-top: 1px solid rgba(99,102,241,0.08);
+      margin-top: 40px;
+    }
+    .footer p {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+    .footer .footer-brand {
+      font-size: 14px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-badge">✦ AI Builders Digest</div>
+    <h1>Agent Laziness Is the New Smart</h1>
+    <p>Weekly curation from the GitHub AI builder ecosystem</p>
+    <div class="header-date">Tuesday · June 16, 2026</div>
+    <div class="header-meta">
+      <span>📦 <strong>16</strong> featured repos</span>
+      <span>🔥 <strong>48,000+</strong> weekly stars combined</span>
+      <span>📰 <strong>9</strong> top discussions</span>
+    </div>
+  </header>
+
+  <!-- Trending Spotlight -->
+  <section class="section">
+    <h2 class="section-title"><span class="icon">🔥</span> This Week's Trend</h2>
+    <div class="section-subtitle">What's hot in the AI builder community</div>
+    <div class="section-divider"></div>
+
+    <div class="trending-spotlight">
+      <div class="spotlight-title">⭐ The Art of Doing Less</div>
+      <h3><a href="https://github.com/DietrichGebert/ponytail">ponytail</a> & shadcn/improve Lead the "Lazy Senior Dev" Revolution</h3>
+      <p>
+        This week's breakout theme? <strong>Making AI agents lazier in all the right ways.</strong> 
+        <strong>ponytail</strong> (16,365★ in 4 days) teaches AI agents to think like the laziest senior dev — 
+        write less code, delete more, and never solve a problem that doesn't exist. Meanwhile 
+        <strong>shadcn/improve</strong> (4,871★) flips the script: use your most expensive model to audit your 
+        codebase and write plans for cheaper models to execute. And <strong>omnigent</strong> (1,906★) 
+        builds a meta-harness so you can swap Claude, Codex, and Pi agents like lego blocks. 
+        The industry is learning that <em>better output comes from smarter orchestration, not bigger models</em>.
+      </p>
+    </div>
+
+    <!-- Insight Quote -->
+    <div class="insight-quote">
+      <div class="quote-text">
+        "The best code is the code you never wrote. Ponytail makes your AI agent think like the laziest senior dev in the room."
+      </div>
+      <div class="quote-source">— ponytail README (16,365★ in 4 days)</div>
+      <div class="quote-tags">
+        <span class="tag idea">💡 YAGNI philosophy</span>
+        <span class="tag tool">agent-orchestration</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Agents & Skills Section -->
+  <section class="section">
+    <h2 class="section-title"><span class="icon">🧠</span> AI Agents & Skills</h2>
+    <div class="section-subtitle">Lazy senior dev skills, meta-agent orchestration, Fable-mode, design skills</div>
+    <div class="section-divider"></div>
+
+    <div class="repo-grid">
+
+      <!-- ponytail -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">D</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/DietrichGebert">DietrichGebert</a> /</div>
+            <div class="repo-name"><a href="https://github.com/DietrichGebert/ponytail">ponytail</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>16,365</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+16,365/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>682</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote. YAGNI, delete dead code, don't over-abstract.
+        </p>
+        <div class="key-points">
+          <div class="key-points-title">💡 Why It Matters</div>
+          <ul>
+            <li>16k★ in 4 days — fastest-growing agent skill this month</li>
+            <li>Tackles AI's biggest problem: over-engineering and bloat</li>
+            <li>YAGNI (You Ain't Gonna Need It) as a first-class agent principle</li>
+          </ul>
+        </div>
+        <div class="repo-tags">
+          <span class="tag lang">JavaScript</span>
+          <span class="tag hot">🔥 breakout</span>
+          <span class="tag tool">agent-skill</span>
+          <span class="tag">yagni</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/DietrichGebert/ponytail" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- shadcn/improve -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">S</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/shadcn">shadcn</a> /</div>
+            <div class="repo-name"><a href="https://github.com/shadcn/improve">improve</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>4,871</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+4,871/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>167</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          Use your most capable model to audit your codebase and write plans for cheaper models to execute. Cost-efficient agent architecture from the shadcn team.
+        </p>
+        <div class="key-points">
+          <div class="key-points-title">💡 Why It Matters</div>
+          <ul>
+            <li>p(expensive) → plan → p(cheap) → execute — optimal cost-efficiency</li>
+            <li>From the creator of shadcn/ui — trusted name in developer tooling</li>
+            <li>Practical, production-ready agent architecture pattern</li>
+          </ul>
+        </div>
+        <div class="repo-tags">
+          <span class="tag tool">agent-architecture</span>
+          <span class="tag idea">💡 cost-efficiency</span>
+          <span class="tag">shadcn</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/shadcn/improve" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- omnigent -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">O</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/omnigent-ai">omnigent-ai</a> /</div>
+            <div class="repo-name"><a href="https://github.com/omnigent-ai/omnigent">omnigent</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>1,906</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+1,906/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>229</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          A meta-harness for all your AI agents. Provides a common layer over Claude Code, Codex, Pi, and custom agents — swap or combine them seamlessly.
+        </p>
+        <div class="key-points">
+          <div class="key-points-title">💡 Why It Matters</div>
+          <ul>
+            <li>Vendor-agnostic agent orchestration — no lock-in</li>
+            <li>Combine strengths of different agents in one workflow</li>
+            <li>Growing need as multi-agent setups become the norm</li>
+          </ul>
+        </div>
+        <div class="repo-tags">
+          <span class="tag lang">Python</span>
+          <span class="tag tool">orchestration</span>
+          <span class="tag">multi-agent</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/omnigent-ai/omnigent" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- baoyu-design -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">J</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/JimLiu">JimLiu</a> /</div>
+            <div class="repo-name"><a href="https://github.com/JimLiu/baoyu-design">baoyu-design</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>1,126</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+1,126/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>78</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          Run Claude Design locally as an Agent Skill — Cursor, Claude Code & more. Produce polished UI mockups, prototypes, decks, and wireframes.
+        </p>
+        <div class="repo-tags">
+          <span class="tag lang">JavaScript</span>
+          <span class="tag tool">agent-skill</span>
+          <span class="tag cn">🇨🇳 Chinese dev</span>
+          <span class="tag">ui-design</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/JimLiu/baoyu-design" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- guard-skills -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">A</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/amElnagdy">amElnagdy</a> /</div>
+            <div class="repo-name"><a href="https://github.com/amElnagdy/guard-skills">guard-skills</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>762</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+762/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>89</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          Guard skills for coding agents — quality gates that catch AI-generated failure modes in code, tests, and docs before they ship.
+        </p>
+        <div class="key-points">
+          <div class="key-points-title">💡 Why It Matters</div>
+          <ul>
+            <li>Quality gates specifically designed for AI-generated code failure modes</li>
+            <li>Catches hallucinated APIs, over-confident comments, missing edge cases</li>
+            <li>Essential infrastructure as AI writes more production code</li>
+          </ul>
+        </div>
+        <div class="repo-tags">
+          <span class="tag security">🔒 quality</span>
+          <span class="tag tool">agent-skills</span>
+          <span class="tag">code-review</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/amElnagdy/guard-skills" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- fable-mode -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">M</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/mrtooher">mrtooher</a> /</div>
+            <div class="repo-name"><a href="https://github.com/mrtooher/fable-mode">fable-mode</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>404</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+404/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>51</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          A Claude skill that activates Fable-style agentic behavior: explicit multi-stage planning, sub-agent delegation, and self-verification.
+        </p>
+        <div class="repo-tags">
+          <span class="tag tool">agent-skill</span>
+          <span class="tag">fable</span>
+          <span class="tag">multi-stage</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/mrtooher/fable-mode" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AI Infrastructure & Tooling Section -->
+  <section class="section">
+    <h2 class="section-title"><span class="icon">⚙️</span> Infrastructure & Tooling</h2>
+    <div class="section-subtitle">MiMo-Code from Xiaomi, AUR supply-chain detection, text humanizer, terminal innovation</div>
+    <div class="section-divider"></div>
+
+    <div class="repo-grid">
+
+      <!-- MiMo-Code -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">X</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/XiaomiMiMo">XiaomiMiMo</a> /</div>
+            <div class="repo-name"><a href="https://github.com/XiaomiMiMo/MiMo-Code">MiMo-Code</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>9,010</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+9,010/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>792</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          Xiaomi's MiMo-Code — a new AI coding assistant from Xiaomi's AI lab. TypeScript-based, built for the Chinese developer ecosystem.
+        </p>
+        <div class="key-points">
+          <div class="key-points-title">💡 Why It Matters</div>
+          <ul>
+            <li>Xiaomi enters the AI coding assistant space — major validation of the market</li>
+            <li>9k★ in ~6 days signals strong Chinese dev community interest</li>
+            <li>Could reshape the China AI coding tool landscape</li>
+          </ul>
+        </div>
+        <div class="repo-tags">
+          <span class="tag lang">TypeScript</span>
+          <span class="tag hot">🔥 viral</span>
+          <span class="tag cn">🇨🇳 Xiaomi</span>
+          <span class="tag tool">ai-coding</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/XiaomiMiMo/MiMo-Code" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- kage -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">T</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/tamnd">tamnd</a> /</div>
+            <div class="repo-name"><a href="https://github.com/tamnd/kage">kage</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>1,525</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+1,525/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>35</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          Shadow any website for offline viewing, with the JavaScript stripped out. Go-based web archiving tool for minimal, readable snapshots.
+        </p>
+        <div class="repo-tags">
+          <span class="tag lang">Go</span>
+          <span class="tag tool">web-archive</span>
+          <span class="tag">offline</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/tamnd/kage" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- AUR malware check -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">L</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/lenucksi">lenucksi</a> /</div>
+            <div class="repo-name"><a href="https://github.com/lenucksi/aur-malware-check">aur-malware-check</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>1,172</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+1,172/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>29</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          Detection tools for the June 2026 atomic-lockfile AUR supply-chain attack. Consolidated from community Gists — essential Linux security tooling.
+        </p>
+        <div class="key-points">
+          <div class="key-points-title">💡 Why It Matters</div>
+          <ul>
+            <li>Real-world supply-chain attack detection — timely and critical</li>
+            <li>Community-driven response to a major AUR security incident</li>
+            <li>Highlights the growing need for open-source supply-chain monitoring</li>
+          </ul>
+        </div>
+        <div class="repo-tags">
+          <span class="tag security">🔒 security</span>
+          <span class="tag lang">Shell</span>
+          <span class="tag">supply-chain</span>
+          <span class="tag">arch-linux</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/lenucksi/aur-malware-check" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- text-humanizer -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">K</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/khrisat">khrisat</a> /</div>
+            <div class="repo-name"><a href="https://github.com/khrisat/text-humanizer">text-humanizer</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>672</em></span>
+          <span class="stat"><span class="stat-icon">🔥</span> <em>+672/wk</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>54</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          Advanced open-source AI humanizer designed to make AI-generated text undetectable by Turnitin, GPTZero, and other AI detectors.
+        </p>
+        <div class="repo-tags">
+          <span class="tag lang">Python</span>
+          <span class="tag tool">humanizer</span>
+          <span class="tag">ai-detection</span>
+          <span class="tag">open-source</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/khrisat/text-humanizer" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Application Layer Section -->
+  <section class="section">
+    <h2 class="section-title"><span class="icon">📱</span> Application Layer</h2>
+    <div class="section-subtitle">Apple Intelligence on Mac, vibe coding cockpit, logo animation, 人味儿写作</div>
+    <div class="section-divider"></div>
+
+    <div class="repo-grid">
+
+      <!-- enableMacosAI -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">S</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/SkyBlue997">SkyBlue997</a> /</div>
+            <div class="repo-name"><a href="https://github.com/SkyBlue997/enableMacosAI">enableMacosAI</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>1,282</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>69</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          国行 Mac 一键开启完整 Apple 智能 (端侧 + Private Cloud Compute 云端) · macOS 27 / Apple Silicon. One-click Apple Intelligence unlock for China Macs.
+        </p>
+        <div class="repo-tags">
+          <span class="tag lang">Shell</span>
+          <span class="tag cn">🇨🇳 国行 Mac</span>
+          <span class="tag tool">apple-intelligence</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/SkyBlue997/enableMacosAI" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- fanbox -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">A</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/alchaincyf">alchaincyf</a> /</div>
+            <div class="repo-name"><a href="https://github.com/alchaincyf/fanbox">fanbox</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>574</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>82</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          vibe coding 的驾驶舱：左边文件，右边/下边终端，中间看清每一次改动。 The cockpit for vibe coding — browse files, command agents, watch every change.
+        </p>
+        <div class="key-points">
+          <div class="key-points-title">💡 Why It Matters</div>
+          <ul>
+            <li>Dedicated UI for the vibe coding workflow — a new UX paradigm</li>
+            <li>Left: files · Right: terminal · Center: diff view — optimized layout</li>
+            <li>Local-first Electron app, deeply integrated with agent tools</li>
+          </ul>
+        </div>
+        <div class="repo-tags">
+          <span class="tag lang">JavaScript</span>
+          <span class="tag cn">🇨🇳 Chinese dev</span>
+          <span class="tag tool">vibe-coding</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/alchaincyf/fanbox" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- renwei-writing -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">O</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/orange2ai">orange2ai</a> /</div>
+            <div class="repo-name"><a href="https://github.com/orange2ai/renwei-writing">renwei-writing</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>669</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>64</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          人味儿写作 · An AI agent skill: edit people's words without erasing the person behind them. Preserves human voice and personality in AI-assisted editing.
+        </p>
+        <div class="quote-block">
+          <div class="quote-text">
+            "Edit people's words without erasing the person behind them."
+          </div>
+          <div class="quote-author">— renwei-writing</div>
+        </div>
+        <div class="repo-tags">
+          <span class="tag idea">💡 writing</span>
+          <span class="tag cn">🇨🇳 Chinese</span>
+          <span class="tag tool">agent-skill</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/orange2ai/renwei-writing" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- pixel2motion -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">N</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/nolangz">nolangz</a> /</div>
+            <div class="repo-name"><a href="https://github.com/nolangz/pixel2motion">pixel2motion</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>474</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>39</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          AI logo animation skill: turn raster logos into smooth SVG animation, animated HTML demos, GIF/video previews, and motion QA evidence.
+        </p>
+        <div class="repo-tags">
+          <span class="tag lang">Python</span>
+          <span class="tag tool">animation</span>
+          <span class="tag">design</span>
+          <span class="tag">svg</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/nolangz/pixel2motion" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- architect-loop -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">D</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/DanMcInerney">DanMcInerney</a> /</div>
+            <div class="repo-name"><a href="https://github.com/DanMcInerney/architect-loop">architect-loop</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>453</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>34</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          Claude Fable 5 as architect, GPT-5.5 Codex as builder, the repo as memory — a research-backed Claude Code skill for cross-vendor agent collaboration.
+        </p>
+        <div class="repo-tags">
+          <span class="tag lang">HTML</span>
+          <span class="tag tool">agent-skill</span>
+          <span class="tag">multi-vendor</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/DanMcInerney/architect-loop" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+      <!-- luban-skill -->
+      <div class="repo-card">
+        <div class="repo-author">
+          <div class="repo-avatar">L</div>
+          <div class="repo-author-info">
+            <div class="repo-owner"><a href="https://github.com/LearnPrompt">LearnPrompt</a> /</div>
+            <div class="repo-name"><a href="https://github.com/LearnPrompt/luban-skill">luban-skill</a></div>
+          </div>
+        </div>
+        <div class="repo-stats">
+          <span class="stat"><span class="stat-icon">⭐</span> <em>335</em></span>
+          <span class="stat"><span class="stat-icon">🔄</span> <em>59</em> forks</span>
+        </div>
+        <p class="repo-desc">
+          鲁班 | Luban — 把"能用的Skill"打磨成"能被装、能传播、能验证、能进化"的公共资产。Agent skill-polishing workshop: inspection, standards, measurement & refinement.
+        </p>
+        <div class="repo-tags">
+          <span class="tag lang">Shell</span>
+          <span class="tag cn">🇨🇳 LearnPrompt</span>
+          <span class="tag tool">agent-skill</span>
+        </div>
+        <div class="repo-links">
+          <a href="https://github.com/LearnPrompt/luban-skill" class="link-github">📦 GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Hacker News Highlights -->
+  <section class="section">
+    <h2 class="section-title"><span class="icon">📰</span> Hacker News Highlights</h2>
+    <div class="section-subtitle">Top discussions from the builder community</div>
+    <div class="section-divider"></div>
+
+    <div class="hn-card">
+      <div class="hn-score">
+        <div class="hn-score-num">904</div>
+        <div class="hn-score-label">pts</div>
+      </div>
+      <div class="hn-content">
+        <div class="hn-title"><a href="https://www.iroh.computer/blog/v1">Iroh 1.0</a></div>
+        <div class="hn-meta">
+          by <strong>chadfowler</strong> · 904 points · Peer-to-peer networking library hits v1
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-card">
+      <div class="hn-score">
+        <div class="hn-score-num">628</div>
+        <div class="hn-score-label">pts</div>
+      </div>
+      <div class="hn-content">
+        <div class="hn-title"><a href="https://news.ycombinator.com/item?id=48542100">Ask HN: Has anyone replaced Claude/GPT with a local model for daily coding?</a></div>
+        <div class="hn-meta">
+          by <strong>cloudking</strong> · 628 points · The local-first AI coding debate rages on
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-card">
+      <div class="hn-score">
+        <div class="hn-score-num">597</div>
+        <div class="hn-score-label">pts</div>
+      </div>
+      <div class="hn-content">
+        <div class="hn-title"><a href="https://roman.pt/posts/linkedin-backdoor/">A backdoor in a LinkedIn job offer</a></div>
+        <div class="hn-meta">
+          by <strong>lwhsiao</strong> · 597 points · Supply-chain attack via fake job offers
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-card">
+      <div class="hn-score">
+        <div class="hn-score-num">564</div>
+        <div class="hn-score-label">pts</div>
+      </div>
+      <div class="hn-content">
+        <div class="hn-title"><a href="https://tinywind.io">TinyWind: A pixel pirate sailing game with real wind physics (380k+ kms sailed)</a></div>
+        <div class="hn-meta">
+          by <strong>tinywind</strong> · 564 points · Indie game built with real physics
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-card">
+      <div class="hn-score">
+        <div class="hn-score-num">315</div>
+        <div class="hn-score-label">pts</div>
+      </div>
+      <div class="hn-content">
+        <div class="hn-title"><a href="https://docs.hetzner.com/general/infrastructure-and-availability/price-adjustment/">Hetzner Price Adjustment</a></div>
+        <div class="hn-meta">
+          by <strong>tuhtah</strong> · 315 points · Cloud pricing changes
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-card">
+      <div class="hn-score">
+        <div class="hn-score-num">269</div>
+        <div class="hn-score-label">pts</div>
+      </div>
+      <div class="hn-content">
+        <div class="hn-title"><a href="https://www.salesforce.com/news/press-releases/2026/06/15/salesforce-signs-definitive-agreement-to-acquire-fin/">Salesforce to Acquire Fin (formerly Intercom) for $3.6B</a></div>
+        <div class="hn-meta">
+          by <strong>colesantiago</strong> · 269 points · Major AI acquisition in customer service
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-card">
+      <div class="hn-score">
+        <div class="hn-score-num">264</div>
+        <div class="hn-score-label">pts</div>
+      </div>
+      <div class="hn-content">
+        <div class="hn-title"><a href="https://www.wsj.com/business/deals/fox-roku-deal-f6e564f9">Fox to buy Roku</a></div>
+        <div class="hn-meta">
+          by <strong>thm</strong> · 264 points · Streaming consolidation
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-card">
+      <div class="hn-score">
+        <div class="hn-score-num">239</div>
+        <div class="hn-score-label">pts</div>
+      </div>
+      <div class="hn-content">
+        <div class="hn-title"><a href="https://www.monash.edu/news/articles/copper-drug-restores-memory-and-clears-toxic-alzheimers-proteins">Copper transport drug restores memory and clears toxic Alzheimer's proteins</a></div>
+        <div class="hn-meta">
+          by <strong>bookofjoe</strong> · 239 points · Breakthrough Alzheimer's research
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-card">
+      <div class="hn-score">
+        <div class="hn-score-num">228</div>
+        <div class="hn-score-label">pts</div>
+      </div>
+      <div class="hn-content">
+        <div class="hn-title"><a href="https://rsgm.dev/post/ai-dev-platform/">My Homelab AI Dev Platform</a></div>
+        <div class="hn-meta">
+          by <strong>rsgm</strong> · 228 points · Building AI dev infrastructure at home
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Quick Stats -->
+  <section class="section">
+    <h2 class="section-title"><span class="icon">📊</span> This Week by the Numbers</h2>
+    <div class="section-divider"></div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" style="background: linear-gradient(135deg, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">16,365</div>
+        <div class="stat-label">⭐ ponytail's total stars</div>
+        <div class="stat-note">4-day breakout — fastest growing</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-number" style="background: linear-gradient(135deg, #f472b6, #fb7185); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">9,010</div>
+        <div class="stat-label">⭐ MiMo-Code (Xiaomi)</div>
+        <div class="stat-note">6 days since launch</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-number" style="background: linear-gradient(135deg, #34d399, #2dd4bf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">904</div>
+        <div class="stat-label">💬 HN Points — Iroh 1.0</div>
+        <div class="stat-note">Top discussion this weekend</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-number" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">6</div>
+        <div class="stat-label">🧠 AI Agent Skills repos</div>
+        <div class="stat-note">Featured in this digest</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer-brand">✦ AI Builders Digest</p>
+    <p>Weekly curation from the GitHub AI ecosystem</p>
+    <p style="opacity:0.6; font-size:12px; margin-top:8px;">Curated by Vera 🌹 · June 16, 2026</p>
+  </footer>
+</div>
+</body>
+</html>
