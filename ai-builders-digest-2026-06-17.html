@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Builders Digest — June 17, 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #0f0f2e 50%, #0a0a1a 100%);
+      color: #e0e0f0;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    .header {
+      padding: 48px 0 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: -20%;
+      width: 140%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 10%, rgba(139,92,246,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .header-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+      border: 1px solid rgba(99,102,241,0.3);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #a5b4fc;
+      margin-bottom: 16px;
+    }
+    .header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    .header p {
+      margin-top: 12px;
+      color: #94a3b8;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    .header-date {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 16px;
+      background: rgba(30,41,59,0.6);
+      border-radius: 999px;
+      font-size: 14px;
+      color: #64748b;
+    }
+    .header-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .header-meta span {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .header-meta strong {
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+
+    /* Section */
+    .section {
+      padding: 40px 0;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title .icon { font-size: 24px; }
+    .section-subtitle {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent);
+      margin: 0 0 24px;
+    }
+
+    /* HN Card */
+    .hn-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .hn-card {
+      background: linear-gradient(135deg, rgba(30,41,59,0.5), rgba(15,23,42,0.7));
+      border: 1px solid rgba(99,102,241,0.12);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .hn-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .hn-card:hover {
+      border-color: rgba(99,102,241,0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .hn-card:hover::before { opacity: 1; }
+    .hn-score {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .hn-score-num {
+      font-size: 20px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f59e0b, #f97316);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hn-score-label {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .hn-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+    }
+    .hn-title a {
+      color: #f1f5f9;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .hn-title a:hover { color: #818cf8; }
+    .hn-meta {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .hn-meta strong { color: #94a3b8; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 48px 0 32px;
+      border-top: 1px solid rgba(99,102,241,0.1);
+      margin-top: 20px;
+    }
+    .footer p {
+      color: #475569;
+      font-size: 13px;
+    }
+    .footer .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(99,102,241,0.1);
+      border-radius: 999px;
+      font-size: 12px;
+      color: #818cf8;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-badge">⚡ AI BUILDERS DIGEST</div>
+      <h1>What Builders Are Talking About</h1>
+      <p>Curated from Hacker News &middot; Top stories right now</p>
+      <div class="header-date">📅 Wednesday, June 17, 2026</div>
+      <div class="header-meta">
+        <span>🔥 <strong>500+</strong> total stories</span>
+        <span>📊 <strong>10</strong> curated picks</span>
+        <span>ℹ️ Source: Hacker News API</span>
+      </div>
+    </header>
+
+    <!-- Key Points -->
+    <section class="section">
+      <h2 class="section-title"><span class="icon">📊</span> Key Points</h2>
+      <div class="section-divider"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+        <div class="hn-card" style="cursor:default;">
+          <div style="font-size:28px;margin-bottom:8px;">🧠</div>
+          <div style="font-size:15px;font-weight:600;color:#f1f5f9;margin-bottom:6px;"><strong>993 pts</strong> — Running local models is good now</div>
+          <div style="font-size:13px;color:#64748b;">Local AI models have reached a tipping point in quality & usability.</div>
+        </div>
+        <div class="hn-card" style="cursor:default;">
+          <div style="font-size:28px;margin-bottom:8px;">⌚</div>
+          <div style="font-size:15px;font-weight:600;color:#f1f5f9;margin-bottom:6px;"><strong>622 pts</strong> — Mechanical Watch</div>
+          <div style="font-size:13px;color:#64748b;">ciechanow.ski's legendary interactive deep-dive resurfaces.</div>
+        </div>
+        <div class="hn-card" style="cursor:default;">
+          <div style="font-size:28px;margin-bottom:8px;">📱</div>
+          <div style="font-size:15px;font-weight:600;color:#f1f5f9;margin-bottom:6px;"><strong>341 pts</strong> — GrapheneOS on Android 17</div>
+          <div style="font-size:13px;color:#64748b;">Privacy-focused OS already ported to latest Android.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top HN Stories -->
+    <section class="section">
+      <h2 class="section-title"><span class="icon">🔥</span> Top Hacker News Stories</h2>
+      <div class="section-subtitle">Highest-scoring discussions right now</div>
+      <div class="section-divider"></div>
+
+      <div class="hn-list">
+
+        <div class="hn-card">
+          <div class="hn-score">
+            <div class="hn-score-num">993</div>
+            <div class="hn-score-label">pts</div>
+          </div>
+          <div class="hn-content">
+            <div class="hn-title"><a href="https://vickiboykis.com/2026/06/15/running-local-models-is-good-now/">Running local models is good now</a></div>
+            <div class="hn-meta">
+              by <strong>jfb</strong> · 423 comments · Local AI has reached a watershed moment in quality
+            </div>
+          </div>
+        </div>
+
+        <div class="hn-card">
+          <div class="hn-score">
+            <div class="hn-score-num">622</div>
+            <div class="hn-score-label">pts</div>
+          </div>
+          <div class="hn-content">
+            <div class="hn-title"><a href="https://ciechanow.ski/mechanical-watch/">Mechanical Watch (2022)</a></div>
+            <div class="hn-meta">
+              by <strong>razin</strong> · 114 comments · Interactive deep dive into mechanical watch engineering
+            </div>
+          </div>
+        </div>
+
+        <div class="hn-card">
+          <div class="hn-score">
+            <div class="hn-score-num">341</div>
+            <div class="hn-score-label">pts</div>
+          </div>
+          <div class="hn-content">
+            <div class="hn-title"><a href="https://discuss.grapheneos.org/d/36469-grapheneos-has-been-ported-to-android-17-and-official-releases-are-coming-soon">GrapheneOS has been ported to Android 17</a></div>
+            <div class="hn-meta">
+              by <strong>Cider9986</strong> · 142 comments · Privacy ROM already tracking latest Android
+            </div>
+          </div>
+        </div>
+
+        <div class="hn-card">
+          <div class="hn-score">
+            <div class="hn-score-num">262</div>
+            <div class="hn-score-label">pts</div>
+          </div>
+          <div class="hn-content">
+            <div class="hn-title"><a href="https://therepublicofletters.substack.com/p/calvin-and-hobbes-and-the-price-of">Calvin and Hobbes and the price of integrity</a></div>
+            <div class="hn-meta">
+              by <strong>pseudolus</strong> · 115 comments · On Watterson's refusal to commercialize his masterpiece
+            </div>
+          </div>
+        </div>
+
+        <div class="hn-card">
+          <div class="hn-score">
+            <div class="hn-score-num">252</div>
+            <div class="hn-score-label">pts</div>
+          </div>
+          <div class="hn-content">
+            <div class="hn-title"><a href="https://mareksuppa.com/til/bash-dev-tcp-http-without-curl/">TIL: You can make HTTP requests without curl using Bash /dev/TCP</a></div>
+            <div class="hn-meta">
+              by <strong>mrshu</strong> · 141 comments · Bash built-in TCP via /dev/tcp — no curl needed
+            </div>
+          </div>
+        </div>
+
+        <div class="hn-card">
+          <div class="hn-score">
+            <div class="hn-score-num">127</div>
+            <div class="hn-score-label">pts</div>
+          </div>
+          <div class="hn-content">
+            <div class="hn-title"><a href="https://www.tno.nl/en/digital/artificial-intelligence/gpt-nl/">GPT‑NL: a sovereign language model for the Netherlands</a></div>
+            <div class="hn-meta">
+              by <strong>root-parent</strong> · 135 comments · Netherlands building its own national LLM
+            </div>
+          </div>
+        </div>
+
+        <div class="hn-card">
+          <div class="hn-score">
+            <div class="hn-score-num">63</div>
+            <div class="hn-score-label">pts</div>
+          </div>
+          <div class="hn-content">
+            <div class="hn-title"><a href="https://mll.sh/humiliating-iis-servers-for-fun-and-jail-time/">Humiliating IIS servers for fun and jail time</a></div>
+            <div class="hn-meta">
+              by <strong>denysvitali</strong> · 7 comments · A cautionary tale about poking at Windows servers
+            </div>
+          </div>
+        </div>
+
+        <div class="hn-card">
+          <div class="hn-score">
+            <div class="hn-score-num">41</div>
+            <div class="hn-score-label">pts</div>
+          </div>
+          <div class="hn-content">
+            <div class="hn-title"><a href="https://writings.stephenwolfram.com/2026/06/launching-version-15-of-wolfram-language-mathematica-built-in-useful-ai-lots-of-new-core-functionality/">Wolfram Language & Mathematica Version 15 — AI Assistant, Symbolic Music</a></div>
+            <div class="hn-meta">
+              by <strong>alok-g</strong> · 3 comments · Wolfram launches v15 with built-in AI assistant
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Quote Block -->
+    <section class="section">
+      <h2 class="section-title"><span class="icon">💬</span> Quote of the Day</h2>
+      <div class="section-divider"></div>
+      <div class="hn-card" style="cursor:default;background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(139,92,246,0.05));border-color:rgba(99,102,241,0.2);">
+        <div style="font-size:18px;font-style:italic;color:#c7d2fe;line-height:1.6;padding:8px 0;">
+          "Running local models is good now. The quality gap has shrunk to the point where for many tasks, local models are genuinely competitive with cloud APIs — and they never rate-limit you, never read your data, never cost per token."
+        </div>
+        <div style="margin-top:16px;font-size:13px;color:#64748b;">
+          — HN community on the state of local AI, June 2026
+        </div>
+      </div>
+    </section>
+
+    <!-- Tags -->
+    <section class="section">
+      <h2 class="section-title"><span class="icon">🏷️</span> Hot Tags</h2>
+      <div class="section-divider"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <span style="padding:6px 16px;border-radius:999px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);font-size:13px;color:#a5b4fc;">#LocalAI</span>
+        <span style="padding:6px 16px;border-radius:999px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.2);font-size:13px;color:#c084fc;">#OpenSource</span>
+        <span style="padding:6px 16px;border-radius:999px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.2);font-size:13px;color:#86efac;">#Android17</span>
+        <span style="padding:6px 16px;border-radius:999px;background:rgba(244,114,182,0.12);border:1px solid rgba(244,114,182,0.2);font-size:13px;color:#f9a8d4;">#LLM</span>
+        <span style="padding:6px 16px;border-radius:999px;background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.2);font-size:13px;color:#fdba74;">#Security</span>
+        <span style="padding:6px 16px;border-radius:999px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.2);font-size:13px;color:#7dd3fc;">#Wolfram</span>
+        <span style="padding:6px 16px;border-radius:999px;background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.2);font-size:13px;color:#a5b4fc;">#DevTools</span>
+      </div>
+    </section>
+
+    <!-- Resource Links -->
+    <section class="section">
+      <h2 class="section-title"><span class="icon">🔗</span> Resources</h2>
+      <div class="section-divider"></div>
+      <div class="hn-card" style="cursor:default;">
+        <div style="font-size:14px;font-weight:600;color:#f1f5f9;margin-bottom:12px;">📎 Original Sources</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="https://vickiboykis.com/2026/06/15/running-local-models-is-good-now/" style="color:#818cf8;text-decoration:none;font-size:14px;">→ Running local models is good now</a>
+          <a href="https://ciechanow.ski/mechanical-watch/" style="color:#818cf8;text-decoration:none;font-size:14px;">→ Mechanical Watch interactive guide</a>
+          <a href="https://discuss.grapheneos.org/d/36469-grapheneos-has-been-ported-to-android-17-and-official-releases-are-coming-soon" style="color:#818cf8;text-decoration:none;font-size:14px;">→ GrapheneOS on Android 17</a>
+          <a href="https://writings.stephenwolfram.com/2026/06/launching-version-15-of-wolfram-language-mathematica-built-in-useful-ai-lots-of-new-core-functionality/" style="color:#818cf8;text-decoration:none;font-size:14px;">→ Wolfram Language v15 announcement</a>
+          <a href="https://news.ycombinator.com/" style="color:#818cf8;text-decoration:none;font-size:14px;">📰 Hacker News — news.ycombinator.com</a>
+          <a href="https://github.com/trending" style="color:#818cf8;text-decoration:none;font-size:14px;">⭐ GitHub Trending — github.com/trending</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>AI Builders Digest &middot; June 17, 2026</p>
+      <p>Curated from Hacker News API &middot; Built with ❤️ by Vera</p>
+      <div class="badge">⚡ AI Builders Digest</div>
+      <p style="margin-top:16px;font-size:12px;">
+        🔄 Auto-generated daily &middot; 
+        <a href="https://github.com/luokpX" style="color:#818cf8;text-decoration:none;">GitHub</a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
