@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Builders Digest — June 18, 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #0f0f2e 50%, #0a0a1a 100%);
+      color: #e0e0f0;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    .header {
+      padding: 48px 0 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: -20%;
+      width: 140%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 10%, rgba(139,92,246,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .header-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+      border: 1px solid rgba(99,102,241,0.3);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #a5b4fc;
+      margin-bottom: 16px;
+    }
+    .header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    .header p {
+      margin-top: 12px;
+      color: #94a3b8;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    .header-date {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 16px;
+      background: rgba(30,41,59,0.6);
+      border-radius: 999px;
+      font-size: 14px;
+      color: #64748b;
+    }
+    .header-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .header-meta span {
+      font-size: 13px;
+      color: #64748b;
+    }
+    .header-meta strong {
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+
+    /* Section */
+    .section {
+      padding: 40px 0;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title .emoji { font-size: 24px; }
+    .section-subtitle {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    /* HN Card */
+    .hn-card {
+      background: linear-gradient(135deg, rgba(30,30,60,0.7), rgba(20,20,50,0.7));
+      border: 1px solid rgba(99,102,241,0.15);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .hn-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #818cf8, #c084fc);
+      border-radius: 0 4px 4px 0;
+    }
+    .hn-card:hover {
+      border-color: rgba(99,102,241,0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.1);
+    }
+    .hn-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .hn-rank {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+      border: 1px solid rgba(99,102,241,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #a5b4fc;
+    }
+    .hn-card h3 {
+      flex: 1;
+      font-size: 17px;
+      font-weight: 600;
+      color: #e2e8f0;
+      line-height: 1.4;
+    }
+    .hn-card h3 a {
+      color: #e2e8f0;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .hn-card h3 a:hover { color: #a5b4fc; }
+    .hn-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .hn-card-meta .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.2);
+      font-size: 12px;
+      font-weight: 500;
+      color: #a5b4fc;
+    }
+    .hn-card-meta .score { color: #fbbf24; font-weight: 600; }
+    .hn-card-meta .author { color: #94a3b8; }
+    .hn-card-meta .comments { color: #60a5fa; }
+    .hn-card .key-points {
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: rgba(30,41,59,0.5);
+      border-radius: 8px;
+      border-left: 3px solid rgba(99,102,241,0.3);
+    }
+    .hn-card .key-points p {
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .hn-card .key-points ul {
+      list-style: none;
+      margin-top: 6px;
+    }
+    .hn-card .key-points ul li {
+      font-size: 13px;
+      color: #94a3b8;
+      padding: 3px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+    .hn-card .key-points ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #818cf8;
+    }
+    .hn-card .resource-links {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .hn-card .resource-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.2);
+      font-size: 12px;
+      font-weight: 500;
+      color: #60a5fa;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .hn-card .resource-links a:hover {
+      background: rgba(59,130,246,0.2);
+      border-color: rgba(59,130,246,0.4);
+    }
+
+    /* Quote block */
+    .quote-block {
+      margin: 28px 0;
+      padding: 20px 24px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.08));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 12px;
+      position: relative;
+    }
+    .quote-block::before {
+      content: '"';
+      position: absolute;
+      top: -8px;
+      left: 12px;
+      font-size: 48px;
+      font-weight: 900;
+      color: rgba(99,102,241,0.15);
+      line-height: 1;
+    }
+    .quote-block p {
+      font-size: 15px;
+      font-style: italic;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+    .quote-block .quote-attribution {
+      margin-top: 8px;
+      font-size: 13px;
+      font-style: normal;
+      color: #64748b;
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .stat-card {
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(30,30,60,0.6), rgba(20,20,50,0.6));
+      border: 1px solid rgba(99,102,241,0.15);
+      border-radius: 12px;
+      text-align: center;
+    }
+    .stat-card .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-card .stat-label {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    /* GitHub Card */
+    .gh-card {
+      background: linear-gradient(135deg, rgba(30,30,60,0.7), rgba(20,20,50,0.7));
+      border: 1px solid rgba(34,197,94,0.15);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .gh-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #22c55e, #06b6d4);
+      border-radius: 0 4px 4px 0;
+    }
+    .gh-card:hover {
+      border-color: rgba(34,197,94,0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(34,197,94,0.08);
+    }
+    .gh-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .gh-card h3 a {
+      color: #e2e8f0;
+      text-decoration: none;
+    }
+    .gh-card h3 a:hover { color: #4ade80; }
+    .gh-card .gh-author {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    .gh-card .gh-author a { color: #94a3b8; text-decoration: none; }
+    .gh-card .gh-author a:hover { color: #4ade80; }
+    .gh-card .gh-desc {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+    .gh-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+    .gh-card-meta .gh-stars { color: #fbbf24; font-weight: 600; }
+    .gh-card-meta .gh-forks { color: #64748b; }
+    .gh-card-meta .gh-lang {
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.2);
+      font-size: 12px;
+      color: #4ade80;
+    }
+    .gh-card .gh-topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .gh-card .gh-topics .topic {
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(30,41,59,0.6);
+      border: 1px solid rgba(71,85,105,0.3);
+      font-size: 11px;
+      color: #64748b;
+    }
+    .gh-card .gh-stats-detail {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 12px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .gh-card .gh-stats-detail .label { color: #475569; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 0;
+      border-top: 1px solid rgba(71,85,105,0.3);
+      margin-top: 20px;
+    }
+    .footer p { font-size: 13px; color: #475569; }
+    .footer a { color: #818cf8; text-decoration: none; }
+    .footer a:hover { color: #a5b4fc; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .header h1 { font-size: 1.6rem; }
+      .hn-card-header { flex-direction: column; gap: 8px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-badge">🤖 AI Builders Digest</div>
+      <h1>Thursday Edition</h1>
+      <p>Curated top stories from Hacker News &amp; GitHub Trending</p>
+      <span class="header-date">📅 June 18, 2026</span>
+      <div class="header-meta">
+        <span>📰 <strong>10</strong> HN Stories</span>
+        <span>⭐ <strong>3</strong> GitHub Repos</span>
+        <span>💬 <strong>3,433+</strong> Comments</span>
+      </div>
+    </header>
+
+    <!-- Quote of the Day -->
+    <div class="quote-block">
+      <p>The best code is the code you never wrote. Make your AI agent think like the laziest senior dev in the room.</p>
+      <div class="quote-attribution">— ponytail (DietrichGebert), #1 trending repo today</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value">3,536</div>
+        <div class="stat-label">Total HN Points</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">2,257</div>
+        <div class="stat-label">Total HN Comments</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">46K+</div>
+        <div class="stat-label">GitHub Stars Combined</div>
+      </div>
+    </div>
+
+    <!-- Hacker News Section -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">🔥</span> Hacker News — Top Stories</h2>
+      <p class="section-subtitle">The most-upvoted discussions across tech, AI, science, and engineering</p>
+
+      <!-- Story 1 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">1</div>
+          <h3><a href="https://lore.org/" target="_blank" rel="noopener">Lore – Open source version control system designed for scalability</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 935</span>
+          <span class="tag author">👤 regnerba</span>
+          <span class="tag comments">💬 506</span>
+          <span class="tag">🔖 version-control</span>
+          <span class="tag">🔖 open-source</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>New VCS built from the ground up for modern distributed development at scale</li>
+            <li>Designed to handle monorepos and massive repositories that choke Git</li>
+            <li>Open source with a focus on performance and developer experience</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48571081" target="_blank">💬 HN Discussion</a>
+          <a href="https://lore.org/" target="_blank">🌐 Website</a>
+        </div>
+      </article>
+
+      <!-- Story 2 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">2</div>
+          <h3><a href="https://artificialanalysis.ai/articles/glm-5-2-is-the-new-leading-open-weights-model-on-the-artificial-analysis-intelligence-index" target="_blank" rel="noopener">GLM-5.2 is the new leading open weights model on Artificial Analysis</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 766</span>
+          <span class="tag author">👤 himata4113</span>
+          <span class="tag comments">💬 382</span>
+          <span class="tag">🔖 AI</span>
+          <span class="tag">🔖 open-weights</span>
+          <span class="tag">🔖 LLM</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>GLM-5.2 has overtaken all other open-weight models on the Artificial Analysis Intelligence Index</li>
+            <li>Demonstrates that Chinese AI labs continue to push the frontier of open models</li>
+            <li>Significant milestone for the open-source AI community</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48567759" target="_blank">💬 HN Discussion</a>
+          <a href="https://artificialanalysis.ai/articles/glm-5-2-is-the-new-leading-open-weights-model-on-the-artificial-analysis-intelligence-index" target="_blank">📄 Read Article</a>
+        </div>
+      </article>
+
+      <!-- Story 3 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">3</div>
+          <h3><a href="https://www.scientificamerican.com/article/americas-compact-between-science-and-politics-is-broken/" target="_blank" rel="noopener">U.S. science is in chaos</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 628</span>
+          <span class="tag author">👤 presspot</span>
+          <span class="tag comments">💬 719</span>
+          <span class="tag">🔖 science</span>
+          <span class="tag">🔖 policy</span>
+          <span class="tag">🔖 politics</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>Most commented story of the day — 719 comments — reflecting deep concern</li>
+            <li>Argues the compact between science and politics in America is fundamentally broken</li>
+            <li>Discusses funding instability, political interference, and erosion of scientific institutions</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48568058" target="_blank">💬 HN Discussion</a>
+          <a href="https://www.scientificamerican.com/article/americas-compact-between-science-and-politics-is-broken/" target="_blank">📄 Read Article</a>
+        </div>
+      </article>
+
+      <!-- Story 4 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">4</div>
+          <h3><a href="https://www.reuters.com/world/china/us-holds-off-blacklisting-chinas-deepseek-more-than-100-firms-deemed-security-2026-06-17/" target="_blank" rel="noopener">US holds off blacklisting DeepSeek, more than 100 firms deemed security risks</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 319</span>
+          <span class="tag author">👤 giuliomagnifico</span>
+          <span class="tag comments">💬 343</span>
+          <span class="tag">🔖 AI</span>
+          <span class="tag">🔖 geopolitics</span>
+          <span class="tag">🔖 regulation</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>US government decides to delay blacklisting DeepSeek despite security concerns</li>
+            <li>Over 100 other Chinese firms identified as security risks on the list</li>
+            <li>Significant implications for AI industry and US-China tech relations</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48565498" target="_blank">💬 HN Discussion</a>
+          <a href="https://archive.ph/MlU1U" target="_blank">📄 Archive Link</a>
+        </div>
+      </article>
+
+      <!-- Story 5 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">5</div>
+          <h3><a href="https://arstechnica.com/ai/2026/06/leaked-financial-docs-show-openai-is-losing-billions-of-dollars-a-year/" target="_blank" rel="noopener">Leaked financial docs show OpenAI is losing billions of dollars a year</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 224</span>
+          <span class="tag author">👤 greenchair</span>
+          <span class="tag comments">💬 133</span>
+          <span class="tag">🔖 AI</span>
+          <span class="tag">🔖 business</span>
+          <span class="tag">🔖 OpenAI</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>Leaked financial documents reveal OpenAI's staggering losses — billions annually</li>
+            <li>Raises questions about the sustainability of frontier AI development</li>
+            <li>Inference costs, talent, and infrastructure are the primary burn drivers</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48577208" target="_blank">💬 HN Discussion</a>
+          <a href="https://arstechnica.com/ai/2026/06/leaked-financial-docs-show-openai-is-losing-billions-of-dollars-a-year/" target="_blank">📄 Read Article</a>
+        </div>
+      </article>
+
+      <!-- Story 6 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">6</div>
+          <h3><a href="https://browser-use.com/posts/firecracker-browser-infra" target="_blank" rel="noopener">How we run Firecracker VMs inside EC2 and start browsers in less than 1s</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 189</span>
+          <span class="tag author">👤 gregpr07</span>
+          <span class="tag comments">💬 118</span>
+          <span class="tag">🔖 infrastructure</span>
+          <span class="tag">🔖 cloud</span>
+          <span class="tag">🔖 browser</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>Browser-use.com shares their architecture using Firecracker micro-VMs on EC2</li>
+            <li>Achieves sub-1-second browser startup for browser automation at scale</li>
+            <li>Deep dive into the infra decisions that make fast browser VMs possible</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48556561" target="_blank">💬 HN Discussion</a>
+          <a href="https://browser-use.com/posts/firecracker-browser-infra" target="_blank">📄 Read Article</a>
+        </div>
+      </article>
+
+      <!-- Story 7 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">7</div>
+          <h3><a href="https://adam.new/" target="_blank" rel="noopener">Show HN: Adam – AI agents for mechanical CAD</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 143</span>
+          <span class="tag author">👤 zachdive</span>
+          <span class="tag comments">💬 77</span>
+          <span class="tag">🔖 CAD</span>
+          <span class="tag">🔖 AI-agents</span>
+          <span class="tag">🔖 ShowHN</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>Building CADAM — open source Text-to-CAD platform (React + Supabase)</li>
+            <li>Belief: AI will become the primary medium for mechanical design, just like in software</li>
+            <li>Text → Code → CAD pipeline, positioned as "AI TinkerCAD"</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48572553" target="_blank">💬 HN Discussion</a>
+          <a href="https://adam.new/" target="_blank">🌐 Website</a>
+          <a href="https://www.youtube.com/watch?v=iESOr7EGWqk" target="_blank">🎥 Demo</a>
+        </div>
+      </article>
+
+      <!-- Story 8 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">8</div>
+          <h3><a href="https://storiedcolors.com/" target="_blank" rel="noopener">Storied Colors – a catalogue of named colors</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 65</span>
+          <span class="tag author">👤 susiecambria</span>
+          <span class="tag comments">💬 12</span>
+          <span class="tag">🔖 design</span>
+          <span class="tag">🔖 colors</span>
+          <span class="tag">🔖 web</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>Beautifully curated catalogue of named colors with stories behind each name</li>
+            <li>A delightful resource for designers and frontend developers</li>
+            <li>Every color has its own history and cultural context</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48577374" target="_blank">💬 HN Discussion</a>
+          <a href="https://storiedcolors.com/" target="_blank">🌐 Website</a>
+        </div>
+      </article>
+
+      <!-- Story 9 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">9</div>
+          <h3><a href="https://loreline.app/en/" target="_blank" rel="noopener">Loreline – Tools for writing interactive fiction</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 57</span>
+          <span class="tag author">👤 smartmic</span>
+          <span class="tag comments">💬 8</span>
+          <span class="tag">🔖 interactive-fiction</span>
+          <span class="tag">🔖 writing</span>
+          <span class="tag">🔖 tools</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>New suite of tools for creating interactive fiction and text adventures</li>
+            <li>Aims to make narrative game development accessible to writers</li>
+            <li>Web-based editor with publishing support</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48576395" target="_blank">💬 HN Discussion</a>
+          <a href="https://loreline.app/en/" target="_blank">🌐 Website</a>
+        </div>
+      </article>
+
+      <!-- Story 10 -->
+      <article class="hn-card">
+        <div class="hn-card-header">
+          <div class="hn-rank">10</div>
+          <h3><a href="https://www.horg.com/horg/?page_id=921" target="_blank" rel="noopener">Taxonomy of the Occlupanida (parasitoids on bread bag tags)</a></h3>
+        </div>
+        <div class="hn-card-meta">
+          <span class="tag score">⬆ 12</span>
+          <span class="tag author">👤 beatthatflight</span>
+          <span class="tag comments">💬 2</span>
+          <span class="tag">🔖 taxonomy</span>
+          <span class="tag">🔖 fun</span>
+          <span class="tag">🔖 science</span>
+        </div>
+        <div class="key-points">
+          <p><strong>Key Insights:</strong></p>
+          <ul>
+            <li>A delightfully absurd "scientific taxonomy" of plastic bread bag clip shapes</li>
+            <li>Treats everyday objects as if they were biological specimens — complete with Latin names</li>
+            <li>Perfect example of the quirky, wonderful content HN loves</li>
+          </ul>
+        </div>
+        <div class="resource-links">
+          <a href="https://news.ycombinator.com/item?id=48578388" target="_blank">💬 HN Discussion</a>
+          <a href="https://www.horg.com/horg/?page_id=921" target="_blank">🌐 Website</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- GitHub Trending Section -->
+    <section class="section">
+      <h2 class="section-title"><span class="emoji">⭐</span> GitHub Trending Repos</h2>
+      <p class="section-subtitle">New repositories gaining the most traction this month</p>
+
+      <article class="gh-card">
+        <h3><a href="https://github.com/DietrichGebert/ponytail" target="_blank">ponytail</a></h3>
+        <div class="gh-author">by <a href="https://github.com/DietrichGebert" target="_blank">DietrichGebert</a></div>
+        <div class="gh-desc">Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.</div>
+        <div class="gh-card-meta">
+          <span class="gh-stars">⭐ 31,639</span>
+          <span class="gh-forks">⑂ 1,428 forks</span>
+          <span class="gh-lang">JavaScript</span>
+        </div>
+        <div class="gh-stats-detail">
+          <span class="label">License:</span><span>MIT</span>
+          <span class="label">Created:</span><span>June 12, 2026</span>
+          <span class="label">Open Issues:</span><span>41</span>
+        </div>
+        <div class="gh-topics">
+          <span class="topic">agent-skills</span>
+          <span class="topic">ai-agents</span>
+          <span class="topic">claude</span>
+          <span class="topic">claude-code</span>
+          <span class="topic">cursor-rules</span>
+          <span class="topic">developer-tools</span>
+          <span class="topic">prompt-engineering</span>
+          <span class="topic">yagni</span>
+        </div>
+        <div class="resource-links">
+          <a href="https://github.com/DietrichGebert/ponytail" target="_blank">🐙 GitHub</a>
+        </div>
+      </article>
+
+      <article class="gh-card">
+        <h3><a href="https://github.com/XiaomiMiMo/MiMo-Code" target="_blank">MiMo-Code</a></h3>
+        <div class="gh-author">by <a href="https://github.com/XiaomiMiMo" target="_blank">XiaomiMiMo</a> (Xiaomi)</div>
+        <div class="gh-desc">MiMo Code: Where Models and Agents Co-Evolve — Xiaomi's open source AI coding agent</div>
+        <div class="gh-card-meta">
+          <span class="gh-stars">⭐ 9,585</span>
+          <span class="gh-forks">⑂ 863 forks</span>
+          <span class="gh-lang">TypeScript</span>
+        </div>
+        <div class="gh-stats-detail">
+          <span class="label">License:</span><span>MIT</span>
+          <span class="label">Created:</span><span>June 10, 2026</span>
+          <span class="label">Open Issues:</span><span>780</span>
+        </div>
+        <div class="gh-topics">
+          <span class="topic">ai</span>
+          <span class="topic">ai-agents</span>
+          <span class="topic">cli</span>
+          <span class="topic">mimo</span>
+          <span class="topic">mimo-code</span>
+        </div>
+        <div class="resource-links">
+          <a href="https://github.com/XiaomiMiMo/MiMo-Code" target="_blank">🐙 GitHub</a>
+          <a href="https://mimo.xiaomi.com/coder" target="_blank">🌐 Homepage</a>
+        </div>
+      </article>
+
+      <article class="gh-card">
+        <h3><a href="https://github.com/shadcn/improve" target="_blank">improve</a></h3>
+        <div class="gh-author">by <a href="https://github.com/shadcn" target="_blank">shadcn</a></div>
+        <div class="gh-desc">Use your most capable model to audit your codebase and write plans for cheaper models to execute.</div>
+        <div class="gh-card-meta">
+          <span class="gh-stars">⭐ 5,213</span>
+          <span class="gh-forks">⑂ 193 forks</span>
+          <span class="gh-lang">—</span>
+        </div>
+        <div class="gh-stats-detail">
+          <span class="label">License:</span><span>MIT</span>
+          <span class="label">Created:</span><span>June 10, 2026</span>
+          <span class="label">Open Issues:</span><span>6</span>
+        </div>
+        <div class="resource-links">
+          <a href="https://github.com/shadcn/improve" target="_blank">🐙 GitHub</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>🤖 AI Builders Digest — Automatically generated on June 18, 2026</p>
+      <p>Built with data from <a href="https://news.ycombinator.com/" target="_blank">Hacker News</a> &amp; <a href="https://github.com/trending" target="_blank">GitHub Trending</a></p>
+    </footer>
+  </div>
+</body>
+</html>
