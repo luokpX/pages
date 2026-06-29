@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Builders Digest - 2026-06-29</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;color:#e0e0e0;padding:20px}
+.container{max-width:800px;margin:0 auto}
+.header{text-align:center;padding:40px 20px;margin-bottom:30px;background:rgba(255,255,255,0.05);border-radius:16px;backdrop-filter:blur(10px)}
+.header h1{font-size:28px;background:linear-gradient(135deg,#00d2ff,#3a7bd5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.header .date{color:#888;font-size:14px}
+.header .tagline{color:#666;font-size:13px;margin-top:4px}
+.card{background:rgba(255,255,255,0.06);border-radius:12px;padding:20px;margin-bottom:16px;transition:all .3s ease;border:1px solid rgba(255,255,255,0.08)}
+.card:hover{transform:translateY(-2px);background:rgba(255,255,255,0.1);border-color:rgba(0,210,255,0.3)}
+.card .title{font-size:16px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.4}
+.card .title a{color:#64b5f6;text-decoration:none}
+.card .title a:hover{text-decoration:underline}
+.card .meta{display:flex;gap:16px;font-size:12px;color:#888;flex-wrap:wrap}
+.card .meta span{display:flex;align-items:center;gap:4px}
+.card .meta .score{color:#4caf50}
+.card .meta .author{color:#ff9800}
+.card .desc{font-size:13px;color:#aaa;margin-top:8px;line-height:1.5}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.tag{background:rgba(100,181,246,0.15);color:#64b5f6;padding:3px 10px;border-radius:20px;font-size:11px}
+.footer{text-align:center;padding:30px;color:#555;font-size:12px;border-top:1px solid rgba(255,255,255,0.05);margin-top:30px}
+.footer a{color:#64b5f6;text-decoration:none}
+.section-title{font-size:18px;font-weight:600;margin:24px 0 12px;padding-left:12px;border-left:3px solid #00d2ff;color:#ddd}
+.key-points{background:linear-gradient(135deg,rgba(0,210,255,0.08),rgba(58,127,213,0.08));border-radius:12px;padding:16px;margin-bottom:20px;border:1px solid rgba(0,210,255,0.15)}
+.key-points h3{font-size:14px;color:#00d2ff;margin-bottom:10px}
+.key-points ul{list-style:none;padding:0}
+.key-points li{padding:4px 0;font-size:13px;color:#ccc;padding-left:16px;position:relative}
+.key-points li:before{content:"▸";position:absolute;left:0;color:#00d2ff}
+.quote-block{background:rgba(255,193,7,0.08);border-left:3px solid #ffc107;border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;font-style:italic}
+.quote-block .quote-text{color:#ccc;font-size:13px}
+.quote-block .quote-source{color:#888;font-size:11px;margin-top:4px;text-align:right}
+.links-section{background:rgba(255,255,255,0.04);border-radius:12px;padding:16px;margin-top:20px}
+.links-section h3{font-size:14px;color:#00d2ff;margin-bottom:10px}
+.links-section ul{list-style:none;padding:0}
+.links-section li{padding:3px 0;font-size:12px}
+.links-section li a{color:#888;text-decoration:none}
+.links-section li a:hover{color:#64b5f6;text-decoration:underline}
+@media(max-width:600px){.header h1{font-size:22px}.card{padding:14px}.card .desc{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>🚀 AI Builders Digest</h1>
+  <div class="date">2026.06.29 · 周一</div>
+  <div class="tagline">Hacker News 热门 · AI 开发者精选</div>
+</div>
+
+<div class="key-points">
+  <h3>📊 今日关键数据</h3>
+  <ul>
+    <li>GLM 5.2 在安全基准测试中超越 Claude，国产模型再获突破</li>
+    <li>开发者用 Claude Code 分析 MRI 扫描结果，AI 医疗诊断迈入实战</li>
+    <li>布朗大学爆出大规模 AI 作弊丑闻，半数学生涉嫌使用 AI 完成考试</li>
+    <li>Aleph Alpha 提出 Model Training as Code 理念，AI 工程化新范式</li>
+    <li>Tokenmaxxing 热潮退去，Agentic 工作流成新焦点</li>
+    <li>全新 Ornith-1.0 让 LLM 自己搭建推理"脚手架"进行编程</li>
+    <li>HackerRank 开源 ATS 系统，AI 招聘准确性遭质疑</li>
+    <li>KIDS 法案要求年龄验证上网引发隐私担忧</li>
+    <li>OpenAI Codex 敏感文件排除功能搁置数月未解决</li>
+  </ul>
+</div>
+
+<div class="quote-block">
+  <div class="quote-text">"The most exciting phrase to hear in science, the one that heralds new discoveries, is not 'Eureka!' but 'That's funny...'"</div>
+  <div class="quote-source">— Isaac Asimov</div>
+</div>
+
+<h2 class="section-title">🔥 今日热门</h2>
+
+<div class="card">
+  <div class="title"><a href="https://semgrep.dev/blog/2026/we-have-mythos-at-home-glm-52-beats-claude-in-our-cyber-benchmarks/" target="_blank">GLM 5.2 beats Claude in our benchmarks</a></div>
+  <div class="meta">
+    <span class="score">⬆ 836</span>
+    <span class="author">👤 jms703</span>
+    <span>🔗 <a href="https://semgrep.dev/blog/2026/we-have-mythos-at-home-glm-52-beats-claude-in-our-cyber-benchmarks/" style="color:#888">semgrep.dev</a></span>
+  </div>
+  <div class="desc">Semgrep 团队发现智谱 GLM 5.2 在网络安全基准测试中超过了 Claude。报告称 GLM 5.2 在代码安全分析方面的表现令人惊艳，引发了对国产模型能力的新一轮讨论。</div>
+  <div class="tags"><span class="tag">GLM</span><span class="tag">Claude</span><span class="tag">基准测试</span><span class="tag">安全</span><span class="tag">国产模型</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://antoine.fi/mri-analysis-using-claude-code-opus" target="_blank">I used Claude Code to get a second opinion on my MRI</a></div>
+  <div class="meta">
+    <span class="score">⬆ 427</span>
+    <span class="author">👤 engmarketer</span>
+    <span>🔗 <a href="https://antoine.fi/mri-analysis-using-claude-code-opus" style="color:#888">antoine.fi</a></span>
+  </div>
+  <div class="desc">一名开发者用 Claude Code 分析了自己的 MRI 扫描结果，获得了与放射科医生一致的诊断结论。展示了 AI 在医疗辅助诊断方面的实际应用潜力。</div>
+  <div class="tags"><span class="tag">Claude Code</span><span class="tag">医疗</span><span class="tag">AI应用</span><span class="tag">开源</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://english.elpais.com/education/2026-06-28/ai-fraud-at-brown-university-academic-integrity-is-at-risk.html" target="_blank">Professor denounces mass AI fraud on an exam at Brown</a></div>
+  <div class="meta">
+    <span class="score">⬆ 404</span>
+    <span class="author">👤 geox</span>
+    <span>🔗 <a href="https://english.elpais.com/education/2026-06-28/ai-fraud-at-brown-university-academic-integrity-is-at-risk.html" style="color:#888">english.elpais.com</a></span>
+  </div>
+  <div class="desc">布朗大学教授揭露大规模学生使用 AI 作弊事件。近半数学生在一次线上考试中使用 AI 工具，引发了关于学术诚信和 AI 时代教育改革的激烈讨论。</div>
+  <div class="tags"><span class="tag">AI作弊</span><span class="tag">教育</span><span class="tag">学术诚信</span><span class="tag">布朗大学</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://aleph-alpha.com/en/blog/model-training-as-code/" target="_blank">Model Training as Code — Aleph Alpha</a></div>
+  <div class="meta">
+    <span class="score">⬆ 153</span>
+    <span class="author">👤 peterBlue75</span>
+    <span>🔗 <a href="https://aleph-alpha.com/en/blog/model-training-as-code/" style="color:#888">aleph-alpha.com</a></span>
+  </div>
+  <div class="desc">Aleph Alpha 提出 "Model Training as Code" 理念，将模型训练流程像软件工程一样进行版本控制、CI/CD 和自动化管理。这可能成为 AI 工程化的下一个范式。</div>
+  <div class="tags"><span class="tag">模型训练</span><span class="tag">MLOps</span><span class="tag">工程化</span><span class="tag">Aleph Alpha</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://12gramsofcarbon.com/p/agentics-tech-things-tokenmaxxing" target="_blank">Tokenmaxxing is dead, long live tokenmaxxing</a></div>
+  <div class="meta">
+    <span class="score">⬆ 150</span>
+    <span class="author">👤 theahura</span>
+    <span>🔗 <a href="https://12gramsofcarbon.com/p/agentics-tech-things-tokenmaxxing" style="color:#888">12gramsofcarbon.com</a></span>
+  </div>
+  <div class="desc">深度分析文章讨论了 "tokenmaxxing" 现象的兴衰——从疯狂追求长上下文的竞赛，到回归实用主义。文章认为 Agentic 工作流才是 token 真正的价值所在。</div>
+  <div class="tags"><span class="tag">Token</span><span class="tag">上下文长度</span><span class="tag">Agent</span><span class="tag">分析</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://deep-reinforce.com/ornith_1_0.html" target="_blank">Ornith-1.0: Self-Scaffolding LLMs for Agentic Coding</a></div>
+  <div class="meta">
+    <span class="score">⬆ 27</span>
+    <span class="author">👤 kordlessagain</span>
+    <span>🔗 <a href="https://deep-reinforce.com/ornith_1_0.html" style="color:#888">deep-reinforce.com</a></span>
+  </div>
+  <div class="desc">Ornith-1.0 提出 "自脚手架" 技术，让 LLM 在编码过程中自主构建和重构其推理结构。这可能是朝着真正自主编程 Agent 迈出的重要一步。</div>
+  <div class="tags"><span class="tag">LLM</span><span class="tag">Agent</span><span class="tag">编程</span><span class="tag">自脚手架</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://danunparsed.com/p/hackerrank-open-source-ats" target="_blank">HackerRank open sourced its ATS. My resume scored 90/100... Oh wait 74. No – 88</a></div>
+  <div class="meta">
+    <span class="score">⬆ 415</span>
+    <span class="author">👤 sambellll</span>
+    <span>🔗 <a href="https://danunparsed.com/p/hackerrank-open-source-ats" style="color:#888">danunparsed.com</a></span>
+  </div>
+  <div class="desc">HackerRank 开源了其 ATS（应聘跟踪系统），作者用自己的简历去测试，发现不同轮次得分从 74 到 90 不等，揭示了 AI 招聘系统的随意性和不可靠性。</div>
+  <div class="tags"><span class="tag">HackerRank</span><span class="tag">招聘</span><span class="tag">ATS</span><span class="tag">开源</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://www.eff.org/deeplinks/2026/06/kids-act-would-require-age-checks-get-online" target="_blank">The KIDS Act would require age checks to get online</a></div>
+  <div class="meta">
+    <span class="score">⬆ 481</span>
+    <span class="author">👤 bilsbie</span>
+    <span>🔗 <a href="https://www.eff.org/deeplinks/2026/06/kids-act-would-require-age-checks-get-online" style="color:#888">www.eff.org</a></span>
+  </div>
+  <div class="desc">美国 KIDS 法案要求所有在线平台实施年龄验证，EFF 对此提出强烈反对，称这是言论自由的前奏控制。这可能深刻影响 AI 产品的用户准入政策。</div>
+  <div class="tags"><span class="tag">政策</span><span class="tag">隐私</span><span class="tag">年龄验证</span><span class="tag">EFF</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://github.com/openai/codex/issues/2847" target="_blank">A way to exclude sensitive files issue still open for OpenAI Codex</a></div>
+  <div class="meta">
+    <span class="score">⬆ 206</span>
+    <span class="author">👤 pikseladam</span>
+    <span>🔗 <a href="https://github.com/openai/codex/issues/2847" style="color:#888">github.com</a></span>
+  </div>
+  <div class="desc">OpenAI Codex GitHub 上一个关于排除敏感文件的功能请求已开放数月仍未解决，开发者担心使用 Codex 时可能不小心将敏感代码发送给 OpenAI。</div>
+  <div class="tags"><span class="tag">OpenAI</span><span class="tag">Codex</span><span class="tag">隐私</span><span class="tag">安全</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://github.com/kamaludu/bash4llm/" target="_blank">Show HN: Bash4LLM+ – A lightweight, dependency-free Bash wrapper for LLM APIs</a></div>
+  <div class="meta">
+    <span class="score">⬆ 50</span>
+    <span class="author">👤 kamaludu</span>
+    <span>🔗 <a href="https://github.com/kamaludu/bash4llm/" style="color:#888">github.com</a></span>
+  </div>
+  <div class="desc">一个单文件 Bash 脚本，零依赖封装 LLM API 调用。支持 OpenAI、Anthropic 等多种提供商，纯 Bash 实现，让你在终端中直接与 AI 对话。</div>
+  <div class="tags"><span class="tag">Bash</span><span class="tag">LLM</span><span class="tag">CLI</span><span class="tag">开源</span><span class="tag">工具</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://github.com/librepods-org/librepods" target="_blank">Librepods: AirPods liberated</a></div>
+  <div class="meta">
+    <span class="score">⬆ 386</span>
+    <span class="author">👤 rbanffy</span>
+    <span>🔗 <a href="https://github.com/librepods-org/librepods" style="color:#888">github.com</a></span>
+  </div>
+  <div class="desc">开源项目 Librepods 通过逆向工程让你可以在非苹果设备上完全使用 AirPods 的所有功能（包括空间音频、设备切换等）。硬件自由运动的又一胜利。</div>
+  <div class="tags"><span class="tag">开源</span><span class="tag">硬件</span><span class="tag">AirPods</span><span class="tag">逆向工程</span></div>
+</div>
+
+<div class="card">
+  <div class="title"><a href="https://dam.stanford.edu/memory-prices.html" target="_blank">Historical memory prices 1960-2026</a></div>
+  <div class="meta">
+    <span class="score">⬆ 298</span>
+    <span class="author">👤 vga1</span>
+    <span>🔗 <a href="https://dam.stanford.edu/memory-prices.html" style="color:#888">dam.stanford.edu</a></span>
+  </div>
+  <div class="desc">斯坦福大学的数据可视化项目展示了 1960 年至 2026 年内存价格的指数级下降。从几十万美元每 MB 到如今的几分钱，数据背后是摩尔定律的生动呈现。</div>
+  <div class="tags"><span class="tag">数据</span><span class="tag">可视化</span><span class="tag">历史</span><span class="tag">硬件</span></div>
+</div>
+
+
+<div class="links-section">
+  <h3>🔗 原始资源</h3>
+  <ul>
+    <li><a href="https://news.ycombinator.com/" target="_blank">📰 Hacker News 首页</a></li>
+    <li><a href="https://news.ycombinator.com/front" target="_blank">📊 HN Front Page Archive (past 24h)</a></li>
+    <li><a href="https://semgrep.dev/blog/2026/we-have-mythos-at-home-glm-52-beats-claude-in-our-cyber-benchmarks/" target="_blank">🔬 GLM 5.2 vs Claude — Semgrep 完整报告</a></li>
+    <li><a href="https://antoine.fi/mri-analysis-using-claude-code-opus" target="_blank">🏥 Claude Code MRI 分析原文</a></li>
+    <li><a href="https://deep-reinforce.com/ornith_1_0.html" target="_blank">🤖 Ornith-1.0 论文</a></li>
+    <li><a href="https://github.com/librepods-org/librepods" target="_blank">💻 Librepods GitHub Repo</a></li>
+    <li><a href="https://dam.stanford.edu/memory-prices.html" target="_blank">📈 Historical Memory Prices 1960-2026</a></li>
+  </ul>
+</div>
+
+<div class="footer">
+  <p>AI Builders Digest · 每日自动生成</p>
+  <p>数据来源: <a href="https://news.ycombinator.com">Hacker News</a> · 由薇拉整理 💕</p>
+  <p>Built by <a href="https://github.com/luokpX">@luokpX</a> · Powered by OpenClaw</p>
+  <p style="margin-top:8px;color:#444">📬 更多内容: <a href="https://luokpx.github.io/pages/">GitHub Pages</a></p>
+</div>
+
+</div>
+</body>
+</html>
